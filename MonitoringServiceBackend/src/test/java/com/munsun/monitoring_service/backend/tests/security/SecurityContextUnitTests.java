@@ -4,13 +4,17 @@ import com.munsun.monitoring_service.backend.security.SecurityContext;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.backend.security.impl.SecurityContextImpl;
 import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import static org.assertj.core.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class SecurityContextUnitTests {
     private SecurityContext securityContext = new SecurityContextImpl();
 
+    @DisplayName("Successful authorization of a user with USER rights")
     @ParameterizedTest
     @EnumSource(
             value = ItemsMainMenu.class,
@@ -21,11 +25,12 @@ public class SecurityContextUnitTests {
                      "EXIT"}
     )
     public void positiveTestAllowAccessByUserRole(ItemsMainMenu item) {
-        var actualAccess = securityContext.allowAccess(Role.USER, item);
+        var actualAccess = securityContext.isAccessAllowed(Role.USER, item);
 
         assertThat(actualAccess).isTrue();
     }
 
+    @DisplayName("Failed authorization of a user with USER rights")
     @ParameterizedTest
     @EnumSource(
             value = ItemsMainMenu.class,
@@ -36,11 +41,12 @@ public class SecurityContextUnitTests {
                     "ADD_METER_READING"}
     )
     public void negativeTestAllowAccessByUserRole(ItemsMainMenu item) {
-        var actualAccess = securityContext.allowAccess(Role.USER, item);
+        var actualAccess = securityContext.isAccessAllowed(Role.USER, item);
 
         assertThat(actualAccess).isFalse();
     }
 
+    @DisplayName("Successful authorization of a user with ADMIN rights")
     @ParameterizedTest
     @EnumSource(
             value = ItemsMainMenu.class,
@@ -52,11 +58,12 @@ public class SecurityContextUnitTests {
                     "EXIT"}
     )
     public void positiveTestAllowAccessByAdminRole(ItemsMainMenu item) {
-        var actualAccess = securityContext.allowAccess(Role.ADMIN, item);
+        var actualAccess = securityContext.isAccessAllowed(Role.ADMIN, item);
 
         assertThat(actualAccess).isTrue();
     }
 
+    @DisplayName("Failed authorization of a user with ADMIN rights")
     @ParameterizedTest
     @EnumSource(
             value = ItemsMainMenu.class,
@@ -66,7 +73,7 @@ public class SecurityContextUnitTests {
                     "GET_SHOW_HISTORY"}
     )
     public void negativeTestAllowAccessByAdminRole(ItemsMainMenu item) {
-        var actualAccess = securityContext.allowAccess(Role.ADMIN, item);
+        var actualAccess = securityContext.isAccessAllowed(Role.ADMIN, item);
 
         assertThat(actualAccess).isFalse();
     }

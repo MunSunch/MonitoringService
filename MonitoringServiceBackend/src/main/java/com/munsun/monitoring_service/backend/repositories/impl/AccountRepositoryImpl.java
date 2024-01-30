@@ -9,14 +9,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AccountRepositoryImpl implements AccountRepository {
-    private Map<String, Account> accountsIndexByLogin;
-    private Map<Long, Account> accountsIndexById;
-    private static Long COUNTER_ID = 0L;
-
-    public AccountRepositoryImpl() {
-        this.accountsIndexByLogin = new HashMap<>();
-        this.accountsIndexById = new HashMap<>();
-    }
+    private final Map<String, Account> accountsIndexByLogin = new HashMap<>();
+    private final Map<Long, Account> accountsIndexById = new HashMap<>();
+    private Long counterId = 0L;
 
     @Override
     public Optional<Account> findByAccount_Login(String login) {
@@ -30,7 +25,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Account save(Account account) throws DatabaseConstraintException {
-        account.setId(COUNTER_ID++);
+        account.setId(counterId++);
         checkConstraints(account);
         accountsIndexByLogin.put(account.getLogin(), account);
         accountsIndexById.put(account.getId(), account);

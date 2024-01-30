@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  * Converter from the MeterReading entity to the output DTO objects LongMeterReadingDtoOut, MeterReadingDtoOut
  */
 public class MeterReadingMapperImpl implements MeterReadingMapper {
+    private static final String SEPARATOR = ":";
 
     /**
      * Converts MeterReadingDtoOut to a DTO object MeterReadingDtoOut
@@ -20,9 +21,8 @@ public class MeterReadingMapperImpl implements MeterReadingMapper {
      */
     @Override
     public MeterReadingDtoOut toMeterReadingDtoOut(MeterReading meterReadings) {
-        String separator = ":";
         List<String> readings = meterReadings.getReadings().entrySet().stream()
-                .map(x -> x.getKey() + separator + x.getValue())
+                .map(x -> x.getKey() + SEPARATOR + x.getValue())
                 .collect(Collectors.toList());
         return new MeterReadingDtoOut(meterReadings.getDate().toString(), readings);
     }
@@ -34,9 +34,8 @@ public class MeterReadingMapperImpl implements MeterReadingMapper {
      */
     @Override
     public LongMeterReadingDtoOut toLongMeterReadingDtoOut(MeterReading meterReading) {
-        String separator = ":";
         var readings = meterReading.getReadings().entrySet().stream()
-                .map(x -> x.getKey() + separator + x.getValue()).toList();
+                .map(x -> x.getKey() + SEPARATOR + x.getValue()).toList();
         return new LongMeterReadingDtoOut(meterReading.getAccount().getLogin(),
                                           meterReading.getDate().toString(),
                                           readings);

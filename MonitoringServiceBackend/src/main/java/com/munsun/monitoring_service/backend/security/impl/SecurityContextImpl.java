@@ -39,7 +39,7 @@ public class SecurityContextImpl implements SecurityContext {
         this.currentAuthorizedAccount = currentAuthorizedAccount;
     }
 
-    public boolean allowAccess(Role role, ItemsMainMenu item) {
+    public boolean isAccessAllowed(Role role, ItemsMainMenu item) {
         return context.get(role).stream().anyMatch(x -> x == item);
     }
 }

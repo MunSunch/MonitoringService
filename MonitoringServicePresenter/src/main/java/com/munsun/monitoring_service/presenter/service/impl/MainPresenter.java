@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class MainPresenter extends Presenter {
     private SecurityService securityService;
-    private final JournalService logger = new LoggerServiceImpl(new JournalRepositoryImpl());
+    private final JournalService logger = new LoggerServiceImpl(MainPresenter.class, new JournalRepositoryImpl());
 
     public MainPresenter(View view, MonitoringService service, SecurityService securityService) {
         super(view, service);

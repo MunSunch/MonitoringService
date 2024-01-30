@@ -10,24 +10,21 @@ import com.munsun.monitoring_service.backend.services.MonitoringService;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class MonitoringServiceImpl implements MonitoringService {
     private final MeterReadingsRepository readingsRepository;
     private final AccountRepository accountRepository;
     private final MeterReadingMapper readingsMapper;
-    private final List<String> namesReadingsMeters;
     private static final List<String> DEFAULT_NAMES_METER_READINGS = List.of("отопление", "горячая вода", "холодная вода");
-
-    public MonitoringServiceImpl(MeterReadingsRepository readingsRepository, AccountRepository accountRepository, MeterReadingMapper readingsMapper) {
-        this.readingsRepository = readingsRepository;
-        this.accountRepository = accountRepository;
-        this.readingsMapper = readingsMapper;
-        this.namesReadingsMeters = new ArrayList<>(DEFAULT_NAMES_METER_READINGS);
-    }
+    private List<String> namesReadingsMeters = new ArrayList<>(DEFAULT_NAMES_METER_READINGS);
 
     @Override
     public void expandMeterReading(String nameNewMeterReading) {

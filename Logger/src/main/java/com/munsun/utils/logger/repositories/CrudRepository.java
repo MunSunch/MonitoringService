@@ -3,10 +3,10 @@ package com.munsun.utils.logger.repositories;
 /**
  * An interface for performing four basic data manipulations:
  * reading, writing, updating, and deleting. In this implementation, some of the operations are omitted as unnecessary
- * @param <VALUE>
- * @param <KEY>
+ * @param <Value>
+ * @param <Key>
  */
-public interface CrudRepository<VALUE, KEY> {
+public interface CrudRepository<Value, Key> {
     /**
      * Saving an entity in the database. It is necessary to set the primary key,
      * which, during the saving of the DBMS, should be changed to a more relevant
@@ -14,5 +14,5 @@ public interface CrudRepository<VALUE, KEY> {
      * @param value
      * @return saved VALUE object with changed DBMS fields
      */
-    VALUE save(VALUE value);
+    Value save(Value value);
 }

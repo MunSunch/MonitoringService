@@ -8,6 +8,7 @@ import com.munsun.monitoring_service.commons.dto.out.AccountDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
+import com.munsun.monitoring_service.frontend.in.enums.forms.ItemsAddNewNameMeterReadingsForm;
 import com.munsun.monitoring_service.frontend.in.enums.forms.ItemsRegisterForm;
 import com.munsun.monitoring_service.frontend.in.enums.menu.ItemsStartMenu;
 import com.munsun.monitoring_service.frontend.in.mapping.ConsoleMapper;
@@ -17,7 +18,11 @@ import com.munsun.monitoring_service.frontend.in.enums.forms.ItemsLoginForm;
 import com.munsun.utils.logger.model.JournalRecord;
 
 import java.time.Month;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -38,8 +43,8 @@ public class Console implements View {
      */
     @Override
     public String showAddNewNameMeterReadingForm() {
-        Map<String, String> form = printForm(List.of("Название"));
-        return form.get("Название");
+        Map<String, String> form = printForm(List.of(ItemsAddNewNameMeterReadingsForm.FIELD_NAME.getTitle()));
+        return form.get(ItemsAddNewNameMeterReadingsForm.FIELD_NAME.getTitle());
     }
 
     /**

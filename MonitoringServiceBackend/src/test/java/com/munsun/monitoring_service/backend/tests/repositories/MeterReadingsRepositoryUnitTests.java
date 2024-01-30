@@ -5,6 +5,7 @@ import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.backend.repositories.MeterReadingsRepository;
 import com.munsun.monitoring_service.backend.repositories.impl.MeterReadingsRepositoryImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Month;
@@ -12,11 +13,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MeterReadingsRepositoryUnitTests {
     private MeterReadingsRepository repository = new MeterReadingsRepositoryImpl();
 
+    @DisplayName("Successful attempt to obtain up-to-date meter readings")
     @Test
     public void testGetLastMetersReadingsByAccount_Id() throws DatabaseConstraintException {
         var meterReading1 = new MeterReading();
@@ -34,6 +36,7 @@ public class MeterReadingsRepositoryUnitTests {
             meterReading3.setDate(new Date());
             meterReading3.setReadings(Map.of("вода", 11L,
                     "отопление", 22L));
+        var expectedAccountId = 1L;
 
         repository.save(meterReading1);
         repository.save(meterReading2);
@@ -45,9 +48,10 @@ public class MeterReadingsRepositoryUnitTests {
                 .get()
                 .extracting(MeterReading::getAccount)
                     .extracting(Account::getId)
-                        .isEqualTo(1L);
+                        .isEqualTo(expectedAccountId);
     }
 
+    @DisplayName("Successful issuance of all meter readings by account ID")
     @Test
     public void testGetAllMeterReadingsByAccount_Id() throws DatabaseConstraintException {
         var meterReading = new MeterReading();
@@ -55,15 +59,18 @@ public class MeterReadingsRepositoryUnitTests {
             meterReading.setDate(new Date());
             meterReading.setReadings(Map.of("вода", 11L,
                                             "отопление", 22L));
+        var expectedSize = 3;
+
         repository.save(meterReading);
         repository.save(meterReading);
         repository.save(meterReading);
         var actual = repository.getAllMeterReadingsByAccount_Id(0L);
 
         assertThat(actual.size())
-                .isEqualTo(3);
+                .isEqualTo(expectedSize);
     }
 
+    @DisplayName("Successful issuance of all meter readings by account ID and month of measurements")
     @Test
     public void testGetMeterReadingsByMonthAndAccount_Id() throws DatabaseConstraintException {
         var meterReading1 = new MeterReading();
@@ -97,6 +104,7 @@ public class MeterReadingsRepositoryUnitTests {
                         .isEqualTo(0L);
     }
 
+    @DisplayName("Successful issuance of all current meter readings of all accounts for all time")
     @Test
     public void testGetLastMetersReadingsAllAccounts() throws DatabaseConstraintException {
         var meterReading1 = new MeterReading();
@@ -123,6 +131,7 @@ public class MeterReadingsRepositoryUnitTests {
                     .allMatch(x -> x.getMonth()+1 == Month.JANUARY.getValue());
     }
 
+    @DisplayName("Successful issuance of all meter readings of all accounts for all time")
     @Test
     public void testGetAllMeterReadingsAllAccounts() throws DatabaseConstraintException {
         var meterReading1 = new MeterReading();
@@ -148,6 +157,7 @@ public class MeterReadingsRepositoryUnitTests {
                 .hasSize(4);
     }
 
+    @DisplayName("Successful issuance of all meter readings of all accounts for a certain month")
     @Test
     public void testGetMeterReadingsByMonthAllAccounts() throws DatabaseConstraintException {
         var meterReading1 = new MeterReading();
@@ -162,6 +172,7 @@ public class MeterReadingsRepositoryUnitTests {
         var meterReading4 = new MeterReading();
             meterReading4.setAccount(new Account(4l));
             meterReading4.setDate(new Date(2024, Calendar.JANUARY, 28));
+        var expectedSize = 3;
 
         repository.save(meterReading1);
         repository.save(meterReading2);
@@ -170,10 +181,11 @@ public class MeterReadingsRepositoryUnitTests {
         var actual = repository.getMeterReadingsByMonthAllAccounts(Month.JANUARY);
 
         assertThat(actual)
-                .hasSize(3)
+                .hasSize(expectedSize)
                 .allMatch(x -> x.getDate().getMonth()+1 == Month.JANUARY.getValue());
     }
 
+    @DisplayName("Successful saving of the entity in the database")
     @Test
     public void testSave() throws DatabaseConstraintException {
         var meterReading = new MeterReading();

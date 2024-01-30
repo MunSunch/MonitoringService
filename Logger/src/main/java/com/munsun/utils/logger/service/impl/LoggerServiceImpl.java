@@ -19,12 +19,13 @@ public class LoggerServiceImpl implements LoggerService, JournalService {
     private LogsRepository logsRepository;
     private JournalRepository journalRepository;
 
-    public <T> LoggerServiceImpl(Class<T> tClass, LogsRepository logsRepository) {
+    public LoggerServiceImpl(Class<?> tClass, LogsRepository logsRepository) {
         this.nameClassOwner = tClass.getName();
         this.logsRepository = logsRepository;
     }
 
-    public LoggerServiceImpl(JournalRepository journalRepository) {
+    public LoggerServiceImpl(Class<?> tClass, JournalRepository journalRepository) {
+        this.nameClassOwner = tClass.getName();
         this.journalRepository = journalRepository;
     }
 
@@ -45,26 +46,34 @@ public class LoggerServiceImpl implements LoggerService, JournalService {
 
     @Override
     public void debug(String message) {
-        logsRepository.save(fabricMethod(message, LevelLog.DEBUG));
-    }
-
-    private Log fabricMethod(String message, LevelLog levelLog) {
-        return new Log(new Date(), levelLog, nameClassOwner, message);
+        logsRepository.save(Log.builder()
+                .message(message)
+                .level(LevelLog.DEBUG)
+                .build());
     }
 
     @Override
     public void info(String message) {
-        logsRepository.save(fabricMethod(message, LevelLog.INFO));
+        logsRepository.save(Log.builder()
+                .message(message)
+                .level(LevelLog.INFO)
+                .build());
     }
 
     @Override
     public void warning(String message) {
-        logsRepository.save(fabricMethod(message, LevelLog.WARN));
+        logsRepository.save(Log.builder()
+                .message(message)
+                .level(LevelLog.WARN)
+                .build());
     }
 
     @Override
     public void error(String message) {
-        logsRepository.save(fabricMethod(message, LevelLog.ERROR));
+        logsRepository.save(Log.builder()
+                .message(message)
+                .level(LevelLog.ERROR)
+                .build());
     }
 
     /**

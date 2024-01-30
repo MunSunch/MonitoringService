@@ -4,6 +4,7 @@ import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintExcept
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.repositories.AccountRepository;
 import com.munsun.monitoring_service.backend.repositories.impl.AccountRepositoryImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class AccountRepositoryUnitsTests {
     private AccountRepository repository = new AccountRepositoryImpl();
 
+    @DisplayName("Successful search for an existing account by login")
     @Test
     public void testPositiveFindByExistsAccount() throws DatabaseConstraintException {
         var account1 = new Account();
@@ -31,6 +33,7 @@ public class AccountRepositoryUnitsTests {
                 .get().extracting(Account::getLogin).isEqualTo("testLogin2");
     }
 
+    @DisplayName("Unsuccessful search for a non-existent account by login")
     @Test
     public void testNegativeFindByNotExistsAccount() throws DatabaseConstraintException {
         var actual = repository.findByAccount_Login("testLogin2");
@@ -39,6 +42,7 @@ public class AccountRepositoryUnitsTests {
                 .isEmpty();
     }
 
+    @DisplayName("Successfully saving a new account without throwing an error")
     @Test
     public void testSaveNewExistsAccount() throws DatabaseConstraintException {
         var account = new Account();

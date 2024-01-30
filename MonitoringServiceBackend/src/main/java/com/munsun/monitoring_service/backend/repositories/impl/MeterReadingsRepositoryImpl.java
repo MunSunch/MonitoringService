@@ -5,16 +5,13 @@ import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.backend.repositories.MeterReadingsRepository;
 
 import java.time.Month;
-import java.util.*;
 import java.util.stream.Collectors;
 
-public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
-    private final Map<Long, MeterReading> listReadings;
-    private static Long COUNTER_ID = 0L;
+import java.util.*;
 
-    public MeterReadingsRepositoryImpl() {
-        this.listReadings = new HashMap<>();
-    }
+public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
+    private final Map<Long, MeterReading> listReadings = new HashMap<>();
+    private Long counterId = 0L;
 
     @Override
     public Optional<MeterReading> getById(Long id) {
@@ -23,8 +20,8 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
 
     @Override
     public MeterReading save(MeterReading meterReading) throws DatabaseConstraintException {
-        meterReading.setId(COUNTER_ID);
-        listReadings.put(COUNTER_ID++, meterReading);
+        meterReading.setId(counterId);
+        listReadings.put(counterId++, meterReading);
         return meterReading;
     }
 

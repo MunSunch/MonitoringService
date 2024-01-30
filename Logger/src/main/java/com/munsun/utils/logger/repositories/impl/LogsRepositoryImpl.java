@@ -7,12 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogsRepositoryImpl implements LogsRepository {
-    private List<Log> cacheLogs;
-    private static Long counterId = 0L;
-
-    public LogsRepositoryImpl() {
-        this.cacheLogs = new ArrayList<>();
-    }
+    private final List<Log> cacheLogs = new ArrayList<>();
+    private Long counterId = 0L;
 
     @Override
     public Log save(Log log) {

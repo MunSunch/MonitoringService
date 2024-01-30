@@ -24,6 +24,7 @@
         <org.junit.jupiter.junit-jupiter.version>5.10.1</org.junit.jupiter.junit-jupiter.version>
         <org.assertj.assertj-core.version>3.25.2</org.assertj.assertj-core.version>
         <org.mockito.mockito-core.version>5.10.0</org.mockito.mockito-core.version>
+        <org.projectlombok.lombok.version>1.18.30</org.projectlombok.lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -43,11 +44,20 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${org.mockito.mockito-core.version}</version>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>5.10.0</version>
                 <scope>test</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${org.projectlombok.lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

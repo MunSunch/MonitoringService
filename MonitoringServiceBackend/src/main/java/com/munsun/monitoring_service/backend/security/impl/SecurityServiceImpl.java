@@ -13,17 +13,13 @@ import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.AccountDtoOut;
 import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
-    private AccountRepository accountRepository;
-    private AccountMapper accountMapper;
-    private SecurityContext securityContext;
-
-    public SecurityServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper, SecurityContext securityContext) {
-        this.accountRepository = accountRepository;
-        this.accountMapper = accountMapper;
-        this.securityContext = securityContext;
-    }
+    private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
+    private final SecurityContext securityContext;
 
     @Override
     public void authenticate(LoginPasswordDtoIn loginPassword) throws AccountNotFoundException, AuthenticationException {
@@ -61,7 +57,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public boolean getAccess(Role role, ItemsMainMenu item) {
-        return securityContext.allowAccess(role, item);
+        return securityContext.isAccessAllowed(role, item);
     }
 
     public SecurityContext getSecurityContext() {

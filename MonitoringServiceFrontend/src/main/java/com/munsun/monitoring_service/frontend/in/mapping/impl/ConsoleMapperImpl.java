@@ -12,7 +12,9 @@ import com.munsun.monitoring_service.frontend.in.mapping.ConsoleMapper;
 import com.munsun.utils.logger.model.JournalRecord;
 
 import java.time.Month;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -30,8 +32,7 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     public List<String> journalToString(List<JournalRecord> allLogs) {
         String separator = "\t";
         return allLogs.stream()
-                .map(x -> new String(x.getDate() + separator
-                            +x.getMessage()))
+                .map(x -> x.getDate() + separator + x.getMessage())
                 .collect(Collectors.toList());
     }
 
@@ -43,11 +44,10 @@ public class ConsoleMapperImpl implements ConsoleMapper {
      * */
     @Override
     public MeterReadingsDtoIn toMeterReadingsDtoIn(Map<String, String> form) {
-        var newMap = new HashMap<String, Long>();
-        for (var entry: form.entrySet()) {
-            newMap.put(entry.getKey(), Long.parseLong(entry.getValue()));
-        }
-        return new MeterReadingsDtoIn(newMap);
+        var updatedMap = form.entrySet().stream()
+                            .collect(Collectors.toMap(entry -> entry.getKey(),
+                                                      entry -> Long.parseLong(entry.getValue())));
+        return new MeterReadingsDtoIn(updatedMap);
     }
 
     /**

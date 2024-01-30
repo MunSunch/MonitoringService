@@ -6,7 +6,7 @@ import com.munsun.monitoring_service.backend.security.enums.Role;
 
 public interface SecurityContext {
     void clear();
-    boolean allowAccess(Role role, ItemsMainMenu item);
+    boolean isAccessAllowed(Role role, ItemsMainMenu item);
     void setCurrentAuthorizedAccount(Account account);
     Account getAuthorizedAccount();
 }

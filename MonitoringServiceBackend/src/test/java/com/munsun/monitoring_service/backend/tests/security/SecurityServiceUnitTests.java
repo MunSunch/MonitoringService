@@ -6,22 +6,33 @@ import com.munsun.monitoring_service.backend.mapping.AccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.repositories.AccountRepository;
 import com.munsun.monitoring_service.backend.security.SecurityContext;
-import com.munsun.monitoring_service.backend.security.SecurityService;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
-import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class SecurityServiceUnitTests {
-    private AccountRepository accountRepository = mock();
-    private SecurityService securityService = new SecurityServiceImpl(accountRepository,
-            mock(AccountMapper.class), mock(SecurityContext.class));
+    @Mock
+    private AccountRepository accountRepository;
+    @Mock
+    private AccountMapper accountMapper;
+    @Mock
+    private SecurityContext securityContext;
+    @InjectMocks
+    private SecurityServiceImpl securityService;
 
+    @DisplayName("Failed authentication of a non-existent user")
     @Test
     public void testNegativeAuthenticateNotExistsAccount() {
         when(accountRepository.findByAccount_Login(any()))
@@ -32,6 +43,7 @@ public class SecurityServiceUnitTests {
         }).isInstanceOf(AccountNotFoundException.class);
     }
 
+    @DisplayName("Failed authentication of a user with an invalid password")
     @Test
     public void testNegativeAuthenticateExistsAccount() {
         var account = new Account();

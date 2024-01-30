@@ -15,13 +15,13 @@ public class PlaceLivingMapperImpl implements PlaceLivingMapper {
      */
     @Override
     public PlaceLivingEmbedded map(AccountDtoIn accountDtoIn) {
-        var placeLiving = new PlaceLivingEmbedded();
-            placeLiving.setCountry(accountDtoIn.country());
-            placeLiving.setCity(accountDtoIn.city());
-            placeLiving.setStreet(accountDtoIn.street());
-            placeLiving.setHouse(accountDtoIn.house());
-            placeLiving.setLevel(accountDtoIn.level());
-            placeLiving.setApartmentNumber(accountDtoIn.apartmentNumber());
-        return placeLiving;
+         return PlaceLivingEmbedded.builder()
+                        .country(accountDtoIn.country())
+                        .city(accountDtoIn.city())
+                        .street(accountDtoIn.street())
+                        .house(accountDtoIn.house())
+                        .level(accountDtoIn.level())
+                        .apartmentNumber(accountDtoIn.apartmentNumber())
+                .build();
     }
 }

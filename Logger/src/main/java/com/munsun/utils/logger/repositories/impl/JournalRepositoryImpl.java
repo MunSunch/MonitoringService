@@ -10,12 +10,8 @@ import java.util.List;
  * A class for storing and outputting Log entities from the database. The concept of a synthetic key is supported
  */
 public class JournalRepositoryImpl implements JournalRepository {
-    private List<JournalRecord> cacheJournalRecords;
-    private static Long counterId = 0L;
-
-    public JournalRepositoryImpl() {
-        this.cacheJournalRecords = new ArrayList<>();
-    }
+    private final List<JournalRecord> cacheJournalRecords = new ArrayList<>();
+    private Long counterId = 0L;
 
     /**
      * Get a list of logs from the database
