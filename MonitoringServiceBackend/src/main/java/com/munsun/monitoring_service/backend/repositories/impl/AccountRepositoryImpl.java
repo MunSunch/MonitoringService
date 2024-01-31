@@ -8,21 +8,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * <p>AccountRepositoryImpl class.</p>
+ *
+ * @author apple
+ * @version $Id: $Id
+ */
 public class AccountRepositoryImpl implements AccountRepository {
     private final Map<String, Account> accountsIndexByLogin = new HashMap<>();
     private final Map<Long, Account> accountsIndexById = new HashMap<>();
     private Long counterId = 0L;
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Account> findByAccount_Login(String login) {
         return Optional.ofNullable(accountsIndexByLogin.get(login));
     }
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Account> getById(Long key) {
         return Optional.ofNullable(accountsIndexById.get(key));
     }
 
+    /** {@inheritDoc} */
     @Override
     public Account save(Account account) throws DatabaseConstraintException {
         account.setId(counterId++);
@@ -38,6 +47,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Account> deleteById(Long key) {
         var account = accountsIndexById.get(key);

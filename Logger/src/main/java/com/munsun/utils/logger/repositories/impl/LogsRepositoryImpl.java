@@ -6,10 +6,17 @@ import com.munsun.utils.logger.repositories.LogsRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>LogsRepositoryImpl class.</p>
+ *
+ * @author apple
+ * @version $Id: $Id
+ */
 public class LogsRepositoryImpl implements LogsRepository {
     private final List<Log> cacheLogs = new ArrayList<>();
     private Long counterId = 0L;
 
+    /** {@inheritDoc} */
     @Override
     public Log save(Log log) {
         log.setId(counterId++);
@@ -17,6 +24,7 @@ public class LogsRepositoryImpl implements LogsRepository {
         return log;
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Log> getAllLogs() {
         return cacheLogs;

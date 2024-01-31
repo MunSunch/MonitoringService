@@ -6,10 +6,14 @@ import java.util.List;
 
 /**
  * An abstraction for auditing user actions
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 public interface JournalService {
     /**
      * Record a user action
+     *
      * @param message the action recorded by the string
      * @return saved DTO object JournalRecord.java
      */
@@ -17,6 +21,7 @@ public interface JournalService {
 
     /**
      * Get all jornals from database
+     *
      * @return list of journals
      */
     List<JournalRecord> getJournalRecords();

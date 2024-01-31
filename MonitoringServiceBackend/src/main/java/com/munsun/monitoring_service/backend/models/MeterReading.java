@@ -10,6 +10,9 @@ import java.util.Map;
 
 /**
  * An entity for storing meter readings
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 @AllArgsConstructor
 @RequiredArgsConstructor

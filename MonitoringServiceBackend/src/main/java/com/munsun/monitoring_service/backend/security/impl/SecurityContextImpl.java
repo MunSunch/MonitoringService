@@ -8,10 +8,19 @@ import com.munsun.monitoring_service.backend.security.enums.Role;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * <p>SecurityContextImpl class.</p>
+ *
+ * @author apple
+ * @version $Id: $Id
+ */
 public class SecurityContextImpl implements SecurityContext {
     public Account currentAuthorizedAccount;
     private final Map<Role, Set<ItemsMainMenu>> context;
 
+    /**
+     * <p>Constructor for SecurityContextImpl.</p>
+     */
     public SecurityContextImpl() {
         this.context = Map.of(Role.ADMIN, Set.of(ItemsMainMenu.GET_SHOW_HISTORY_ALL_USERS,
                                                  ItemsMainMenu.GET_SHOW_HISTORY_MONTH_ALL_USERS,
@@ -26,19 +35,25 @@ public class SecurityContextImpl implements SecurityContext {
                                                  ItemsMainMenu.EXIT));
     }
 
+    /**
+     * <p>clear.</p>
+     */
     public void clear() {
         currentAuthorizedAccount = null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Account getAuthorizedAccount() {
         return currentAuthorizedAccount;
     }
 
+    /** {@inheritDoc} */
     public void setCurrentAuthorizedAccount(Account currentAuthorizedAccount) {
         this.currentAuthorizedAccount = currentAuthorizedAccount;
     }
 
+    /** {@inheritDoc} */
     public boolean isAccessAllowed(Role role, ItemsMainMenu item) {
         return context.get(role).stream().anyMatch(x -> x == item);
     }

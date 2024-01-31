@@ -17,6 +17,9 @@ import com.munsun.monitoring_service.presenter.service.impl.MainPresenter;
 
 /**
  * The entry point to the application
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 public class MonitoringServiceApplication {
     private static final Account ADMIN = new Account(null,
@@ -33,6 +36,12 @@ public class MonitoringServiceApplication {
             Role.USER,
             false);
 
+    /**
+     * <p>main.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects
+     * @throws com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException if any.
+     */
     public static void main(String[] args) throws DatabaseConstraintException {
         var accountRepository = new AccountRepositoryImpl();
             accountRepository.save(ADMIN);

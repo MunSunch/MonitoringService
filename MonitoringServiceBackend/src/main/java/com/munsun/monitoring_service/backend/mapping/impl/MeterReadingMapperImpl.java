@@ -9,15 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Converter from the MeterReading entity to the output DTO objects LongMeterReadingDtoOut, MeterReadingDtoOut
+ * Converter from the {@linkplain MeterReading} entity to the output DTO objects
+ * {@linkplain LongMeterReadingDtoOut}, {@linkplain MeterReadingDtoOut}
+ * @author MunSun
+ * @version $Id: 1.0-SNAPSHOT
  */
 public class MeterReadingMapperImpl implements MeterReadingMapper {
     private static final String SEPARATOR = ":";
 
     /**
-     * Converts MeterReadingDtoOut to a DTO object MeterReadingDtoOut
-     * @param meterReadings entity MeterReading.java
-     * @return MeterReadingDtoOut DTO object
+     * {@inheritDoc}
      */
     @Override
     public MeterReadingDtoOut toMeterReadingDtoOut(MeterReading meterReadings) {
@@ -28,9 +29,8 @@ public class MeterReadingMapperImpl implements MeterReadingMapper {
     }
 
     /**
-     * Converts MeterReadingDtoOut to a DTO object LongMeterReadingDtoOut
-     * @param meterReading entity MeterReading.java
-     * @return LongMeterReadingDtoOut DTO object
+     * {@inheritDoc}
+     *
      */
     @Override
     public LongMeterReadingDtoOut toLongMeterReadingDtoOut(MeterReading meterReading) {

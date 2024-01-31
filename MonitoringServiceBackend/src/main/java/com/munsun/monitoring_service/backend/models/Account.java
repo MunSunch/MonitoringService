@@ -11,6 +11,9 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Entity for storing user information
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +29,11 @@ public class Account {
     private Role role;
     private boolean isBlocked;
 
+    /**
+     * <p>Constructor for Account.</p>
+     *
+     * @param id a {@link java.lang.Long} object
+     */
     public Account(Long id) {
         this.id = id;
     }

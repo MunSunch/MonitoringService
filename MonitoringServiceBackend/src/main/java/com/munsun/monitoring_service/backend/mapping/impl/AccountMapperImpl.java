@@ -7,16 +7,18 @@ import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Converter AccountDto to Account
+ * Converter {@link AccountDtoIn} to {@link Account}
+ *
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
 public class AccountMapperImpl implements AccountMapper {
     private final PlaceLivingMapper placeLivingMapper;
 
     /**
-     * Сonvert AccountDtoIn to Account
-     * @param accountDtoIn DTO object AccountDtoIn.java
-     * @return entity Account
+     * {@inheritDoc}
+     *
      */
     @Override
     public Account map(AccountDtoIn accountDtoIn) {

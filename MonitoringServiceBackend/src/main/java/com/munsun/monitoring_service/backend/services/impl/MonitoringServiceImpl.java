@@ -18,6 +18,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * <p>MonitoringServiceImpl class.</p>
+ *
+ * @author MunSun
+ * @version $Id: $Id
+ */
 @RequiredArgsConstructor
 public class MonitoringServiceImpl implements MonitoringService {
     private final MeterReadingsRepository readingsRepository;
@@ -26,15 +32,22 @@ public class MonitoringServiceImpl implements MonitoringService {
     private static final List<String> DEFAULT_NAMES_METER_READINGS = List.of("отопление", "горячая вода", "холодная вода");
     private List<String> namesReadingsMeters = new ArrayList<>(DEFAULT_NAMES_METER_READINGS);
 
+    /** {@inheritDoc} */
     @Override
     public void expandMeterReading(String nameNewMeterReading) {
         namesReadingsMeters.add(nameNewMeterReading);
     }
 
+    /**
+     * <p>Getter for the field <code>namesReadingsMeters</code>.</p>
+     *
+     * @return a {@link java.util.List} object
+     */
     public List<String> getNamesReadingsMeters() {
         return namesReadingsMeters;
     }
 
+    /** {@inheritDoc} */
     @Override
     public MeterReadingDtoOut getActualMeterReadings(Long idAccount) throws AccountNotFoundException {
         var meterReading = readingsRepository.getLastMeterReadingByAccount_Id(idAccount)
@@ -42,6 +55,7 @@ public class MonitoringServiceImpl implements MonitoringService {
         return readingsMapper.toMeterReadingDtoOut(meterReading);
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<LongMeterReadingDtoOut> getActualMeterReadingsAllUsers() {
         var meterReadings = readingsRepository.getLastMetersReadingsAllAccounts();
@@ -50,6 +64,7 @@ public class MonitoringServiceImpl implements MonitoringService {
                 .collect(Collectors.toList());
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<LongMeterReadingDtoOut> getHistoryMonthAllUsers(Month month) {
         return readingsRepository.getMeterReadingsByMonthAllAccounts(month).stream()
@@ -57,6 +72,7 @@ public class MonitoringServiceImpl implements MonitoringService {
                 .collect(Collectors.toList());
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<LongMeterReadingDtoOut> getAllMeterReadingsAllUsers() {
         return readingsRepository.getAllMeterReadingsAllAccounts().stream()
@@ -64,6 +80,7 @@ public class MonitoringServiceImpl implements MonitoringService {
                 .collect(Collectors.toList());
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<MeterReadingDtoOut> getHistoryMonth(Long idAccount, Month month) {
         return readingsRepository.getMeterReadingsByMonthAndAccount_Id(idAccount, month).stream()
@@ -71,6 +88,7 @@ public class MonitoringServiceImpl implements MonitoringService {
                 .collect(Collectors.toList());
     }
 
+    /** {@inheritDoc} */
     @Override
     public MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws DatabaseConstraintException, AccountNotFoundException {
         Date now = new Date();
@@ -90,6 +108,7 @@ public class MonitoringServiceImpl implements MonitoringService {
             throw new IllegalArgumentException("Добавление невозможно: запись за текущий месяц уже существует");
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<MeterReadingDtoOut> getAllHistory(Long idAccount) {
         return readingsRepository.getAllMeterReadingsByAccount_Id(idAccount).stream()

@@ -10,6 +10,9 @@ import java.util.Date;
 
 /**
  * An entity for storing service information of user actions that is more necessary for software developers
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 @Builder
 @AllArgsConstructor

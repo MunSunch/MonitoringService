@@ -5,13 +5,15 @@ import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded
 import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 
 /**
- * Converter from the AccountDtoIn input object to the PlaceLivingEmbedded entity
+ * Converter from the {@linkplain AccountDtoIn} input object
+ * to the {@linkplain PlaceLivingEmbedded} entity
+ *
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public class PlaceLivingMapperImpl implements PlaceLivingMapper {
     /**
-     * Extracts the PlaceLivingEmbedded entity from the AccountDtoIn object.
-     * @param accountDtoIn DTO object AccountDtoIn.java
-     * @return PlaceLivingEmbedded
+     * {@inheritDoc}
      */
     @Override
     public PlaceLivingEmbedded map(AccountDtoIn accountDtoIn) {

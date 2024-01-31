@@ -2,6 +2,9 @@ package com.munsun.monitoring_service.commons.enums;
 
 /**
  * An enumeration containing the main menu items
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 public enum ItemsMainMenu {
     GET_ACTUAL_METER_READINGS("получение актуальных показаний счетчиков"),
@@ -23,6 +26,7 @@ public enum ItemsMainMenu {
 
     /**
      * Return the name of the menu item
+     *
      * @return name of the menu item
      */
     public String getTitle() {

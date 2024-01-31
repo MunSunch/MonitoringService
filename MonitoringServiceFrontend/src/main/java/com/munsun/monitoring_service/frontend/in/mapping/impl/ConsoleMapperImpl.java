@@ -19,14 +19,17 @@ import java.util.stream.Collectors;
 
 /**
  * Converter from console input to DTO objects
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 public class ConsoleMapperImpl implements ConsoleMapper {
 
     /**
+     * {@inheritDoc}
+     *
      * Converts a list of logs into a list of strings for further output to the user.
      * Splits the argument into components , then concatenates using separator ="\t"
-     * @param allLogs list of JournalRecord objects
-     * @return list of strings
      */
     @Override
     public List<String> journalToString(List<JournalRecord> allLogs) {
@@ -37,11 +40,11 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Converts the data received from user input into meter readings
      * MeterReadingsDtoIn into an In object for recording in the database
-     * @param form key-value collection
-     * @return DTO object MeterReadingsDtoIn.java
-     * */
+     */
     @Override
     public MeterReadingsDtoIn toMeterReadingsDtoIn(Map<String, String> form) {
         var updatedMap = form.entrySet().stream()
@@ -51,10 +54,10 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Converts the DTO, which contains the number of the main menu item
      * selected by the user, to the start menu item specified by the enumeration
-     * @param userResponse the main menu item specified by the enumeration
-     * @return the start menu item specified by the enumeration ItemsMainMenu.java
      */
     @Override
     public ItemsMainMenu toMainItem(SelectedUserItemDtoIn userResponse) {
@@ -62,9 +65,9 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Converts a string received from user input to a month
-     * @param month not-empty string contains number
-     * @return enum Month constants
      */
     @Override
     public Month toMonth(String month) {
@@ -72,10 +75,10 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Converts the DTO, which contains the number of the start menu item
      * selected by the user, to the start menu item specified by the enumeration
-     * @param userResponse the start menu item specified by the enumeration
-     * @return the start menu item specified by the enumeration ItemsStartMenu.java
      */
     @Override
     public ItemsStartMenu toStartItem(SelectedUserItemDtoIn userResponse) {
@@ -90,9 +93,9 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Converts key-value format data received from user input into a LoginPasswordDto object for further authentication
-     * @param form key-value collection
-     * @return DTO object LoginPasswordDtoIn.java
      */
     @Override
     public LoginPasswordDtoIn toLoginPasswordDto(Map<String, String> form) {
@@ -101,10 +104,10 @@ public class ConsoleMapperImpl implements ConsoleMapper {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Converts data received from user input into an AccountDtoIn object for
      * the purpose of further registration of a new user
-     * @param form key-value collection
-     * @return DTO object AccountDtoIn.java
      */
     @Override
     public AccountDtoIn toAccountDto(Map<String, String> form) {

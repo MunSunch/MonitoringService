@@ -15,12 +15,19 @@ import com.munsun.monitoring_service.commons.dto.out.AccountDtoOut;
 import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * <p>SecurityServiceImpl class.</p>
+ *
+ * @author apple
+ * @version $Id: $Id
+ */
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final SecurityContext securityContext;
 
+    /** {@inheritDoc} */
     @Override
     public void authenticate(LoginPasswordDtoIn loginPassword) throws AccountNotFoundException, AuthenticationException {
         var account = accountRepository.findByAccount_Login(loginPassword.login())
@@ -34,6 +41,7 @@ public class SecurityServiceImpl implements SecurityService {
         securityContext.setCurrentAuthorizedAccount(account);
     }
 
+    /** {@inheritDoc} */
     @Override
     public AccountDtoOut register(AccountDtoIn accountDtoIn) {
         var newAccount = accountMapper.map(accountDtoIn);
@@ -46,20 +54,32 @@ public class SecurityServiceImpl implements SecurityService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void logout() {
         securityContext.clear();
     }
 
+    /**
+     * <p>getCurrentAuthorizedAccount.</p>
+     *
+     * @return a {@link com.munsun.monitoring_service.backend.models.Account} object
+     */
     public Account getCurrentAuthorizedAccount() {
         return securityContext.getAuthorizedAccount();
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean getAccess(Role role, ItemsMainMenu item) {
         return securityContext.isAccessAllowed(role, item);
     }
 
+    /**
+     * <p>Getter for the field <code>securityContext</code>.</p>
+     *
+     * @return a {@link com.munsun.monitoring_service.backend.security.SecurityContext} object
+     */
     public SecurityContext getSecurityContext() {
         return securityContext;
     }

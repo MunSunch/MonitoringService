@@ -22,17 +22,29 @@ import java.util.List;
 
 /**
  * Implementing a representative manipulating the Service and View components
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 public class MainPresenter extends Presenter {
     private SecurityService securityService;
     private final JournalService logger = new LoggerServiceImpl(MainPresenter.class, new JournalRepositoryImpl());
 
+    /**
+     * <p>Constructor for MainPresenter.</p>
+     *
+     * @param view a {@link com.munsun.monitoring_service.frontend.in.service.View} object
+     * @param service a {@link com.munsun.monitoring_service.backend.services.MonitoringService} object
+     * @param securityService a {@link com.munsun.monitoring_service.backend.security.SecurityService} object
+     */
     public MainPresenter(View view, MonitoringService service, SecurityService securityService) {
         super(view, service);
         this.securityService = securityService;
     }
 
     /**
+     * {@inheritDoc}
+     *
      *  Displays the start menu and asks the user for the number of the item in this menu.
      *  Depending on the input, it transfers the user either to the authentication or authorization form
      * @exception ArrayIndexOutOfBoundsException if the water item does not contain the number of the start menu item

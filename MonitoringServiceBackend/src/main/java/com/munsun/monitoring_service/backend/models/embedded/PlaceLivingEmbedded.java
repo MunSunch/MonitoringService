@@ -7,6 +7,9 @@ import lombok.EqualsAndHashCode;
 
 /**
  * An embedded object that contains information about the user's place of residence
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 @Builder
 @Getter @Setter

@@ -27,19 +27,26 @@ import java.util.stream.Collectors;
 
 /**
  * Interacts with user input by outputting and inputting data in the form of forms and lists
+ *
+ * @author apple
+ * @version $Id: $Id
  */
 public class Console implements View {
     private Scanner scanner;
     private ConsoleMapper consoleMapper;
 
+    /**
+     * <p>Constructor for Console.</p>
+     */
     public Console() {
         scanner = new Scanner(System.in);
         consoleMapper = new ConsoleMapperImpl();
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display a form for the user to read the new name of the counter indicator
-     * @return name of new meter reading
      */
     @Override
     public String showAddNewNameMeterReadingForm() {
@@ -48,8 +55,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * display the logging list to the user
-     * @param allLogs list of DTO object JournalRecord.java
      */
     @Override
     public void showJournalRecords(List<JournalRecord> allLogs) {
@@ -58,8 +66,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * display to the user a list of meter readings for all time
-     * @param meterReadingDtoOuts list of DTO object MeterReadingDtoOut.java
      */
     @Override
     public void showMeterReading(List<MeterReadingDtoOut> meterReadingDtoOuts) {
@@ -71,8 +80,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display a list of meter readings to a user with the administrator role
-     * @param meterReadingDtoOuts DTO object
      */
     @Override
     public void showLongMeterReading(List<LongMeterReadingDtoOut> meterReadingDtoOuts) {
@@ -85,8 +95,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Show the user the form for getting the month number(1-12)
-     * @return Month
      */
     @Override
     public Month showHistoryMonthForm() {
@@ -95,9 +106,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * display a form for filling out meter readings to the user
-     * @param namesMetersReadings list of names meter readings
-     * @return DTO object MeterReadingsDtoIn.java
      */
     @Override
     public MeterReadingsDtoIn showAddMeterReadingsForm(List<String> namesMetersReadings) {
@@ -106,8 +117,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display the counter reading to the user with the administrator role
-     * @param meterReadingDtoOut DTO object
      */
     @Override
     public void showLongMeterReading(MeterReadingDtoOut meterReadingDtoOut) {
@@ -117,8 +129,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display the main menu to the user and read the data
-     * @return the main menu item specified by the enumeration ItemsMainMenu.java
      */
     @Override
     public ItemsMainMenu showMainMenu() {
@@ -131,8 +144,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display a message to the user about the successful registration of a new account
-     * @param accountDtoOut DTO object
      */
     @Override
     public void showSuccessRegister(AccountDtoOut accountDtoOut) {
@@ -141,8 +155,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display the user's account registration form and read the data
-     * @return DTO object AccountDtoIn.java
      */
     @Override
     public AccountDtoIn showRegisterForm() {
@@ -154,8 +169,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display the user's account authentication form and read the data
-     * @return DTO object LoginPasswordDtoIn.java
      */
     @Override
     public LoginPasswordDtoIn showLoginForm() {
@@ -175,8 +191,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display the start menu to the user and read the data
-     * @return the start menu item specified by the enumeration ItemsStartMenu.java
      */
     @Override
     public ItemsStartMenu showStartMenu() {
@@ -207,8 +224,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Display an error message to the user with the message
-     * @param s message
      */
     @Override
     public void showError(String s) {
@@ -216,8 +234,9 @@ public class Console implements View {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * display a message to the user about the successful addition of a meter reading
-     * @param dtoOut DTO object
      */
     @Override
     public void showSuccessAddMeterReading(MeterReadingDtoOut dtoOut) {
