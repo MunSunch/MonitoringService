@@ -5,8 +5,8 @@ import com.munsun.monitoring_service.backend.mapping.impl.AccountMapperImpl;
 import com.munsun.monitoring_service.backend.mapping.impl.MeterReadingMapperImpl;
 import com.munsun.monitoring_service.backend.mapping.impl.PlaceLivingMapperImpl;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.repositories.impl.AccountRepositoryImpl;
-import com.munsun.monitoring_service.backend.repositories.impl.MeterReadingsRepositoryImpl;
+import com.munsun.monitoring_service.backend.dao.impl.AccountRepositoryImpl;
+import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsRepositoryImpl;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.backend.security.impl.SecurityContextImpl;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
@@ -16,10 +16,9 @@ import com.munsun.monitoring_service.commons.db.MigrationSystem;
 import com.munsun.monitoring_service.frontend.in.service.impl.Console;
 import com.munsun.monitoring_service.presenter.service.Presenter;
 import com.munsun.monitoring_service.presenter.service.impl.MainPresenter;
-import liquibase.Liquibase;
-import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -49,7 +48,7 @@ public class MonitoringServiceApplication {
      * @param args an array of {@link java.lang.String} objects
      * @throws com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException if any.
      */
-    public static void main(String[] args) throws DatabaseConstraintException, SQLException, LiquibaseException {
+    public static void main(String[] args) throws DatabaseConstraintException, SQLException, LiquibaseException, IOException {
         MigrationSystem.initSchema(Database.getConnection());
 
         var accountRepository = new AccountRepositoryImpl();

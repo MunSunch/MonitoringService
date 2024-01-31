@@ -1,4 +1,4 @@
-package com.munsun.monitoring_service.backend.repositories;
+package com.munsun.monitoring_service.backend.dao;
 
 import com.munsun.monitoring_service.backend.models.Account;
 

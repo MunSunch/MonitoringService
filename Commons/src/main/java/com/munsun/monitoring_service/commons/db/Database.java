@@ -14,29 +14,36 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Database {
     private static HikariDataSource dataSource;
+    private static final Properties properties = new Properties();
 
-    private static final Integer PORT = 8081;
-    private static final Integer POOL_SIZE = 32;
-    private static final String NAME_DATABASE = "root";
-    private static final String NAME_SCHEMA = "monitoring_service";
-    private static final String POSTGRES_USERNAME = "root";
-    private static final String POSTGRES_PASSWORD = "root";
-
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException, IOException {
         if(dataSource == null) {
+            loadProperty();
             var config = new HikariConfig();
-                config.setJdbcUrl( "jdbc:postgresql://localhost:" + PORT + "/" + NAME_DATABASE);
-                config.setUsername(POSTGRES_USERNAME);
-                config.setPassword(POSTGRES_PASSWORD);
-                config.setMaximumPoolSize(POOL_SIZE);
+                config.setJdbcUrl(properties.getProperty("datasource.url"));
+                config.setUsername(properties.getProperty("datasource.username"));
+                config.setPassword(properties.getProperty("datasource.password"));
+                config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("datasource.pool_size")));
             dataSource = new HikariDataSource(config);
         }
         return dataSource.getConnection();
+    }
+
+    private static void loadProperty() {
+        try (var reader = new FileReader("Commons/src/main/resources/app.properties")) {
+            properties.load(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Database() {}

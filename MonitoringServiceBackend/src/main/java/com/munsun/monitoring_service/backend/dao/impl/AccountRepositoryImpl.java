@@ -1,11 +1,12 @@
-package com.munsun.monitoring_service.backend.repositories.impl;
+package com.munsun.monitoring_service.backend.dao.impl;
 
+import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.repositories.AccountRepository;
+import com.munsun.monitoring_service.backend.dao.AccountRepository;
 import com.munsun.monitoring_service.commons.db.Database;
 
-import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,17 @@ public class AccountRepositoryImpl implements AccountRepository {
     /** {@inheritDoc} */
     @Override
     public Optional<Account> findByAccount_Login(String login) {
+        try(var connection = Database.getConnection();
+            var preparedStatement = connection.prepareStatement(Query.QUERY_FIND_ACCOUNT_BY_LOGIN))
+        {
+//            preparedStatement.setInt();
+            var result = preparedStatement.executeQuery();
+//            result.
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return Optional.ofNullable(accountsIndexByLogin.get(login));
     }
 

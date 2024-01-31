@@ -4,8 +4,8 @@ import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.models.MeterReading;
-import com.munsun.monitoring_service.backend.repositories.AccountRepository;
-import com.munsun.monitoring_service.backend.repositories.MeterReadingsRepository;
+import com.munsun.monitoring_service.backend.dao.AccountRepository;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
 import com.munsun.monitoring_service.backend.services.MonitoringService;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;

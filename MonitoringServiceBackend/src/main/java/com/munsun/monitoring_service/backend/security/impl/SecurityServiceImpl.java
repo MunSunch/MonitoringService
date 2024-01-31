@@ -5,7 +5,7 @@ import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.repositories.AccountRepository;
+import com.munsun.monitoring_service.backend.dao.AccountRepository;
 import com.munsun.monitoring_service.backend.security.SecurityContext;
 import com.munsun.monitoring_service.backend.security.SecurityService;
 import com.munsun.monitoring_service.backend.security.enums.Role;

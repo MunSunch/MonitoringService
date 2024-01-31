@@ -1,8 +1,8 @@
-package com.munsun.monitoring_service.backend.repositories.impl;
+package com.munsun.monitoring_service.backend.dao.impl;
 
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.models.MeterReading;
-import com.munsun.monitoring_service.backend.repositories.MeterReadingsRepository;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
 
 import java.time.Month;
 import java.util.stream.Collectors;
