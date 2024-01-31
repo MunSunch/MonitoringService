@@ -1,0 +1,1 @@
+set time zone 'Europe/Moscow';
