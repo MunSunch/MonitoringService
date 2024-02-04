@@ -1,7 +1,7 @@
-package com.munsun.utils.logger.repositories.impl;
+package com.munsun.utils.logger.dao.impl;
 
 import com.munsun.utils.logger.model.Log;
-import com.munsun.utils.logger.repositories.LogsRepository;
+import com.munsun.utils.logger.dao.LogsDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author apple
  * @version $Id: $Id
  */
-public class LogsRepositoryImpl implements LogsRepository {
+public class LogsDaoImpl implements LogsDao {
     private final List<Log> cacheLogs = new ArrayList<>();
     private Long counterId = 0L;
 

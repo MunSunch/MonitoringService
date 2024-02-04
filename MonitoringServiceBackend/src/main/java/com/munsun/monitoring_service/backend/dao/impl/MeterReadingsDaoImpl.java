@@ -1,6 +1,6 @@
 package com.munsun.monitoring_service.backend.dao.impl;
 
-import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsDao;
 import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableMeterReadings;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcMeterReadingsMapper;
 import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
+public class MeterReadingsDaoImpl implements MeterReadingsDao {
     private final Database database;
     private final JdbcMeterReadingsMapper mapper;
 

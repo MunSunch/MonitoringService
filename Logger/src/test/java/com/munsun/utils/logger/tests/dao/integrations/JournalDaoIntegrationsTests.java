@@ -1,12 +1,12 @@
-package com.munsun.utils.logger.tests.repositories.integrations;
+package com.munsun.utils.logger.tests.dao.integrations;
 
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import com.munsun.utils.logger.model.JournalRecord;
-import com.munsun.utils.logger.repositories.JournalRepository;
-import com.munsun.utils.logger.repositories.impl.JournalRepositoryImpl;
-import com.munsun.utils.logger.repositories.impl.mapping.impl.JdbcJournalMapperImpl;
-import com.munsun.utils.logger.tests.repositories.PostgresContainer;
+import com.munsun.utils.logger.dao.JournalDao;
+import com.munsun.utils.logger.dao.impl.JournalDaoImpl;
+import com.munsun.utils.logger.dao.impl.mapping.impl.JdbcJournalMapperImpl;
+import com.munsun.utils.logger.tests.dao.PostgresContainer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +16,10 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class JournalRepositoryIntegrationsTests extends PostgresContainer {
+public class JournalDaoIntegrationsTests extends PostgresContainer {
     private Database database = new DatabaseImpl(getProperties());
-    private JournalRepository journalRepository =
-            new JournalRepositoryImpl(database, new JdbcJournalMapperImpl());
+    private JournalDao journalRepository =
+            new JournalDaoImpl(database, new JdbcJournalMapperImpl());
 
     private JournalRecord testJournal = JournalRecord.builder()
                                             .id(1L)

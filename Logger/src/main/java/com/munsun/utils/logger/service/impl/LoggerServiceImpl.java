@@ -3,8 +3,8 @@ package com.munsun.utils.logger.service.impl;
 import com.munsun.utils.logger.enums.LevelLog;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.model.Log;
-import com.munsun.utils.logger.repositories.JournalRepository;
-import com.munsun.utils.logger.repositories.LogsRepository;
+import com.munsun.utils.logger.dao.JournalDao;
+import com.munsun.utils.logger.dao.LogsDao;
 import com.munsun.utils.logger.service.JournalService;
 import com.munsun.utils.logger.service.LoggerService;
 
@@ -19,16 +19,16 @@ import java.util.List;
  */
 public class LoggerServiceImpl implements LoggerService, JournalService {
     private String nameClassOwner;
-    private LogsRepository logsRepository;
-    private JournalRepository journalRepository;
+    private LogsDao logsRepository;
+    private JournalDao journalRepository;
 
     /**
      * <p>Constructor for LoggerServiceImpl.</p>
      *
      * @param tClass a {@link java.lang.Class} object
-     * @param logsRepository a {@link com.munsun.utils.logger.repositories.LogsRepository} object
+     * @param logsRepository a {@link LogsDao} object
      */
-    public LoggerServiceImpl(Class<?> tClass, LogsRepository logsRepository) {
+    public LoggerServiceImpl(Class<?> tClass, LogsDao logsRepository) {
         this.nameClassOwner = tClass.getName();
         this.logsRepository = logsRepository;
     }
@@ -37,9 +37,9 @@ public class LoggerServiceImpl implements LoggerService, JournalService {
      * <p>Constructor for LoggerServiceImpl.</p>
      *
      * @param tClass a {@link java.lang.Class} object
-     * @param journalRepository a {@link com.munsun.utils.logger.repositories.JournalRepository} object
+     * @param journalRepository a {@link JournalDao} object
      */
-    public LoggerServiceImpl(Class<?> tClass, JournalRepository journalRepository) {
+    public LoggerServiceImpl(Class<?> tClass, JournalDao journalRepository) {
         this.nameClassOwner = tClass.getName();
         this.journalRepository = journalRepository;
     }

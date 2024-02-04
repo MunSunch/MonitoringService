@@ -4,8 +4,8 @@ import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException
 import com.munsun.monitoring_service.backend.exceptions.MeterReadingNotFoundException;
 import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.models.MeterReading;
-import com.munsun.monitoring_service.backend.dao.AccountRepository;
-import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
+import com.munsun.monitoring_service.backend.dao.AccountDao;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsDao;
 import com.munsun.monitoring_service.backend.services.MonitoringService;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
  */
 @RequiredArgsConstructor
 public class MonitoringServiceImpl implements MonitoringService {
-    private final MeterReadingsRepository readingsRepository;
-    private final AccountRepository accountRepository;
+    private final MeterReadingsDao readingsRepository;
+    private final AccountDao accountRepository;
     private final MeterReadingMapper readingsMapper;
     private static final List<String> DEFAULT_NAMES_METER_READINGS = List.of("отопление", "горячая вода", "холодная вода");
     private List<String> namesReadingsMeters = new ArrayList<>(DEFAULT_NAMES_METER_READINGS);

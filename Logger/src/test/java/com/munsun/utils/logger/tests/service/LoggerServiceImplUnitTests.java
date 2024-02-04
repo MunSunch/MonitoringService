@@ -2,7 +2,7 @@ package com.munsun.utils.logger.tests.service;
 
 import com.munsun.utils.logger.enums.LevelLog;
 import com.munsun.utils.logger.model.Log;
-import com.munsun.utils.logger.repositories.impl.LogsRepositoryImpl;
+import com.munsun.utils.logger.dao.impl.LogsDaoImpl;
 import com.munsun.utils.logger.service.LoggerService;
 import com.munsun.utils.logger.service.impl.LoggerServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoggerServiceImplUnitTests {
-    private LoggerService service = new LoggerServiceImpl(LoggerServiceImplUnitTests.class, new LogsRepositoryImpl());
+    private LoggerService service = new LoggerServiceImpl(LoggerServiceImplUnitTests.class, new LogsDaoImpl());
 
     @DisplayName("Save the debug log")
     @Test

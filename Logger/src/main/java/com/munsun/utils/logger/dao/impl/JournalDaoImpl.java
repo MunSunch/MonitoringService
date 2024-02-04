@@ -1,10 +1,10 @@
-package com.munsun.utils.logger.repositories.impl;
+package com.munsun.utils.logger.dao.impl;
 
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.utils.logger.model.JournalRecord;
-import com.munsun.utils.logger.repositories.JournalRepository;
-import com.munsun.utils.logger.repositories.impl.queries.Query;
-import com.munsun.utils.logger.repositories.impl.mapping.JdbcJournalMapper;
+import com.munsun.utils.logger.dao.JournalDao;
+import com.munsun.utils.logger.dao.impl.queries.Query;
+import com.munsun.utils.logger.dao.impl.mapping.JdbcJournalMapper;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -19,7 +19,7 @@ import java.util.List;
  * @version $Id: $Id
  */
 @RequiredArgsConstructor
-public class JournalRepositoryImpl implements JournalRepository {
+public class JournalDaoImpl implements JournalDao {
     private final Database database;
     private final JdbcJournalMapper mapper;
 

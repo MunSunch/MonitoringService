@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.repositories;
+package com.munsun.utils.logger.dao;
 
 import com.munsun.utils.logger.model.Log;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author apple
  * @version $Id: $Id
  */
-public interface LogsRepository extends CrudRepository<Log, Long>{
+public interface LogsDao extends CrudDao<Log, Long> {
     /**
      * Outputs a list from logs, and the size of this list is not defined
      *

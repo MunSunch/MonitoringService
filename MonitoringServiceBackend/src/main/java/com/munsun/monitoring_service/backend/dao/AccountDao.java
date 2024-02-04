@@ -10,7 +10,7 @@ import java.util.Optional;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-public interface AccountRepository extends CrudRepository<Account, Long>{
+public interface AccountDao extends CrudDao<Account, Long> {
     /**
      * Return the Account entity by the specified login field
      *

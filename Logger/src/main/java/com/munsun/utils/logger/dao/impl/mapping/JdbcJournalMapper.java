@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.repositories.impl.mapping;
+package com.munsun.utils.logger.dao.impl.mapping;
 
 import com.munsun.utils.logger.model.JournalRecord;
 

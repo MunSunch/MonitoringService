@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-public interface MeterReadingsRepository extends CrudRepository<MeterReading, Long>{
+public interface MeterReadingsDao extends CrudDao<MeterReading, Long> {
     /**
      * <p>getLastMeterReadingByAccount_Id.</p>
      *

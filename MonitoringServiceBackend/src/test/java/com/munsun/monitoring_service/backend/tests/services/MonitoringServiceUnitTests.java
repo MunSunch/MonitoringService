@@ -2,7 +2,7 @@ package com.munsun.monitoring_service.backend.tests.services;
 
 import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.models.MeterReading;
-import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsDao;
 import com.munsun.monitoring_service.backend.services.impl.MonitoringServiceImpl;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import org.junit.jupiter.api.DisplayName;
@@ -10,11 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class MonitoringServiceUnitTests {
     @Mock
-    private MeterReadingsRepository repository;
+    private MeterReadingsDao repository;
     @Mock
     private MeterReadingMapper meterReadingMapper;
     @InjectMocks

@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.repositories;
+package com.munsun.utils.logger.dao;
 
 import com.munsun.utils.logger.model.JournalRecord;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author apple
  * @version $Id: $Id
  */
-public interface JournalRepository extends CrudRepository<JournalRecord, Long>{
+public interface JournalDao extends CrudDao<JournalRecord, Long> {
     /**
      * Get a list of logs from the database
      *

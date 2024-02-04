@@ -3,7 +3,7 @@ package com.munsun.monitoring_service.backend.dao.impl;
 import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.dao.AccountRepository;
+import com.munsun.monitoring_service.backend.dao.AccountDao;
 import com.munsun.monitoring_service.commons.db.Database;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
  * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
-public class AccountRepositoryImpl implements AccountRepository {
+public class AccountDaoImpl implements AccountDao {
     private final Database database;
     private final JdbcAccountMapper mapper;
 

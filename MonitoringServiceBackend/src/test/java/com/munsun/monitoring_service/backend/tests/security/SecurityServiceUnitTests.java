@@ -4,7 +4,7 @@ import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.dao.AccountRepository;
+import com.munsun.monitoring_service.backend.dao.AccountDao;
 import com.munsun.monitoring_service.backend.security.SecurityContext;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class SecurityServiceUnitTests {
     @Mock
-    private AccountRepository accountRepository;
+    private AccountDao accountRepository;
     @Mock
     private AccountMapper accountMapper;
     @Mock

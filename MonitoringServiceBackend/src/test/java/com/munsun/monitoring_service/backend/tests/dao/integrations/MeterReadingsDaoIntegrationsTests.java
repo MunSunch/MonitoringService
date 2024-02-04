@@ -1,9 +1,9 @@
-package com.munsun.monitoring_service.backend.tests.repositories.integrations;
+package com.munsun.monitoring_service.backend.tests.dao.integrations;
 
-import com.munsun.monitoring_service.backend.dao.AccountRepository;
-import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
-import com.munsun.monitoring_service.backend.dao.impl.AccountRepositoryImpl;
-import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsRepositoryImpl;
+import com.munsun.monitoring_service.backend.dao.AccountDao;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsDao;
+import com.munsun.monitoring_service.backend.dao.impl.AccountDaoImpl;
+import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsDaoImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcMeterReadingsMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
@@ -11,7 +11,7 @@ import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
 import com.munsun.monitoring_service.backend.security.enums.Role;
-import com.munsun.monitoring_service.backend.tests.repositories.PostgresContainer;
+import com.munsun.monitoring_service.backend.tests.dao.PostgresContainer;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +26,13 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MeterReadingsRepositoryIntegrationsTests extends PostgresContainer {
+public class MeterReadingsDaoIntegrationsTests extends PostgresContainer {
     private Database database = new DatabaseImpl(getProperties());
 
-    private MeterReadingsRepository meterReadingsRepository =
-            new MeterReadingsRepositoryImpl(database, new JdbcMeterReadingsMapperImpl(new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl())));
-    private AccountRepository accountRepository =
-            new AccountRepositoryImpl(database, new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl()));
+    private MeterReadingsDao meterReadingsRepository =
+            new MeterReadingsDaoImpl(database, new JdbcMeterReadingsMapperImpl(new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl())));
+    private AccountDao accountRepository =
+            new AccountDaoImpl(database, new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl()));
 
     private Account testAccount1 = Account.builder()
             .id(1L)

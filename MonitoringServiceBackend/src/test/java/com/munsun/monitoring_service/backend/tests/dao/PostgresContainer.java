@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.tests.repositories;
+package com.munsun.monitoring_service.backend.tests.dao;
 
 import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
 import liquibase.exception.LiquibaseException;

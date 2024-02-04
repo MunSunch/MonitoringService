@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-public interface CrudRepository<Value, Key> {
+public interface CrudDao<Value, Key> {
     /**
      * Return an entity wrapped in Optional with the primary key value from the database.
      *

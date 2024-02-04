@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.repositories;
+package com.munsun.utils.logger.dao;
 
 /**
  * An interface for performing four basic data manipulations:
@@ -9,7 +9,7 @@ package com.munsun.utils.logger.repositories;
  * @author apple
  * @version $Id: $Id
  */
-public interface CrudRepository<Value, Key> {
+public interface CrudDao<Value, Key> {
     /**
      * Saving an entity in the database. It is necessary to set the primary key,
      * which, during the saving of the DBMS, should be changed to a more relevant

@@ -1,14 +1,14 @@
-package com.munsun.monitoring_service.backend.tests.repositories.integrations;
+package com.munsun.monitoring_service.backend.tests.dao.integrations;
 
-import com.munsun.monitoring_service.backend.dao.AccountRepository;
-import com.munsun.monitoring_service.backend.dao.impl.AccountRepositoryImpl;
+import com.munsun.monitoring_service.backend.dao.AccountDao;
+import com.munsun.monitoring_service.backend.dao.impl.AccountDaoImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
 import com.munsun.monitoring_service.backend.security.enums.Role;
-import com.munsun.monitoring_service.backend.tests.repositories.PostgresContainer;
+import com.munsun.monitoring_service.backend.tests.dao.PostgresContainer;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -20,10 +20,10 @@ import java.sql.SQLException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class AccountsRepositoryIntegrationsTests extends PostgresContainer {
+public class AccountsDaoIntegrationsTests extends PostgresContainer {
     private final Database database = new DatabaseImpl(getProperties());
     private final JdbcAccountMapper jdbcAccountMapper = new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl());
-    private final AccountRepository accountRepository = new AccountRepositoryImpl(database, jdbcAccountMapper);
+    private final AccountDao accountRepository = new AccountDaoImpl(database, jdbcAccountMapper);
 
     private Account testAccount = Account.builder()
             .login("user")

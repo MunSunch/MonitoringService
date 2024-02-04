@@ -4,7 +4,7 @@ import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.dao.AccountRepository;
+import com.munsun.monitoring_service.backend.dao.AccountDao;
 import com.munsun.monitoring_service.backend.security.SecurityContext;
 import com.munsun.monitoring_service.backend.security.SecurityService;
 import com.munsun.monitoring_service.backend.security.enums.Role;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
-    private final AccountRepository accountRepository;
+    private final AccountDao accountRepository;
     private final AccountMapper accountMapper;
     private final SecurityContext securityContext;
 

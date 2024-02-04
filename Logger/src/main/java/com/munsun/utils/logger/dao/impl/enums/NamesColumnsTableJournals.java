@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.repositories.impl.enums;
+package com.munsun.utils.logger.dao.impl.enums;
 
 public enum NamesColumnsTableJournals {
     ID("id"),

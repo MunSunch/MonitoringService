@@ -1,4 +1,4 @@
-package com.munsun.utils.logger.repositories.impl.queries;
+package com.munsun.utils.logger.dao.impl.queries;
 
 public class Query {
     public static final String SAVE_JOURNAL = """

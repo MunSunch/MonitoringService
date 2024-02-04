@@ -1,4 +1,4 @@
-package com.munsun.monitoring_service.backend.tests.repositories;
+package com.munsun.utils.logger.tests.dao;
 
 import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
 import liquibase.exception.LiquibaseException;
@@ -8,7 +8,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;

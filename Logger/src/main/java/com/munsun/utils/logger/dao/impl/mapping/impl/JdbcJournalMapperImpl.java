@@ -1,10 +1,9 @@
-package com.munsun.utils.logger.repositories.impl.mapping.impl;
+package com.munsun.utils.logger.dao.impl.mapping.impl;
 
 import com.munsun.utils.logger.model.JournalRecord;
-import com.munsun.utils.logger.repositories.impl.enums.NamesColumnsTableJournals;
-import com.munsun.utils.logger.repositories.impl.mapping.JdbcJournalMapper;
+import com.munsun.utils.logger.dao.impl.enums.NamesColumnsTableJournals;
+import com.munsun.utils.logger.dao.impl.mapping.JdbcJournalMapper;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
