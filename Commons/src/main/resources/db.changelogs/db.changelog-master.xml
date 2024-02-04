@@ -12,10 +12,16 @@
         <tagDatabase tag="db_init"/>
     </changeSet>
 
-    <include file="v-1.0/db.changelog-v1.0.xml" relativeToChangelogFile="true"/>
+    <include file="v-1.0/db.changelog-v1.0-schema.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="4" author="MunSun">
-        <tagDatabase tag="v-1.0"/>
+    <changeSet id="5" author="MunSun">
+        <tagDatabase tag="v-1.0-add_schema"/>
+    </changeSet>
+
+    <include file="v-1.0/db.changelog-v1.0-logs.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="8" author="MunSun">
+        <tagDatabase tag="v-1.0-add_journals"/>
     </changeSet>
 
 </databaseChangeLog>

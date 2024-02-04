@@ -8,7 +8,7 @@ import com.munsun.utils.logger.repositories.LogsRepository;
 import com.munsun.utils.logger.service.JournalService;
 import com.munsun.utils.logger.service.LoggerService;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -57,7 +57,7 @@ public class LoggerServiceImpl implements LoggerService, JournalService {
      */
     @Override
     public JournalRecord journal(String message) {
-        return journalRepository.save(new JournalRecord(new Date(), message));
+        return journalRepository.save(new JournalRecord(new Date(new java.util.Date().getTime()), message));
     }
 
     /** {@inheritDoc} */

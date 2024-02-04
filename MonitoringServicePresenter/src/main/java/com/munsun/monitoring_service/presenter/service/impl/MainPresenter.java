@@ -3,6 +3,7 @@ package com.munsun.monitoring_service.presenter.service.impl;
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
+import com.munsun.monitoring_service.backend.exceptions.MeterReadingNotFoundException;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.security.SecurityService;
 import com.munsun.monitoring_service.backend.services.MonitoringService;
@@ -12,9 +13,7 @@ import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
 import com.munsun.monitoring_service.frontend.in.service.View;
 import com.munsun.monitoring_service.presenter.service.Presenter;
-import com.munsun.utils.logger.repositories.impl.JournalRepositoryImpl;
 import com.munsun.utils.logger.service.JournalService;
-import com.munsun.utils.logger.service.impl.LoggerServiceImpl;
 
 import java.time.Month;
 import java.util.InputMismatchException;
@@ -27,19 +26,19 @@ import java.util.List;
  * @version $Id: $Id
  */
 public class MainPresenter extends Presenter {
-    private SecurityService securityService;
-    private final JournalService logger = new LoggerServiceImpl(MainPresenter.class, new JournalRepositoryImpl());
+    private final SecurityService securityService;
+    private final JournalService logger;
 
     /**
      * <p>Constructor for MainPresenter.</p>
-     *
-     * @param view a {@link com.munsun.monitoring_service.frontend.in.service.View} object
-     * @param service a {@link com.munsun.monitoring_service.backend.services.MonitoringService} object
-     * @param securityService a {@link com.munsun.monitoring_service.backend.security.SecurityService} object
+     *  @param view a {@link View} object
+     * @param service a {@link MonitoringService} object
+     * @param securityService a {@link SecurityService} object
      */
-    public MainPresenter(View view, MonitoringService service, SecurityService securityService) {
+    public MainPresenter(View view, MonitoringService service, SecurityService securityService, JournalService journalService) {
         super(view, service);
         this.securityService = securityService;
+        this.logger = journalService;
     }
 
     /**
@@ -100,7 +99,7 @@ public class MainPresenter extends Presenter {
                 logger.journal("Регистрация нового аккаунта успешно; login = "+accountDtoIn.login());
             getView().showSuccessRegister(accountDtoOut);
         } catch (DatabaseConstraintException e) {
-            getView().showError("Account already exists");
+            getView().showError("Аккаунт с таким логином уже существует!");
         }
         start();
     }
@@ -238,7 +237,7 @@ public class MainPresenter extends Presenter {
         } catch (NumberFormatException e) {
                 logger.journal("Неудачная попытка добавления новой записи");
             getView().showError("Нарушен формат входных данных! Используйте числа");
-        } catch (DatabaseConstraintException | AccountNotFoundException | IllegalArgumentException e) {
+        } catch (DatabaseConstraintException | AccountNotFoundException | IllegalArgumentException | MeterReadingNotFoundException e) {
                 logger.journal("Неудачная попытка добавления новой записи");
             getView().showError(e.getMessage());
         }

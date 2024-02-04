@@ -22,30 +22,36 @@ public class MeterReadingMapperUnitsTests {
     @Test
     public void testConvertMeterReadingToMeterReadingDtoOut() {
         Date date = new Date();
-        var expected = new MeterReadingDtoOut(date.toString(), List.of("отопление:10"));
         var meterReading = new MeterReading();
-            meterReading.setDate(date);
+            meterReading.setDate(new java.sql.Date(date.getTime()));
             meterReading.setReadings(Map.of("отопление", 10L));
+        var expected = new MeterReadingDtoOut(date.toString(), List.of("отопление:10"));
 
         var actual = meterReadingMapper.toMeterReadingDtoOut(meterReading);
 
-        assertThat(actual).isEqualToComparingFieldByFieldRecursively(expected);
+        assertThat(actual)
+                .isNotNull()
+                .extracting(MeterReadingDtoOut::meterReadings)
+                    .isEqualTo(expected.meterReadings());
     }
 
     @DisplayName("Successful conversion of an entity to another DTO")
     @Test
     public void testConvertMeterReadingToLongMeterReadingDtoOut() {
         Date date = new Date();
-        var expected = new LongMeterReadingDtoOut("testLogin", date.toString(), List.of("отопление:10"));
         var meterReading = new MeterReading();
-            meterReading.setDate(date);
+            meterReading.setDate(new java.sql.Date(date.getTime()));
             var account = new Account();
                 account.setLogin("testLogin");
             meterReading.setAccount(account);
             meterReading.setReadings(Map.of("отопление", 10L));
+        var expected = new LongMeterReadingDtoOut("testLogin", date.toString(), List.of("отопление:10"));
 
         var actual = meterReadingMapper.toLongMeterReadingDtoOut(meterReading);
 
-        assertThat(actual).isEqualToComparingFieldByFieldRecursively(expected);
+        assertThat(actual)
+                .isNotNull()
+                .extracting(LongMeterReadingDtoOut::meterReadings, LongMeterReadingDtoOut::login)
+                    .containsExactly(expected.meterReadings(), expected.login());
     }
 }

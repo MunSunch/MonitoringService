@@ -1,15 +1,13 @@
 package com.munsun.monitoring_service.backend.dao.impl;
 
 import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
-import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
+import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.AccountRepository;
 import com.munsun.monitoring_service.commons.db.Database;
+import lombok.RequiredArgsConstructor;
 
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -18,59 +16,73 @@ import java.util.Optional;
  * @author apple
  * @version $Id: $Id
  */
+@RequiredArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
-    private final Map<String, Account> accountsIndexByLogin = new HashMap<>();
-    private final Map<Long, Account> accountsIndexById = new HashMap<>();
-    private Long counterId = 0L;
+    private final Database database;
+    private final JdbcAccountMapper mapper;
 
     /** {@inheritDoc} */
     @Override
     public Optional<Account> findByAccount_Login(String login) {
-        try(var connection = Database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.QUERY_FIND_ACCOUNT_BY_LOGIN))
+        try(var connection = database.getConnection();
+            var preparedStatement = connection.prepareStatement(Query.FIND_ACCOUNT_BY_LOGIN))
         {
-//            preparedStatement.setInt();
+            mapper.preparedFindByLoginStatement(preparedStatement, login);
             var result = preparedStatement.executeQuery();
-//            result.
+            if(!result.next()){
+                return Optional.empty();
+            }
+            return Optional.of(mapper.toAccount(result));
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return Optional.ofNullable(accountsIndexByLogin.get(login));
+        return Optional.empty();
     }
 
     /** {@inheritDoc} */
     @Override
     public Optional<Account> getById(Long key) {
-        return Optional.ofNullable(accountsIndexById.get(key));
+        try(var connection = database.getConnection();
+            var preparedStatement = connection.prepareStatement(Query.GET_ACCOUNT_BY_ID);)
+        {
+            mapper.preparedFindByIdStatement(preparedStatement, key);
+            var res = preparedStatement.executeQuery();
+            if(!res.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(mapper.toAccount(res));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @return*/
     @Override
-    public Account save(Account account) throws DatabaseConstraintException {
-        account.setId(counterId++);
-        checkConstraints(account);
-        accountsIndexByLogin.put(account.getLogin(), account);
-        accountsIndexById.put(account.getId(), account);
-        return account;
-    }
-
-    private void checkConstraints(Account account) throws DatabaseConstraintException {
-        if(accountsIndexByLogin.containsKey(account.getLogin())) {
-            throw new DatabaseConstraintException("Error constraint: unique 'login'");
+    public Long save(Account account) throws SQLException {
+        try(var connection = database.getConnection();
+            var preparedStatement = connection.prepareStatement(Query.SAVE_ACCOUNT))
+        {
+            mapper.preparedSaveStatement(preparedStatement, account);
+            int res = preparedStatement.executeUpdate();
+            return (long) res;
+        } catch (SQLException e) {
+            throw e;
         }
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * @return*/
     @Override
-    public Optional<Account> deleteById(Long key) {
-        var account = accountsIndexById.get(key);
-        if(account == null) {
-            return Optional.empty();
+    public Integer deleteById(Long key) throws SQLException {
+        try(var connection = database.getConnection();
+            var preparedStatement = connection.prepareStatement(Query.DELETE_BY_ID))
+        {
+            mapper.preparedDeleteByIdStatement(preparedStatement, key);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
-        accountsIndexById.remove(key);
-        accountsIndexByLogin.remove(account.getLogin());
-        return Optional.ofNullable(account);
     }
 }

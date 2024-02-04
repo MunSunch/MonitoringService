@@ -1,6 +1,6 @@
 package com.munsun.monitoring_service.backend.dao;
 
-import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -19,7 +19,7 @@ public interface CrudRepository<Value, Key> {
      * @param key primary key
      * @return Optional<VALUE>
      */
-    Optional<Value> getById(Key key);
+    Optional<Value> getById(Key key) throws SQLException;
 
     /**
      * Save the entity in the database and assign it a primary key in accordance
@@ -27,14 +27,13 @@ public interface CrudRepository<Value, Key> {
      *
      * @param value entity
      * @return VALUE entity and the modified primary key
-     * @throws com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException it is thrown out when the restrictions set by the DBMS are violated
      */
-    Value save(Value value) throws DatabaseConstraintException;
+    Long save(Value value) throws SQLException;
     /**
      * <p>deleteById.</p>
      *
      * @param key a Key object
      * @return a {@link java.util.Optional} object
      */
-    Optional<Value> deleteById(Key key);
+    Integer deleteById(Key key) throws SQLException;
 }

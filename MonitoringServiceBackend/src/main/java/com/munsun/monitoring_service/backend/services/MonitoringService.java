@@ -2,6 +2,7 @@ package com.munsun.monitoring_service.backend.services;
 
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
+import com.munsun.monitoring_service.backend.exceptions.MeterReadingNotFoundException;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
@@ -60,7 +61,7 @@ public interface MonitoringService {
      * @throws com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException if any.
      * @throws com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException if any.
      */
-    MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws DatabaseConstraintException, AccountNotFoundException;
+    MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws DatabaseConstraintException, AccountNotFoundException, MeterReadingNotFoundException;
     /**
      * <p>getAllHistory.</p>
      *

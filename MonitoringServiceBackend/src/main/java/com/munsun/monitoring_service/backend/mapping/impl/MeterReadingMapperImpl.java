@@ -22,6 +22,9 @@ public class MeterReadingMapperImpl implements MeterReadingMapper {
      */
     @Override
     public MeterReadingDtoOut toMeterReadingDtoOut(MeterReading meterReadings) {
+        if(meterReadings == null) {
+            return new MeterReadingDtoOut("", List.of());
+        }
         List<String> readings = meterReadings.getReadings().entrySet().stream()
                 .map(x -> x.getKey() + SEPARATOR + x.getValue())
                 .collect(Collectors.toList());

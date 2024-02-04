@@ -2,6 +2,7 @@ package com.munsun.monitoring_service.backend.services.impl;
 
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
+import com.munsun.monitoring_service.backend.exceptions.MeterReadingNotFoundException;
 import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.backend.dao.AccountRepository;
@@ -12,6 +13,7 @@ import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.SQLException;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +53,7 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Override
     public MeterReadingDtoOut getActualMeterReadings(Long idAccount) throws AccountNotFoundException {
         var meterReading = readingsRepository.getLastMeterReadingByAccount_Id(idAccount)
-                .orElseThrow(AccountNotFoundException::new);
+                .orElse(null);
         return readingsMapper.toMeterReadingDtoOut(meterReading);
     }
 
@@ -67,7 +69,7 @@ public class MonitoringServiceImpl implements MonitoringService {
     /** {@inheritDoc} */
     @Override
     public List<LongMeterReadingDtoOut> getHistoryMonthAllUsers(Month month) {
-        return readingsRepository.getMeterReadingsByMonthAllAccounts(month).stream()
+        return readingsRepository.getAllMeterReadings_MonthAllAccounts(month).stream()
                 .map(readingsMapper::toLongMeterReadingDtoOut)
                 .collect(Collectors.toList());
     }
@@ -90,14 +92,20 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     /** {@inheritDoc} */
     @Override
-    public MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws DatabaseConstraintException, AccountNotFoundException {
+    public MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws AccountNotFoundException, MeterReadingNotFoundException {
         Date now = new Date();
         checkRepeatAddMeterReadingPerMonth(idAccount);
-        MeterReading newMeterReading = new MeterReading();
-            newMeterReading.setAccount(accountRepository.getById(idAccount).orElseThrow(AccountNotFoundException::new));
-            newMeterReading.setDate(now);
-            newMeterReading.setReadings(dtoIn.readings());
-        return readingsMapper.toMeterReadingDtoOut(readingsRepository.save(newMeterReading));
+        try {
+            MeterReading newMeterReading = new MeterReading();
+                newMeterReading.setAccount(accountRepository.getById(idAccount).orElseThrow(AccountNotFoundException::new));
+                newMeterReading.setDate(new java.sql.Date(now.getTime()));
+                newMeterReading.setReadings(dtoIn.readings());
+            Long idSavedMeterReading = readingsRepository.save(newMeterReading);
+            return readingsMapper.toMeterReadingDtoOut(readingsRepository.getById(idSavedMeterReading).orElseThrow(MeterReadingNotFoundException::new));
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void checkRepeatAddMeterReadingPerMonth(Long idAccount) {

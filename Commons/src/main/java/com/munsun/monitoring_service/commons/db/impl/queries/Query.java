@@ -1,4 +1,4 @@
-package com.munsun.monitoring_service.commons.db.queries;
+package com.munsun.monitoring_service.commons.db.impl.queries;
 
 public class Query {
     public static String getQueryCreateNewSchema(String nameNewSchema) {
@@ -9,7 +9,7 @@ public class Query {
         return String.format("""
                     SELECT schema_name
                     FROM information_schema.schemata
-                    WHERE schema_name = '%s'");
+                    WHERE schema_name = '%s';
                     """, nameSchema);
     }
 }

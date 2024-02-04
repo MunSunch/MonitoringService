@@ -1,21 +1,27 @@
 package com.munsun.monitoring_service.app;
 
+import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsRepositoryImpl;
+import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMapperImpl;
+import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcMeterReadingsMapperImpl;
+import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
 import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
-import com.munsun.monitoring_service.backend.mapping.impl.AccountMapperImpl;
-import com.munsun.monitoring_service.backend.mapping.impl.MeterReadingMapperImpl;
-import com.munsun.monitoring_service.backend.mapping.impl.PlaceLivingMapperImpl;
+import com.munsun.monitoring_service.backend.mapping.impl.*;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.impl.AccountRepositoryImpl;
-import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsRepositoryImpl;
+import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.backend.security.impl.SecurityContextImpl;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
 import com.munsun.monitoring_service.backend.services.impl.MonitoringServiceImpl;
 import com.munsun.monitoring_service.commons.db.Database;
-import com.munsun.monitoring_service.commons.db.MigrationSystem;
+import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
+import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
 import com.munsun.monitoring_service.frontend.in.service.impl.Console;
 import com.munsun.monitoring_service.presenter.service.Presenter;
 import com.munsun.monitoring_service.presenter.service.impl.MainPresenter;
+import com.munsun.utils.logger.repositories.impl.JournalRepositoryImpl;
+import com.munsun.utils.logger.repositories.impl.mapping.impl.JdbcJournalMapperImpl;
+import com.munsun.utils.logger.service.impl.LoggerServiceImpl;
 import liquibase.exception.LiquibaseException;
 
 import java.io.IOException;
@@ -31,14 +37,28 @@ public class MonitoringServiceApplication {
     private static final Account ADMIN = new Account(null,
             "admin",
             "admin",
-            null,
+            PlaceLivingEmbedded.builder()
+                    .country("Russia")
+                    .city("Saratov")
+                    .street("red")
+                    .house("silver")
+                    .level("11")
+                    .apartmentNumber("1B")
+                    .build(),
             Role.ADMIN,
             false);
 
     private static final Account USER = new Account(null,
             "user",
             "user",
-            null,
+            PlaceLivingEmbedded.builder()
+                    .country("Russia")
+                    .city("Saratov")
+                    .street("red")
+                    .house("silver")
+                    .level("11")
+                    .apartmentNumber("1B")
+                    .build(),
             Role.USER,
             false);
 
@@ -49,19 +69,27 @@ public class MonitoringServiceApplication {
      * @throws com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException if any.
      */
     public static void main(String[] args) throws DatabaseConstraintException, SQLException, LiquibaseException, IOException {
-        MigrationSystem.initSchema(Database.getConnection());
+        Database database = new DatabaseImpl();
+        new MigrationSystem().initSchema(database.getConnection());
 
-        var accountRepository = new AccountRepositoryImpl();
+        var jdbcAccountMapper = new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl());
+        var accountRepository = new AccountRepositoryImpl(database, jdbcAccountMapper);
+        if(accountRepository.findByAccount_Login(ADMIN.getLogin()).isEmpty())
             accountRepository.save(ADMIN);
+        if(accountRepository.findByAccount_Login(USER.getLogin()).isEmpty())
             accountRepository.save(USER);
 
         Presenter presenter = new MainPresenter(new Console(),
-                                                new MonitoringServiceImpl(new MeterReadingsRepositoryImpl(),
+                                                new MonitoringServiceImpl(new MeterReadingsRepositoryImpl(database,
+                                                                                                          new JdbcMeterReadingsMapperImpl(jdbcAccountMapper)),
                                                                           accountRepository,
                                                                           new MeterReadingMapperImpl()),
                                                 new SecurityServiceImpl(accountRepository,
                                                                         new AccountMapperImpl(new PlaceLivingMapperImpl()),
-                                                                        new SecurityContextImpl()));
+                                                                        new SecurityContextImpl()),
+                                                new LoggerServiceImpl(MainPresenter.class,
+                                                                      new JournalRepositoryImpl(database,
+                                                                                                new JdbcJournalMapperImpl())));
         presenter.start();
     }
 }

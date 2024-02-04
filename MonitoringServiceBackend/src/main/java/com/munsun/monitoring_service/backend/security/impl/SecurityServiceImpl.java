@@ -2,7 +2,6 @@ package com.munsun.monitoring_service.backend.security.impl;
 
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
-import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.AccountRepository;
@@ -47,9 +46,9 @@ public class SecurityServiceImpl implements SecurityService {
         var newAccount = accountMapper.map(accountDtoIn);
             newAccount.setRole(Role.USER);
         try {
-            var account = accountRepository.save(newAccount);
-            return new AccountDtoOut(account.getLogin());
-        } catch (DatabaseConstraintException e) {
+            var res = accountRepository.save(newAccount);
+            return res == 1? new AccountDtoOut(accountDtoIn.login()): null;
+        } catch (Exception e) {
             throw new IllegalArgumentException("Аккаунт с таким логином уже существует");
         }
     }

@@ -29,11 +29,11 @@ public interface MeterReadingsRepository extends CrudRepository<MeterReading, Lo
     /**
      * <p>getMeterReadingsByMonthAndAccount_Id.</p>
      *
-     * @param idAccount a {@link java.lang.Long} object
-     * @param month a {@link java.time.Month} object
+     * @param idAccount a {@link Long} object
+     * @param month a {@link Month} object
      * @return a {@link java.util.List} object
      */
-    List<MeterReading> getMeterReadingsByMonthAndAccount_Id(Long idAccount, Month month);
+    Optional<MeterReading> getMeterReadingsByMonthAndAccount_Id(Long idAccount, Month month);
 
     /**
      * <p>getLastMetersReadingsAllAccounts.</p>
@@ -53,5 +53,5 @@ public interface MeterReadingsRepository extends CrudRepository<MeterReading, Lo
      * @param month a {@link java.time.Month} object
      * @return a {@link java.util.List} object
      */
-    List<MeterReading> getMeterReadingsByMonthAllAccounts(Month month);
+    List<MeterReading> getAllMeterReadings_MonthAllAccounts(Month month);
 }
