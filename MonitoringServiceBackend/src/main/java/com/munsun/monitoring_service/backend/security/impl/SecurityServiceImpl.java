@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 /**
  * <p>SecurityServiceImpl class.</p>
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {

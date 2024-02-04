@@ -8,8 +8,8 @@ import java.util.Optional;
 /**
  * Interface for storing and retrieving an entity MeterReading
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public interface MeterReadingsRepository extends CrudRepository<MeterReading, Long>{
     /**

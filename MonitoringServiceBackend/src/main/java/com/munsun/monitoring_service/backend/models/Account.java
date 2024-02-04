@@ -12,8 +12,8 @@ import lombok.EqualsAndHashCode;
 /**
  * Entity for storing user information
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @AllArgsConstructor
 @NoArgsConstructor

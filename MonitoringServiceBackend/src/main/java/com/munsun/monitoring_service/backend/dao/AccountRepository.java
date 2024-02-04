@@ -7,8 +7,8 @@ import java.util.Optional;
 /**
  * Interface for storing and manipulating an entity Account
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public interface AccountRepository extends CrudRepository<Account, Long>{
     /**

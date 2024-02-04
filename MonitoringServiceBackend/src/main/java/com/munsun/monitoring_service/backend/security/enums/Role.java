@@ -5,8 +5,8 @@ import java.util.Set;
 /**
  * <p>Role class.</p>
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public enum Role {
     USER(Set.of("read", "write")),

@@ -9,8 +9,8 @@ import java.util.Optional;
  *
  * @param <Value> entity
  * @param <Key> primary key
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public interface CrudRepository<Value, Key> {
     /**

@@ -1,7 +1,6 @@
 package com.munsun.monitoring_service.backend.services.impl;
 
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
-import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.exceptions.MeterReadingNotFoundException;
 import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.models.MeterReading;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
  * <p>MonitoringServiceImpl class.</p>
  *
  * @author MunSun
- * @version $Id: $Id
+ * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
 public class MonitoringServiceImpl implements MonitoringService {
@@ -40,11 +39,7 @@ public class MonitoringServiceImpl implements MonitoringService {
         namesReadingsMeters.add(nameNewMeterReading);
     }
 
-    /**
-     * <p>Getter for the field <code>namesReadingsMeters</code>.</p>
-     *
-     * @return a {@link java.util.List} object
-     */
+    /** {@inheritDoc} */
     public List<String> getNamesReadingsMeters() {
         return namesReadingsMeters;
     }

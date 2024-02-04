@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +22,15 @@ public class JdbcMeterReadingsMapperImpl implements JdbcMeterReadingsMapper {
 
     @Override
     public void preparedSaveMeterReadingStatement(PreparedStatement preparedStatementSaveMeterReadings, MeterReading meterReading) throws SQLException {
-        preparedStatementSaveMeterReadings.setDate(NamesColumnsTableMeterReadings.DATE.ordinal(), meterReading.getDate());
-        preparedStatementSaveMeterReadings.setLong(NamesColumnsTableMeterReadings.ACCOUNT_ID.ordinal(), meterReading.getAccount().getId());
+        preparedStatementSaveMeterReadings.setDate(1, meterReading.getDate());
+        preparedStatementSaveMeterReadings.setLong(2, meterReading.getAccount().getId());
     }
 
     @Override
     public void preparedSaveReadingsStatement(PreparedStatement saveReadings, Map.Entry<String, Long> entrySet, Long idMeterReading) throws SQLException {
-        saveReadings.setLong(NamesColumnsTableReadings.METER_READINGS_ID.ordinal(), idMeterReading);
-        saveReadings.setString(NamesColumnsTableReadings.NAME.ordinal(), entrySet.getKey());
-        saveReadings.setLong(NamesColumnsTableReadings.VALUE.ordinal(), entrySet.getValue());
+        saveReadings.setLong(1, idMeterReading);
+        saveReadings.setString(2, entrySet.getKey());
+        saveReadings.setLong(3, entrySet.getValue());
     }
 
     @Override
@@ -63,5 +64,42 @@ public class JdbcMeterReadingsMapperImpl implements JdbcMeterReadingsMapper {
                               result.getLong(NamesColumnsTableReadings.VALUE.getTitle()));
         } while(result.next());
         return meterReadings;
+    }
+
+    @Override
+    public void preparedGetByIdStatement(PreparedStatement preparedStatement, Long aLong) throws SQLException {
+        preparedStatement.setLong(1, aLong);
+    }
+
+    @Override
+    public void preparedDeleteReadingById(PreparedStatement deleteReadings, Long aLong) throws SQLException {
+        deleteReadings.setLong(1, aLong);
+    }
+
+    @Override
+    public void preparedDeleteMeterReadingById(PreparedStatement deleteMeterReading, Long aLong) throws SQLException {
+        deleteMeterReading.setLong(1, aLong);
+    }
+
+    @Override
+    public void preparedGetLastMeterReadingStatement(PreparedStatement preparedStatement, Long idAccount, int nowMonth) throws SQLException {
+        preparedStatement.setLong(1, nowMonth);
+        preparedStatement.setLong(2, idAccount);
+    }
+
+    @Override
+    public void preparedGetAllMetersReadingsByAccountId(PreparedStatement preparedStatement, Long idAccount) throws SQLException {
+        preparedStatement.setLong(1, idAccount);
+    }
+
+    @Override
+    public void preparedGetAllMetersReadingsByMonth(PreparedStatement preparedStatement, Month month) throws SQLException {
+        preparedStatement.setLong(1, month.getValue());
+    }
+
+    @Override
+    public void preparedGetMeterReadingsByAccountIdAndMonth(PreparedStatement preparedStatement, Long idAccount, Month month) throws SQLException {
+        preparedStatement.setLong(1, month.getValue());
+        preparedStatement.setLong(2, idAccount);
     }
 }

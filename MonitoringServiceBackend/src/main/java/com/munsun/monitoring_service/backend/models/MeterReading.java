@@ -11,8 +11,8 @@ import java.util.Map;
 /**
  * An entity for storing meter readings
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @AllArgsConstructor
 @RequiredArgsConstructor

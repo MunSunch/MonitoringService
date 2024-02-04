@@ -2,7 +2,6 @@ package com.munsun.monitoring_service.backend.dao.impl;
 
 import com.munsun.monitoring_service.backend.dao.MeterReadingsRepository;
 import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableMeterReadings;
-import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableReadings;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcMeterReadingsMapper;
 import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
 import com.munsun.monitoring_service.backend.models.MeterReading;
@@ -28,7 +27,7 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
         try(var connection = database.getConnection();
             var preparedStatement = connection.prepareStatement(Query.GET_METER_READING_BY_ID))
         {
-            preparedStatement.setLong(NamesColumnsTableMeterReadings.ID.ordinal()+1, aLong);
+            mapper.preparedGetByIdStatement(preparedStatement, aLong);
             var result = preparedStatement.executeQuery();
             if(result.next()) {
                 return Optional.of(mapper.toMeterReading(result));
@@ -46,7 +45,7 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
         {
             connection.setAutoCommit(false);
             mapper.preparedSaveMeterReadingStatement(saveMeterReading, meterReading);
-            int res = saveMeterReading.executeUpdate();
+            saveMeterReading.executeUpdate();
             Long idMeterReading = getIdSavedMeterReading(connection);
             for (var entrySet: meterReading.getReadings().entrySet()) {
                 saveReadings(connection, entrySet, idMeterReading);
@@ -82,7 +81,6 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
         }
     }
 
-    // cascade delete
     @Override
     public Integer deleteById(Long aLong) throws SQLException {
         try(var connection = database.getConnection();
@@ -91,10 +89,9 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
         {
             connection.setAutoCommit(false);
 
-            deleteReadings.setLong(NamesColumnsTableReadings.METER_READINGS_ID.ordinal(), aLong);
+            mapper.preparedDeleteReadingById(deleteReadings, aLong);
             deleteReadings.executeUpdate();
-
-            deleteMeterReading.setLong(NamesColumnsTableMeterReadings.ID.ordinal()+1, aLong);
+            mapper.preparedDeleteMeterReadingById(deleteMeterReading, aLong);
             int res = deleteMeterReading.executeUpdate();
 
             connection.commit();
@@ -111,8 +108,7 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
             var preparedStatement = connection.prepareStatement(Query.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH))
         {
             var nowMonth = new Date().getMonth()+1;
-            preparedStatement.setLong(1, nowMonth);
-            preparedStatement.setLong(2, idAccount);
+            mapper.preparedGetLastMeterReadingStatement(preparedStatement, idAccount, nowMonth);
             var res = preparedStatement.executeQuery();
             if(res.next()) {
                 return Optional.of(mapper.toMeterReading(res));
@@ -129,7 +125,7 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
             var preparedStatement = connection.prepareStatement(Query.GET_METER_READINGS_BY_ACCOUNT_ID,
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
-            preparedStatement.setLong(1, idAccount);
+            mapper.preparedGetAllMetersReadingsByAccountId(preparedStatement, idAccount);
             var res = preparedStatement.executeQuery();
             if(res.next()) {
                 return mapper.toMetersReadings(res);
@@ -145,8 +141,7 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
         try(var connection = database.getConnection();
             var preparedStatement = connection.prepareStatement(Query.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH))
         {
-            preparedStatement.setLong(1, month.getValue());
-            preparedStatement.setLong(2, idAccount);
+            mapper.preparedGetMeterReadingsByAccountIdAndMonth(preparedStatement, idAccount, month);
             var res = preparedStatement.executeQuery();
             if(res.next()) {
                 return Optional.of(mapper.toMeterReading(res));
@@ -197,7 +192,7 @@ public class MeterReadingsRepositoryImpl implements MeterReadingsRepository {
             var preparedStatement = connection.prepareStatement(Query.GET_ALL_METER_READINGS_ALL_ACCOUNTS_BY_MONTH,
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
-            preparedStatement.setLong(1, month.getValue());
+            mapper.preparedGetAllMetersReadingsByMonth(preparedStatement, month);
             var res = preparedStatement.executeQuery();
             if(res.next()) {
                 return mapper.toMetersReadings(res);

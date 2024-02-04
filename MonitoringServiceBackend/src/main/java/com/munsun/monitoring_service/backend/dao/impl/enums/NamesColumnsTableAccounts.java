@@ -1,5 +1,8 @@
 package com.munsun.monitoring_service.backend.dao.impl.enums;
 
+/**
+ * Column names of the table accounts
+ */
 public enum NamesColumnsTableAccounts {
     ID("id"),
     LOGIN("login"),

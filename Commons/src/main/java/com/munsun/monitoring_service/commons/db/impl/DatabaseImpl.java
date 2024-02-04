@@ -9,9 +9,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Database interface implementation.
+ * The work requires paperwork related to the distribution.property. Required list of properties:
+ * <ul>
+ * <li>data source.url</li>
+ * <li>data source.username</li>
+ * <li>data source.password</li>
+ * <li>data source.the default scheme</li>
+ * </ul
+ *
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
+ */
 public class DatabaseImpl implements Database {
     private static Properties property = new Properties();
-    private static final String pathToResources = "Commons/src/main/resources/app.properties";
+    private static final String PATH_TO_RESOURCES = "Commons/src/main/resources/app.properties";
 
     public DatabaseImpl(Properties properties) {
         property = properties;
@@ -19,7 +32,7 @@ public class DatabaseImpl implements Database {
 
     public DatabaseImpl() {
         try {
-            property.load(new FileReader(pathToResources));
+            property.load(new FileReader(PATH_TO_RESOURCES));
         } catch (IOException e) {
             e.printStackTrace();
         }

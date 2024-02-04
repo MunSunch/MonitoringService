@@ -25,11 +25,11 @@ public class JdbcPlaceLivingMapperImpl implements JdbcPlaceLivingMapper {
     @Override
     public void preparedSaveStatement(PreparedStatement preparedStatement, Account account) throws SQLException {
         var placeLiving = account.getPlaceLiving();
-        preparedStatement.setString(NamesColumnsTableAccounts.COUNTRY.ordinal(), placeLiving.getCountry());
-        preparedStatement.setString(NamesColumnsTableAccounts.CITY.ordinal(), placeLiving.getCity());
-        preparedStatement.setString(NamesColumnsTableAccounts.STREET.ordinal(), placeLiving.getStreet());
-        preparedStatement.setString(NamesColumnsTableAccounts.HOUSE.ordinal(), placeLiving.getHouse());
-        preparedStatement.setString(NamesColumnsTableAccounts.LEVEL.ordinal(), placeLiving.getLevel());
-        preparedStatement.setString(NamesColumnsTableAccounts.APARTMENT_NUMBER.ordinal(), placeLiving.getApartmentNumber());
+        preparedStatement.setString(5, placeLiving.getCountry());
+        preparedStatement.setString(6, placeLiving.getCity());
+        preparedStatement.setString(7, placeLiving.getStreet());
+        preparedStatement.setString(8, placeLiving.getHouse());
+        preparedStatement.setString(9, placeLiving.getLevel());
+        preparedStatement.setString(10, placeLiving.getApartmentNumber());
     }
 }

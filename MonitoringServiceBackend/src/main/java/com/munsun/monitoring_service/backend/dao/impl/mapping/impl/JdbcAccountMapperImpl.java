@@ -29,25 +29,25 @@ public class JdbcAccountMapperImpl implements JdbcAccountMapper {
 
     @Override
     public void preparedSaveStatement(PreparedStatement preparedStatement, Account account) throws SQLException {
-        preparedStatement.setString(NamesColumnsTableAccounts.LOGIN.ordinal(), String.valueOf(account.getLogin()));
-        preparedStatement.setString(NamesColumnsTableAccounts.PASSWORD.ordinal(), String.valueOf(account.getPassword()));
-        preparedStatement.setString(NamesColumnsTableAccounts.ROLE.ordinal(), String.valueOf(account.getRole()));
-        preparedStatement.setBoolean(NamesColumnsTableAccounts.IS_BLOCKED.ordinal(), account.isBlocked());
+        preparedStatement.setString(1, String.valueOf(account.getLogin()));
+        preparedStatement.setString(2, String.valueOf(account.getPassword()));
+        preparedStatement.setString(3, String.valueOf(account.getRole()));
+        preparedStatement.setBoolean(4, account.isBlocked());
         placeLivingMapper.preparedSaveStatement(preparedStatement, account);
     }
 
     @Override
     public void preparedFindByLoginStatement(PreparedStatement preparedStatement, String login) throws SQLException {
-        preparedStatement.setString(NamesColumnsTableAccounts.LOGIN.ordinal(), login);
+        preparedStatement.setString(1, login);
     }
 
     @Override
     public void preparedFindByIdStatement(PreparedStatement preparedStatement, Long key) throws SQLException {
-        preparedStatement.setLong(NamesColumnsTableAccounts.ID.ordinal()+1, key);
+        preparedStatement.setLong(1, key);
     }
 
     @Override
     public void preparedDeleteByIdStatement(PreparedStatement preparedStatement, Long key) throws SQLException {
-        preparedStatement.setLong(NamesColumnsTableAccounts.ID.ordinal()+1, key);
+        preparedStatement.setLong(1, key);
     }
 }

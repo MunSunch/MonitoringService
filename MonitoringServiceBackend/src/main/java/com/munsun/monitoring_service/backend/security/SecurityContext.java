@@ -5,33 +5,32 @@ import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 
 /**
- * <p>SecurityContext interface.</p>
- *
- * @author apple
- * @version $Id: $Id
+ * Abstraction for user authorization
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public interface SecurityContext {
     /**
-     * <p>clear.</p>
+     * Clear the storage with authenticated users
      */
     void clear();
+
     /**
-     * <p>isAccessAllowed.</p>
-     *
+     * Authorize a user with a {@link Role role} to access a specific resource {@link ItemsMainMenu}
      * @param role a {@link com.munsun.monitoring_service.backend.security.enums.Role} object
      * @param item a {@link com.munsun.monitoring_service.commons.enums.ItemsMainMenu} object
      * @return a boolean
      */
     boolean isAccessAllowed(Role role, ItemsMainMenu item);
+
     /**
-     * <p>setCurrentAuthorizedAccount.</p>
-     *
+     * Substitute a user
      * @param account a {@link com.munsun.monitoring_service.backend.models.Account} object
      */
     void setCurrentAuthorizedAccount(Account account);
+
     /**
-     * <p>getAuthorizedAccount.</p>
-     *
+     * Return the current authenticated user from the context
      * @return a {@link com.munsun.monitoring_service.backend.models.Account} object
      */
     Account getAuthorizedAccount();

@@ -19,26 +19,55 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Migration system for automatic schema creation in DBMS.
+ * For correct operation, it requires a connection to the DBMS to create the main and service schemas and a file.property with indication of properties:
+ * <ul>
+ * <li>liquibase.default-schema</li>
+ * <li>liquibase.changelog.path</li>
+ * </ul>
+ *
+ * The last property indicates the location of the set of changes applicable to the database. For more information, follow the {@link <a href="http://www.liquibase.org/">link</a>}
+ *
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
+ */
 public class MigrationSystem {
     private Properties properties = new Properties();
-    private static String pathToResources = "Commons/src/main/resources/app.properties";
+    private static final String PATH_RESOURCES = "Commons/src/main/resources/app.properties";
 
+    /**
+     * <p>Constructor for MigrationSystem.</p>
+     */
     public MigrationSystem() {
         loadProperties();
     }
 
+    /**
+     * <p>Constructor for MigrationSystem.</p>
+     *
+     * @param properties a {@link java.util.Properties} object
+     */
     public MigrationSystem(Properties properties) {
         this.properties = properties;
     }
 
     private void loadProperties() {
         try {
-            properties.load(new FileReader(pathToResources));
+            properties.load(new FileReader(PATH_RESOURCES));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Create a schema in the database based on a set of changes
+     *
+     * @param connection a Connection object
+     * @throws liquibase.exception.LiquibaseException
+     * @throws java.sql.SQLException
+     * @throws java.io.FileNotFoundException
+     */
     public void initSchema(Connection connection) throws LiquibaseException, SQLException, FileNotFoundException {
         if(!checkExistsSchema(properties.getProperty("liquibase.default-schema"), connection))
             createSchema(properties.getProperty("liquibase.default-schema"), connection);

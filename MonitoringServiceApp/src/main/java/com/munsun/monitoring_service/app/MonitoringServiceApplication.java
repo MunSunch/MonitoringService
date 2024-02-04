@@ -4,7 +4,6 @@ import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsRepositoryImp
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcMeterReadingsMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
-import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.mapping.impl.*;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.impl.AccountRepositoryImpl;
@@ -66,9 +65,8 @@ public class MonitoringServiceApplication {
      * <p>main.</p>
      *
      * @param args an array of {@link java.lang.String} objects
-     * @throws com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException if any.
      */
-    public static void main(String[] args) throws DatabaseConstraintException, SQLException, LiquibaseException, IOException {
+    public static void main(String[] args) throws SQLException, LiquibaseException, IOException {
         Database database = new DatabaseImpl();
         new MigrationSystem().initSchema(database.getConnection());
 

@@ -372,12 +372,3 @@ public class MeterReadingsRepositoryIntegrationsTests extends PostgresContainer 
                         .containsExactly(Month.JANUARY.getValue(), Month.JANUARY.getValue());
     }
 }
-
-
-
-
-
-
-
-
-

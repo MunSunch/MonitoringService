@@ -13,8 +13,8 @@ import java.util.Optional;
 /**
  * <p>AccountRepositoryImpl class.</p>
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
