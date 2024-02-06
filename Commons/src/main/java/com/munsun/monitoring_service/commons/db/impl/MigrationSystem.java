@@ -1,6 +1,6 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
-import com.munsun.monitoring_service.commons.db.impl.queries.Query;
+import com.munsun.monitoring_service.commons.db.impl.queries.PrevQueries;
 import liquibase.Liquibase;
 import liquibase.command.CommandScope;
 import liquibase.command.core.UpdateCommandStep;
@@ -87,9 +87,10 @@ public class MigrationSystem {
     }
 
     private boolean checkExistsSchema(String nameSchema, Connection connection) {
-        try(var statement = connection.createStatement())
+        try(var statement = connection.prepareStatement(PrevQueries.IS_EXISTS_SCHEMA.QUERY.getDescription()))
         {
-            var res = statement.executeQuery(Query.isExistsSchemaInDatabase(nameSchema));
+            statement.setString(PrevQueries.IS_EXISTS_SCHEMA.Arguments.NAME_SCHEMA.getPositionInQuery(), nameSchema);
+            var res = statement.executeQuery();
             return res.next();
         } catch (SQLException e) {
             return false;
@@ -99,7 +100,7 @@ public class MigrationSystem {
     private void createSchema(String nameSchema, Connection connection) {
         try(var statement = connection.createStatement())
         {
-            statement.executeUpdate(Query.getQueryCreateNewSchema(nameSchema));
+            statement.executeUpdate(String.format(PrevQueries.CREATE_NEW_SCHEMA.QUERY.getDescription(), nameSchema));
         } catch (SQLException e) {
             e.printStackTrace();
         }

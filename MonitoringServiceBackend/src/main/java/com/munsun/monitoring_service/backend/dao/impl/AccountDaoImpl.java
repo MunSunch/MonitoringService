@@ -1,6 +1,6 @@
 package com.munsun.monitoring_service.backend.dao.impl;
 
-import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
+import com.munsun.monitoring_service.backend.dao.impl.queries.AccountsQueries;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.AccountDao;
@@ -25,7 +25,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Optional<Account> findByAccount_Login(String login) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.FIND_ACCOUNT_BY_LOGIN))
+            var preparedStatement = connection.prepareStatement(AccountsQueries.FIND_ACCOUNT_BY_LOGIN.QUERY.getDescription()))
         {
             mapper.preparedFindByLoginStatement(preparedStatement, login);
             var result = preparedStatement.executeQuery();
@@ -43,7 +43,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Optional<Account> getById(Long key) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_ACCOUNT_BY_ID);)
+            var preparedStatement = connection.prepareStatement(AccountsQueries.GET_ACCOUNT_BY_ID.QUERY.getDescription()))
         {
             mapper.preparedFindByIdStatement(preparedStatement, key);
             var res = preparedStatement.executeQuery();
@@ -62,7 +62,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Long save(Account account) throws SQLException {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.SAVE_ACCOUNT))
+            var preparedStatement = connection.prepareStatement(AccountsQueries.SAVE_ACCOUNT.QUERY.getDescription()))
         {
             mapper.preparedSaveStatement(preparedStatement, account);
             int res = preparedStatement.executeUpdate();
@@ -77,7 +77,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Integer deleteById(Long key) throws SQLException {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.DELETE_BY_ID))
+            var preparedStatement = connection.prepareStatement(AccountsQueries.DELETE_BY_ID.QUERY.getDescription()))
         {
             mapper.preparedDeleteByIdStatement(preparedStatement, key);
             return preparedStatement.executeUpdate();

@@ -3,7 +3,7 @@ package com.munsun.monitoring_service.backend.dao.impl;
 import com.munsun.monitoring_service.backend.dao.MeterReadingsDao;
 import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableMeterReadings;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcMeterReadingsMapper;
-import com.munsun.monitoring_service.backend.dao.impl.queries.Query;
+import com.munsun.monitoring_service.backend.dao.impl.queries.MeterReadingsQueries;
 import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.commons.db.Database;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public Optional<MeterReading> getById(Long aLong) throws SQLException {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_METER_READING_BY_ID))
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_METER_READING_BY_ID.QUERY.getDescription()))
         {
             mapper.preparedGetByIdStatement(preparedStatement, aLong);
             var result = preparedStatement.executeQuery();
@@ -41,7 +41,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public Long save(MeterReading meterReading) throws SQLException {
         try(var connection = database.getConnection();
-            var saveMeterReading = connection.prepareStatement(Query.SAVE_METER_READING))
+            var saveMeterReading = connection.prepareStatement(MeterReadingsQueries.SAVE_METER_READING.QUERY.getDescription()))
         {
             connection.setAutoCommit(false);
             mapper.preparedSaveMeterReadingStatement(saveMeterReading, meterReading);
@@ -60,7 +60,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
 
     private Long getIdSavedMeterReading(Connection connection) {
         try(var prepared =
-                    connection.prepareStatement(Query.GET_LAST_SAVED_METER_READINGS))
+                    connection.prepareStatement(MeterReadingsQueries.GET_LAST_SAVED_METER_READINGS.QUERY.getDescription()))
         {
             var res = prepared.executeQuery();
             if(res.next()) {
@@ -73,7 +73,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     }
 
     private void saveReadings(Connection connection, Map.Entry<String, Long> entrySet, Long idMeterReading) {
-        try(var saveReadings = connection.prepareStatement(Query.SAVE_READING)) {
+        try(var saveReadings = connection.prepareStatement(MeterReadingsQueries.SAVE_READING.QUERY.getDescription())) {
             mapper.preparedSaveReadingsStatement(saveReadings, entrySet, idMeterReading);
             saveReadings.executeUpdate();
         } catch (SQLException e) {
@@ -84,8 +84,8 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public Integer deleteById(Long aLong) throws SQLException {
         try(var connection = database.getConnection();
-            var deleteReadings = connection.prepareStatement(Query.DELETE_READING_BY_ID);
-            var deleteMeterReading = connection.prepareStatement(Query.DELETE_METER_READING_BY_ID))
+            var deleteReadings = connection.prepareStatement(MeterReadingsQueries.DELETE_READING_BY_ID.QUERY.getDescription());
+            var deleteMeterReading = connection.prepareStatement(MeterReadingsQueries.DELETE_METER_READING_BY_ID.QUERY.getDescription()))
         {
             connection.setAutoCommit(false);
 
@@ -105,7 +105,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public Optional<MeterReading> getLastMeterReadingByAccount_Id(Long idAccount) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH))
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH.QUERY.getDescription()))
         {
             var nowMonth = new Date().getMonth()+1;
             mapper.preparedGetLastMeterReadingStatement(preparedStatement, idAccount, nowMonth);
@@ -122,7 +122,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public List<MeterReading> getAllMeterReadingsByAccount_Id(Long idAccount) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_METER_READINGS_BY_ACCOUNT_ID,
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID.QUERY.getDescription(),
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             mapper.preparedGetAllMetersReadingsByAccountId(preparedStatement, idAccount);
@@ -139,7 +139,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public Optional<MeterReading> getMeterReadingsByMonthAndAccount_Id(Long idAccount, Month month) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH))
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH.QUERY.getDescription()))
         {
             mapper.preparedGetMeterReadingsByAccountIdAndMonth(preparedStatement, idAccount, month);
             var res = preparedStatement.executeQuery();
@@ -155,11 +155,11 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public List<MeterReading> getLastMetersReadingsAllAccounts() {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_ALL_METER_READINGS_ALL_ACCOUNTS_BY_MONTH,
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_ALL_METER_READINGS_ALL_ACCOUNTS_BY_MONTH.QUERY.getDescription(),
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             var nowMonth = new Date().getMonth()+1;
-            preparedStatement.setLong(1, nowMonth);
+            mapper.preparedGetAllMetersReadingsByMonth(preparedStatement, Month.of(nowMonth));
             var res = preparedStatement.executeQuery();
             if(res.next()) {
                 return mapper.toMetersReadings(res);
@@ -173,7 +173,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public List<MeterReading> getAllMeterReadingsAllAccounts() {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_ALL_METER_READINGS_ALL_ACCOUNTS,
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_ALL_METER_READINGS_ALL_ACCOUNTS.QUERY.getDescription(),
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             var res = preparedStatement.executeQuery();
@@ -189,7 +189,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     @Override
     public List<MeterReading> getAllMeterReadings_MonthAllAccounts(Month month) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_ALL_METER_READINGS_ALL_ACCOUNTS_BY_MONTH,
+            var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_ALL_METER_READINGS_ALL_ACCOUNTS_BY_MONTH.QUERY.getDescription(),
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             mapper.preparedGetAllMetersReadingsByMonth(preparedStatement, month);

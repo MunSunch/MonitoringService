@@ -129,8 +129,8 @@ public class MainPresenter extends Presenter {
             }
         } catch (InputMismatchException | ArrayIndexOutOfBoundsException e) {
             getView().showError("Error input!");
-            mainMenu();
         }
+        mainMenu();
     }
 
     /**

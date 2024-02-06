@@ -1,9 +1,9 @@
 package com.munsun.utils.logger.dao.impl;
 
 import com.munsun.monitoring_service.commons.db.Database;
+import com.munsun.utils.logger.dao.impl.queries.JournalQueries;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.JournalDao;
-import com.munsun.utils.logger.dao.impl.queries.Query;
 import com.munsun.utils.logger.dao.impl.mapping.JdbcJournalMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +31,7 @@ public class JournalDaoImpl implements JournalDao {
     @Override
     public List<JournalRecord> getAllJournalRecords() {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.GET_ALL_JOURNALS))
+            var preparedStatement = connection.prepareStatement(JournalQueries.GET_ALL_JOURNALS.QUERY.getDescription()))
         {
             var res = preparedStatement.executeQuery();
             return mapper.toJournalsRecord(res);
@@ -49,7 +49,7 @@ public class JournalDaoImpl implements JournalDao {
     @Override
     public JournalRecord save(JournalRecord journalRecord) {
         try(var connection = database.getConnection();
-            var preparedStatement = connection.prepareStatement(Query.SAVE_JOURNAL))
+            var preparedStatement = connection.prepareStatement(JournalQueries.SAVE_JOURNAL.QUERY.getDescription()))
         {
             mapper.preparedSaveStatement(preparedStatement, journalRecord);
             preparedStatement.executeUpdate();
@@ -61,7 +61,7 @@ public class JournalDaoImpl implements JournalDao {
     }
 
     private JournalRecord getLastRow(Connection connection) {
-        try(var preparedStatement = connection.prepareStatement(Query.GET_ALL_JOURNALS,
+        try(var preparedStatement = connection.prepareStatement(JournalQueries.GET_ALL_JOURNALS.QUERY.getDescription(),
                 ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             var result = preparedStatement.executeQuery();

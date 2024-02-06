@@ -1,5 +1,6 @@
 package com.munsun.utils.logger.dao.impl.mapping.impl;
 
+import com.munsun.utils.logger.dao.impl.queries.JournalQueries;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.impl.enums.NamesColumnsTableJournals;
 import com.munsun.utils.logger.dao.impl.mapping.JdbcJournalMapper;
@@ -31,7 +32,7 @@ public class JdbcJournalMapperImpl implements JdbcJournalMapper {
 
     @Override
     public void preparedSaveStatement(PreparedStatement preparedStatement, JournalRecord journalRecord) throws SQLException {
-        preparedStatement.setDate(NamesColumnsTableJournals.DATE.ordinal(), journalRecord.getDate());
-        preparedStatement.setString(NamesColumnsTableJournals.MESSAGE.ordinal(), journalRecord.getMessage());
+        preparedStatement.setDate(JournalQueries.SAVE_JOURNAL.Arguments.DATE.getPositionInQuery(), journalRecord.getDate());
+        preparedStatement.setString(JournalQueries.SAVE_JOURNAL.Arguments.MESSAGE.getPositionInQuery(), journalRecord.getMessage());
     }
 }

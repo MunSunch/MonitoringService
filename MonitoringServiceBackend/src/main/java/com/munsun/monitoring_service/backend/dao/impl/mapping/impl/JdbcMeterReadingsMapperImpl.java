@@ -4,6 +4,7 @@ import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableMet
 import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableReadings;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcMeterReadingsMapper;
+import com.munsun.monitoring_service.backend.dao.impl.queries.MeterReadingsQueries;
 import com.munsun.monitoring_service.backend.models.MeterReading;
 import lombok.RequiredArgsConstructor;
 
@@ -22,15 +23,15 @@ public class JdbcMeterReadingsMapperImpl implements JdbcMeterReadingsMapper {
 
     @Override
     public void preparedSaveMeterReadingStatement(PreparedStatement preparedStatementSaveMeterReadings, MeterReading meterReading) throws SQLException {
-        preparedStatementSaveMeterReadings.setDate(1, meterReading.getDate());
-        preparedStatementSaveMeterReadings.setLong(2, meterReading.getAccount().getId());
+        preparedStatementSaveMeterReadings.setDate(MeterReadingsQueries.SAVE_METER_READING.Arguments.DATE.getPositionInQuery(), meterReading.getDate());
+        preparedStatementSaveMeterReadings.setLong(MeterReadingsQueries.SAVE_METER_READING.Arguments.ACCOUNT_ID.getPositionInQuery(), meterReading.getAccount().getId());
     }
 
     @Override
     public void preparedSaveReadingsStatement(PreparedStatement saveReadings, Map.Entry<String, Long> entrySet, Long idMeterReading) throws SQLException {
-        saveReadings.setLong(1, idMeterReading);
-        saveReadings.setString(2, entrySet.getKey());
-        saveReadings.setLong(3, entrySet.getValue());
+        saveReadings.setLong(MeterReadingsQueries.SAVE_READING.Arguments.METER_READINGS_ID.getPositionInQuery(), idMeterReading);
+        saveReadings.setString(MeterReadingsQueries.SAVE_READING.Arguments.NAME.getPositionInQuery(), entrySet.getKey());
+        saveReadings.setLong(MeterReadingsQueries.SAVE_READING.Arguments.VALUE.getPositionInQuery(), entrySet.getValue());
     }
 
     @Override
@@ -68,38 +69,38 @@ public class JdbcMeterReadingsMapperImpl implements JdbcMeterReadingsMapper {
 
     @Override
     public void preparedGetByIdStatement(PreparedStatement preparedStatement, Long aLong) throws SQLException {
-        preparedStatement.setLong(1, aLong);
+        preparedStatement.setLong(MeterReadingsQueries.GET_METER_READING_BY_ID.Arguments.ID.getPositionInQuery(), aLong);
     }
 
     @Override
     public void preparedDeleteReadingById(PreparedStatement deleteReadings, Long aLong) throws SQLException {
-        deleteReadings.setLong(1, aLong);
+        deleteReadings.setLong(MeterReadingsQueries.DELETE_READING_BY_ID.Arguments.METER_READINGS_ID.getPositionInQuery(), aLong);
     }
 
     @Override
     public void preparedDeleteMeterReadingById(PreparedStatement deleteMeterReading, Long aLong) throws SQLException {
-        deleteMeterReading.setLong(1, aLong);
+        deleteMeterReading.setLong(MeterReadingsQueries.DELETE_METER_READING_BY_ID.Arguments.ID.getPositionInQuery(), aLong);
     }
 
     @Override
     public void preparedGetLastMeterReadingStatement(PreparedStatement preparedStatement, Long idAccount, int nowMonth) throws SQLException {
-        preparedStatement.setLong(1, nowMonth);
-        preparedStatement.setLong(2, idAccount);
+        preparedStatement.setLong(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH.Arguments.MONTH.getPositionInQuery(), nowMonth);
+        preparedStatement.setLong(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH.Arguments.ID.getPositionInQuery(), idAccount);
     }
 
     @Override
     public void preparedGetAllMetersReadingsByAccountId(PreparedStatement preparedStatement, Long idAccount) throws SQLException {
-        preparedStatement.setLong(1, idAccount);
+        preparedStatement.setLong(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID.Arguments.ID.getPositionInQuery(), idAccount);
     }
 
     @Override
     public void preparedGetAllMetersReadingsByMonth(PreparedStatement preparedStatement, Month month) throws SQLException {
-        preparedStatement.setLong(1, month.getValue());
+        preparedStatement.setLong(MeterReadingsQueries.GET_ALL_METER_READINGS_ALL_ACCOUNTS_BY_MONTH.Arguments.MONTH.getPositionInQuery(), month.getValue());
     }
 
     @Override
     public void preparedGetMeterReadingsByAccountIdAndMonth(PreparedStatement preparedStatement, Long idAccount, Month month) throws SQLException {
-        preparedStatement.setLong(1, month.getValue());
-        preparedStatement.setLong(2, idAccount);
+        preparedStatement.setLong(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH.Arguments.MONTH.getPositionInQuery(), month.getValue());
+        preparedStatement.setLong(MeterReadingsQueries.GET_METER_READINGS_BY_ACCOUNT_ID_AND_MONTH.Arguments.ID.getPositionInQuery(), idAccount);
     }
 }

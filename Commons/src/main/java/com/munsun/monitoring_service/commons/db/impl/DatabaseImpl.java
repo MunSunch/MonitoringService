@@ -23,7 +23,7 @@ import java.util.Properties;
  * @version 1.0-SNAPSHOT
  */
 public class DatabaseImpl implements Database {
-    private static Properties property = new Properties();
+    private Properties property = new Properties();
     private static final String PATH_TO_RESOURCES = "Commons/src/main/resources/app.properties";
 
     public DatabaseImpl(Properties properties) {

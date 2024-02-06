@@ -3,6 +3,7 @@ package com.munsun.monitoring_service.backend.dao.impl.mapping.impl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcPlaceLivingMapper;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableAccounts;
+import com.munsun.monitoring_service.backend.dao.impl.queries.AccountsQueries;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public class JdbcAccountMapperImpl implements JdbcAccountMapper {
     private final JdbcPlaceLivingMapper placeLivingMapper;
+
     @Override
     public Account toAccount(ResultSet result) throws SQLException {
         var account = Account.builder()
@@ -29,25 +31,29 @@ public class JdbcAccountMapperImpl implements JdbcAccountMapper {
 
     @Override
     public void preparedSaveStatement(PreparedStatement preparedStatement, Account account) throws SQLException {
-        preparedStatement.setString(1, String.valueOf(account.getLogin()));
-        preparedStatement.setString(2, String.valueOf(account.getPassword()));
-        preparedStatement.setString(3, String.valueOf(account.getRole()));
-        preparedStatement.setBoolean(4, account.isBlocked());
+        preparedStatement.setString(AccountsQueries.SAVE_ACCOUNT.Arguments.LOGIN.getPositionInQuery(),
+                                    String.valueOf(account.getLogin()));
+        preparedStatement.setString(AccountsQueries.SAVE_ACCOUNT.Arguments.PASSWORD.getPositionInQuery(),
+                                    String.valueOf(account.getPassword()));
+        preparedStatement.setString(AccountsQueries.SAVE_ACCOUNT.Arguments.ROLE.getPositionInQuery(),
+                                    String.valueOf(account.getRole()));
+        preparedStatement.setBoolean(AccountsQueries.SAVE_ACCOUNT.Arguments.IS_BLOCKED.getPositionInQuery(),
+                                     account.isBlocked());
         placeLivingMapper.preparedSaveStatement(preparedStatement, account);
     }
 
     @Override
     public void preparedFindByLoginStatement(PreparedStatement preparedStatement, String login) throws SQLException {
-        preparedStatement.setString(1, login);
+        preparedStatement.setString(AccountsQueries.FIND_ACCOUNT_BY_LOGIN.Arguments.LOGIN.getPositionInQuery(), login);
     }
 
     @Override
     public void preparedFindByIdStatement(PreparedStatement preparedStatement, Long key) throws SQLException {
-        preparedStatement.setLong(1, key);
+        preparedStatement.setLong(AccountsQueries.GET_ACCOUNT_BY_ID.Arguments.ID.getPositionInQuery(), key);
     }
 
     @Override
     public void preparedDeleteByIdStatement(PreparedStatement preparedStatement, Long key) throws SQLException {
-        preparedStatement.setLong(1, key);
+        preparedStatement.setLong(AccountsQueries.DELETE_BY_ID.Arguments.ID.getPositionInQuery(), key);
     }
 }
