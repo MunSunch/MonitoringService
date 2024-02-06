@@ -31,6 +31,10 @@ public class DatabaseImpl implements Database {
     }
 
     public DatabaseImpl() {
+        loadProperties();
+    }
+
+    private void loadProperties() {
         try {
             property.load(new FileReader(PATH_TO_RESOURCES));
         } catch (IOException e) {
@@ -38,6 +42,11 @@ public class DatabaseImpl implements Database {
         }
     }
 
+    /**
+     * Reconnect to the database. It is important that after use, the connection is closed using the close() method or specified in try-with-resources
+     * @return {@link Connection connection}
+     * @throws SQLException
+     */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(property.getProperty("datasource.url"),
                 property.getProperty("datasource.username"),

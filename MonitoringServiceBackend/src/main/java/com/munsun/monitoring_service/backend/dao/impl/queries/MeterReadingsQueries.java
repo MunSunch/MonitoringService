@@ -1,5 +1,8 @@
 package com.munsun.monitoring_service.backend.dao.impl.queries;
 
+/**
+ * SQL queries for interacting with the Meter Readings relationship
+ */
 public interface MeterReadingsQueries {
     enum GET_METER_READING_BY_ID implements MeterReadingsQueries {
         QUERY("""

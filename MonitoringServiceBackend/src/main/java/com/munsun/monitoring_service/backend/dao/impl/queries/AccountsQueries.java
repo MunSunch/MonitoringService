@@ -1,5 +1,8 @@
 package com.munsun.monitoring_service.backend.dao.impl.queries;
 
+/**
+ * SQL queries for interacting with the Accounts relationship
+ */
 public interface AccountsQueries {
     enum FIND_ACCOUNT_BY_LOGIN implements AccountsQueries {
         QUERY("""

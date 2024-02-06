@@ -61,7 +61,7 @@ public class MigrationSystem {
     }
 
     /**
-     * Create a schema in the database based on a set of changes
+     * Create a schema in the database based on a set of changes.
      *
      * @param connection a Connection object
      * @throws liquibase.exception.LiquibaseException

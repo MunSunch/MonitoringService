@@ -1,5 +1,8 @@
 package com.munsun.utils.logger.dao.impl.queries;
 
+/**
+ * SQL queries for interaction with DBMS
+ */
 public interface JournalQueries {
     enum SAVE_JOURNAL implements JournalQueries {
         QUERY("""

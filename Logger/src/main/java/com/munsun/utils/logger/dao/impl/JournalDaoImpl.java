@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * A class for storing and outputting Log entities from the database. The concept of a synthetic key is supported
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
 public class JournalDaoImpl implements JournalDao {

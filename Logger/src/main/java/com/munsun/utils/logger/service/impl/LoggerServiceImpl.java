@@ -1,12 +1,8 @@
 package com.munsun.utils.logger.service.impl;
 
-import com.munsun.utils.logger.enums.LevelLog;
 import com.munsun.utils.logger.model.JournalRecord;
-import com.munsun.utils.logger.model.Log;
 import com.munsun.utils.logger.dao.JournalDao;
-import com.munsun.utils.logger.dao.LogsDao;
 import com.munsun.utils.logger.service.JournalService;
-import com.munsun.utils.logger.service.LoggerService;
 
 import java.sql.Date;
 import java.util.List;
@@ -17,21 +13,9 @@ import java.util.List;
  * @author apple
  * @version $Id: $Id
  */
-public class LoggerServiceImpl implements LoggerService, JournalService {
+public class LoggerServiceImpl implements JournalService {
     private String nameClassOwner;
-    private LogsDao logsRepository;
     private JournalDao journalRepository;
-
-    /**
-     * <p>Constructor for LoggerServiceImpl.</p>
-     *
-     * @param tClass a {@link java.lang.Class} object
-     * @param logsRepository a {@link LogsDao} object
-     */
-    public LoggerServiceImpl(Class<?> tClass, LogsDao logsRepository) {
-        this.nameClassOwner = tClass.getName();
-        this.logsRepository = logsRepository;
-    }
 
     /**
      * <p>Constructor for LoggerServiceImpl.</p>
@@ -58,51 +42,5 @@ public class LoggerServiceImpl implements LoggerService, JournalService {
     @Override
     public JournalRecord journal(String message) {
         return journalRepository.save(new JournalRecord(new Date(new java.util.Date().getTime()), message));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void debug(String message) {
-        logsRepository.save(Log.builder()
-                .message(message)
-                .level(LevelLog.DEBUG)
-                .build());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void info(String message) {
-        logsRepository.save(Log.builder()
-                .message(message)
-                .level(LevelLog.INFO)
-                .build());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void warning(String message) {
-        logsRepository.save(Log.builder()
-                .message(message)
-                .level(LevelLog.WARN)
-                .build());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void error(String message) {
-        logsRepository.save(Log.builder()
-                .message(message)
-                .level(LevelLog.ERROR)
-                .build());
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * Get all jornals from database
-     */
-    @Override
-    public List<Log> getAllLogs() {
-        return logsRepository.getAllLogs();
     }
 }
