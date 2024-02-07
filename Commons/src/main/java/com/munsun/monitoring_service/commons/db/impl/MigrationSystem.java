@@ -1,6 +1,8 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
 import com.munsun.monitoring_service.commons.db.impl.queries.PrevQueries;
+import com.munsun.monitoring_service.commons.utils.PropertyService;
+import com.munsun.monitoring_service.commons.utils.impl.PropertyServiceImpl;
 import liquibase.Liquibase;
 import liquibase.command.CommandScope;
 import liquibase.command.core.UpdateCommandStep;
@@ -33,31 +35,10 @@ import java.util.Properties;
  * @version 1.0-SNAPSHOT
  */
 public class MigrationSystem {
-    private Properties properties = new Properties();
-    private static final String PATH_RESOURCES = "Commons/src/main/resources/app.properties";
+    private final PropertyService properties;
 
-    /**
-     * <p>Constructor for MigrationSystem.</p>
-     */
-    public MigrationSystem() {
-        loadProperties();
-    }
-
-    /**
-     * <p>Constructor for MigrationSystem.</p>
-     *
-     * @param properties a {@link java.util.Properties} object
-     */
-    public MigrationSystem(Properties properties) {
+    public MigrationSystem(PropertyService properties) {
         this.properties = properties;
-    }
-
-    private void loadProperties() {
-        try {
-            properties.load(new FileReader(PATH_RESOURCES));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

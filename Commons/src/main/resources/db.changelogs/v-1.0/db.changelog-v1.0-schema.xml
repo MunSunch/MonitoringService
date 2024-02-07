@@ -6,8 +6,15 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="2" author="MunSun">
+        <createSequence schemaName="monitoring_system"
+                        sequenceName="my_serial"
+                        minValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="4" author="MunSun">
         <createTable schemaName="monitoring_system" tableName="accounts">
-            <column name="id" type="serial">
+            <column name="id" type="bigint" valueComputed="my_serial" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="text">
@@ -48,9 +55,9 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="3" author="MunSun">
+    <changeSet id="6" author="MunSun">
         <createTable schemaName="monitoring_system" tableName="meter_readings">
-            <column name="id" type="serial">
+            <column name="id" type="bigint" valueComputed="my_serial" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="date" type="timestamp with time zone">
@@ -68,9 +75,9 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="4" author="MunSun">
+    <changeSet id="8" author="MunSun">
         <createTable schemaName="monitoring_system" tableName="readings">
-            <column name="id" type="serial">
+            <column name="id" type="bigint" valueComputed="my_serial" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="meter_readings_id" type="integer">

@@ -5,16 +5,15 @@ import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMa
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcMeterReadingsMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
 import com.munsun.monitoring_service.backend.mapping.impl.*;
-import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.impl.AccountDaoImpl;
-import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
-import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.backend.security.impl.SecurityContextImpl;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
 import com.munsun.monitoring_service.backend.services.impl.MonitoringServiceImpl;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
+import com.munsun.monitoring_service.commons.utils.PropertyService;
+import com.munsun.monitoring_service.commons.utils.impl.PropertyServiceImpl;
 import com.munsun.monitoring_service.frontend.in.service.impl.Console;
 import com.munsun.monitoring_service.presenter.service.Presenter;
 import com.munsun.monitoring_service.presenter.service.impl.MainPresenter;
@@ -33,53 +32,23 @@ import java.sql.SQLException;
  * @version $Id: $Id
  */
 public class MonitoringServiceApplication {
-    private static final Account ADMIN = new Account(null,
-            "admin",
-            "admin",
-            PlaceLivingEmbedded.builder()
-                    .country("Russia")
-                    .city("Saratov")
-                    .street("red")
-                    .house("silver")
-                    .level("11")
-                    .apartmentNumber("1B")
-                    .build(),
-            Role.ADMIN,
-            false);
-
-    private static final Account USER = new Account(null,
-            "user",
-            "user",
-            PlaceLivingEmbedded.builder()
-                    .country("Russia")
-                    .city("Saratov")
-                    .street("red")
-                    .house("silver")
-                    .level("11")
-                    .apartmentNumber("1B")
-                    .build(),
-            Role.USER,
-            false);
-
     /**
      * <p>main.</p>
      *
      * @param args an array of {@link java.lang.String} objects
      */
     public static void main(String[] args) throws SQLException, LiquibaseException, IOException {
-        Database database = new DatabaseImpl();
-        new MigrationSystem().initSchema(database.getConnection());
+        PropertyService properties = new PropertyServiceImpl(MonitoringServiceApplication.class);
+
+        Database database = new DatabaseImpl(properties);
+        new MigrationSystem(properties).initSchema(database.getConnection());
 
         var jdbcAccountMapper = new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl());
         var accountRepository = new AccountDaoImpl(database, jdbcAccountMapper);
-        if(accountRepository.findByAccount_Login(ADMIN.getLogin()).isEmpty())
-            accountRepository.save(ADMIN);
-        if(accountRepository.findByAccount_Login(USER.getLogin()).isEmpty())
-            accountRepository.save(USER);
 
         Presenter presenter = new MainPresenter(new Console(),
                                                 new MonitoringServiceImpl(new MeterReadingsDaoImpl(database,
-                                                                                                          new JdbcMeterReadingsMapperImpl(jdbcAccountMapper)),
+                                                                                                  new JdbcMeterReadingsMapperImpl(jdbcAccountMapper)),
                                                                           accountRepository,
                                                                           new MeterReadingMapperImpl()),
                                                 new SecurityServiceImpl(accountRepository,
@@ -87,7 +56,7 @@ public class MonitoringServiceApplication {
                                                                         new SecurityContextImpl()),
                                                 new LoggerServiceImpl(MainPresenter.class,
                                                                       new JournalDaoImpl(database,
-                                                                                                new JdbcJournalMapperImpl())));
+                                                                                         new JdbcJournalMapperImpl())));
         presenter.start();
     }
 }
