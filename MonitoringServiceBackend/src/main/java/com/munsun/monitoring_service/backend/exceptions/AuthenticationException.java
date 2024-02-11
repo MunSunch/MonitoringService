@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 /**
  * An exception thrown when the username/password does not match
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 @NoArgsConstructor
 public class AuthenticationException extends Exception {

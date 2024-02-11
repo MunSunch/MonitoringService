@@ -25,11 +25,16 @@
         <org.assertj.assertj-core.version>3.25.2</org.assertj.assertj-core.version>
         <org.mockito.mockito-core.version>5.10.0</org.mockito.mockito-core.version>
         <org.projectlombok.lombok.version>1.18.30</org.projectlombok.lombok.version>
+        <org.postgresql.artifactId.version>42.7.1</org.postgresql.artifactId.version>
+        <org.liquibase.liquibase-core.version>4.25.1</org.liquibase.liquibase-core.version>
+        <org.testcontainers.testcontainers.version>1.18.2</org.testcontainers.testcontainers.version>
+        <org.testcontainers.postgresql.version>1.18.3</org.testcontainers.postgresql.version>
+        <org.apache.maven.plugins.maven-javadoc-plugin.version>3.6.3</org.apache.maven.plugins.maven-javadoc-plugin.version>
+        <org.mockito.mockito-junit-jupiter.version>5.10.0</org.mockito.mockito-junit-jupiter.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -44,20 +49,44 @@
                 <scope>test</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-junit-jupiter</artifactId>
-                <version>5.10.0</version>
+                <version>${org.mockito.mockito-junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
-
 
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${org.projectlombok.lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${org.postgresql.artifactId.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${org.liquibase.liquibase-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${org.testcontainers.testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${org.testcontainers.postgresql.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -68,7 +97,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
+                <version>${org.apache.maven.plugins.maven-javadoc-plugin.version}</version>
                 <configuration>
                 </configuration>
                 <executions>

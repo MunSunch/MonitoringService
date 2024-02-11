@@ -11,8 +11,8 @@ import java.util.Set;
 /**
  * <p>SecurityContextImpl class.</p>
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public class SecurityContextImpl implements SecurityContext {
     public Account currentAuthorizedAccount;

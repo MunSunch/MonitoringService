@@ -1,10 +1,8 @@
 package com.munsun.monitoring_service.backend.tests.services;
 
-import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
-import com.munsun.monitoring_service.backend.exceptions.DatabaseConstraintException;
 import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.models.MeterReading;
-import com.munsun.monitoring_service.backend.repositories.MeterReadingsRepository;
+import com.munsun.monitoring_service.backend.dao.MeterReadingsDao;
 import com.munsun.monitoring_service.backend.services.impl.MonitoringServiceImpl;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import org.junit.jupiter.api.DisplayName;
@@ -14,18 +12,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class MonitoringServiceUnitTests {
     @Mock
-    private MeterReadingsRepository repository;
+    private MeterReadingsDao repository;
     @Mock
     private MeterReadingMapper meterReadingMapper;
     @InjectMocks
@@ -33,11 +31,11 @@ public class MonitoringServiceUnitTests {
 
     @DisplayName("Failed attempt to add a second record in a month")
     @Test
-    public void negativeTestAddMeterReadings() throws DatabaseConstraintException, AccountNotFoundException {
-        var meterReading = new MeterReading();
-            meterReading.setDate(new Date(2024, Calendar.JANUARY, 28));
+    public void negativeTestAddMeterReadings() {
+        MeterReading meterReading = new MeterReading();
+            meterReading.setDate(new Date(new java.util.Date().getTime()));
 
-        when(repository.getLastMeterReadingByAccount_Id(0L))
+        when(repository.getLastMeterReadingByAccount_Id(anyLong()))
                 .thenReturn(Optional.of(meterReading));
 
         assertThatThrownBy(() ->

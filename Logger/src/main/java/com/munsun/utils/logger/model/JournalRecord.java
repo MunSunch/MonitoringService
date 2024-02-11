@@ -1,10 +1,9 @@
 package com.munsun.utils.logger.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * The essence for storing the service information of user actions is more necessary for specialists who are not related to software development
@@ -12,7 +11,9 @@ import java.util.Date;
  * @author apple
  * @version $Id: $Id
  */
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 public class JournalRecord {
     private Long id;
