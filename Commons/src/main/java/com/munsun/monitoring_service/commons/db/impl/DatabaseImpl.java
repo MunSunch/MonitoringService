@@ -1,15 +1,11 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
 import com.munsun.monitoring_service.commons.db.Database;
-import com.munsun.monitoring_service.commons.utils.PropertyService;
-import com.munsun.monitoring_service.commons.utils.impl.PropertyServiceImpl;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * Database interface implementation.

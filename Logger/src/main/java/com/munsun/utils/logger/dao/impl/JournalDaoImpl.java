@@ -1,6 +1,7 @@
 package com.munsun.utils.logger.dao.impl;
 
 import com.munsun.monitoring_service.commons.db.Database;
+import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import com.munsun.utils.logger.dao.impl.queries.JournalQueries;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.JournalDao;
@@ -36,9 +37,8 @@ public class JournalDaoImpl implements JournalDao {
             var res = preparedStatement.executeQuery();
             return mapper.toJournalsRecord(res);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return null;
     }
 
     /**
@@ -55,9 +55,8 @@ public class JournalDaoImpl implements JournalDao {
             preparedStatement.executeUpdate();
             return getLastRow(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return null;
     }
 
     private JournalRecord getLastRow(Connection connection) {
@@ -68,8 +67,7 @@ public class JournalDaoImpl implements JournalDao {
             result.absolute(-1);
             return mapper.toJournalRecord(result);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return null;
     }
 }

@@ -3,8 +3,9 @@ package com.munsun.monitoring_service.backend.tests.dao;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
-import com.munsun.monitoring_service.commons.utils.PropertyService;
-import com.munsun.monitoring_service.commons.utils.impl.PropertyServiceImpl;
+import com.munsun.monitoring_service.commons.exceptions.InitSchemaLiquibaseException;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
+import com.munsun.monitoring_service.commons.utils.property.impl.PropertyServiceImpl;
 import liquibase.exception.LiquibaseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ public class PostgresContainer {
     private Database database = new DatabaseImpl(properties);
 
     @BeforeEach
-    public void initSchema() throws SQLException, FileNotFoundException, LiquibaseException {
+    public void initSchema() throws SQLException, FileNotFoundException, LiquibaseException, InitSchemaLiquibaseException {
         container.start();
 
         properties.setProperty("datasource.url", container.getJdbcUrl());

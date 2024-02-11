@@ -21,7 +21,7 @@ public interface JdbcMeterReadingsMapper {
      * @return entity {@link MeterReading}
      * @throws SQLException
      */
-    MeterReading toMeterReading(ResultSet result) throws SQLException;
+    MeterReading toMeterReading(ResultSet result);
 
     /**
      * Match the query results with a list of MeterReading entities
@@ -29,7 +29,7 @@ public interface JdbcMeterReadingsMapper {
      * @return entity {@link List<MeterReading>}
      * @throws SQLException
      */
-    List<MeterReading> toMetersReadings(ResultSet result) throws SQLException;
+    List<MeterReading> toMetersReadings(ResultSet result);
 
     /**
      * Match argument values with a request to save counter metrics
@@ -37,7 +37,7 @@ public interface JdbcMeterReadingsMapper {
      * @param meterReading {@link MeterReading}
      * @throws SQLException
      */
-    void preparedSaveMeterReadingStatement(PreparedStatement preparedStatementSaveMeterReadings, MeterReading meterReading) throws SQLException;
+    void preparedSaveMeterReadingStatement(PreparedStatement preparedStatementSaveMeterReadings, MeterReading meterReading);
 
     /**
      * Compare the values of the arguments with the request to save the indicators
@@ -46,7 +46,7 @@ public interface JdbcMeterReadingsMapper {
      * @param idMeterReading {@link Long}
      * @throws SQLException
      */
-    void preparedSaveReadingsStatement(PreparedStatement saveReadings, Map.Entry<String, Long> entrySet, Long idMeterReading) throws SQLException;
+    void preparedSaveReadingsStatement(PreparedStatement saveReadings, Map.Entry<String, Long> entrySet, Long idMeterReading);
 
     /**
      * To match the values of the arguments with a request to receive meter readings by its identifier
@@ -54,7 +54,7 @@ public interface JdbcMeterReadingsMapper {
      * @param aLong {@link Long}
      * @throws SQLException
      */
-    void preparedGetByIdStatement(PreparedStatement preparedStatement, Long aLong) throws SQLException;
+    void preparedGetByIdStatement(PreparedStatement preparedStatement, Long aLong);
 
     /**
      * To match the values of the arguments with the request to delete readings by the identifier of the meter indicator
@@ -62,7 +62,7 @@ public interface JdbcMeterReadingsMapper {
      * @param aLong {@link Long}
      * @throws SQLException
      */
-    void preparedDeleteReadingById(PreparedStatement deleteReadings, Long aLong) throws SQLException;
+    void preparedDeleteReadingById(PreparedStatement deleteReadings, Long aLong);
 
     /**
      * To match the values of the arguments with a request to delete meter readings by its identifier
@@ -70,7 +70,7 @@ public interface JdbcMeterReadingsMapper {
      * @param aLong {@link Long}
      * @throws SQLException
      */
-    void preparedDeleteMeterReadingById(PreparedStatement deleteMeterReading, Long aLong) throws SQLException;
+    void preparedDeleteMeterReadingById(PreparedStatement deleteMeterReading, Long aLong);
 
     /**
      * To match the values of the arguments with a request to receive current meter readings by account ID
@@ -79,7 +79,7 @@ public interface JdbcMeterReadingsMapper {
      * @param nowMonth int
      * @throws SQLException
      */
-    void preparedGetLastMeterReadingStatement(PreparedStatement preparedStatement, Long idAccount, int nowMonth) throws SQLException;
+    void preparedGetLastMeterReadingStatement(PreparedStatement preparedStatement, Long idAccount, int nowMonth);
 
     /**
      * Match the values of the arguments with a request to get meter readings by account ID
@@ -87,7 +87,7 @@ public interface JdbcMeterReadingsMapper {
      * @param idAccount {@link Long}
      * @throws SQLException
      */
-    void preparedGetAllMetersReadingsByAccountId(PreparedStatement preparedStatement, Long idAccount) throws SQLException;
+    void preparedGetAllMetersReadingsByAccountId(PreparedStatement preparedStatement, Long idAccount);
 
     /**
      * Compare the values of the arguments with a request to receive meter readings for all accounts by month
@@ -95,7 +95,7 @@ public interface JdbcMeterReadingsMapper {
      * @param month {@link Month}
      * @throws SQLException
      */
-    void preparedGetAllMetersReadingsByMonth(PreparedStatement preparedStatement, Month month) throws SQLException;
+    void preparedGetAllMetersReadingsByMonth(PreparedStatement preparedStatement, Month month);
 
     /**
      * Compare the values of the arguments with the request to get meter readings by account ID and month
@@ -104,5 +104,5 @@ public interface JdbcMeterReadingsMapper {
      * @param month {@link Month}
      * @throws SQLException
      */
-    void preparedGetMeterReadingsByAccountIdAndMonth(PreparedStatement preparedStatement, Long idAccount, Month month) throws SQLException;
+    void preparedGetMeterReadingsByAccountIdAndMonth(PreparedStatement preparedStatement, Long idAccount, Month month);
 }

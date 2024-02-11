@@ -5,7 +5,7 @@ package com.munsun.monitoring_service.backend.exceptions;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-public class MeterReadingNotFoundException extends Exception{
+public class MeterReadingNotFoundException extends RuntimeException{
     private static final String DEFAULT_MESSAGE = "MeterReading id not exists!";
 
     public MeterReadingNotFoundException() {

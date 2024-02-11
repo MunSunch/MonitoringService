@@ -1,5 +1,6 @@
 package com.munsun.utils.logger.service;
 
+import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import com.munsun.utils.logger.model.JournalRecord;
 
 import java.util.List;
@@ -14,10 +15,10 @@ public interface JournalService {
     /**
      * Record a user action
      *
-     * @param message the action recorded by the string
+     * @param journalRecord dto object {@link JournalRecord}
      * @return saved DTO object JournalRecord.java
      */
-    JournalRecord journal(String message);
+    JournalRecord journal(JournalRecord journalRecord);
 
     /**
      * Get all jornals from database

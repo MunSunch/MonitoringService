@@ -1,74 +1,70 @@
 package com.munsun.monitoring_service.backend.security.impl;
 
 import com.munsun.monitoring_service.backend.dao.AccountDao;
+import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.models.Account;
-import com.munsun.monitoring_service.backend.security.JwtProvider;
+import com.munsun.monitoring_service.backend.security.SimpleTokenProvider;
+import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.backend.security.model.SecurityUser;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
+import com.munsun.monitoring_service.backend.security.model.Token;
 import lombok.RequiredArgsConstructor;
 
-import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
-import java.security.Provider;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JwtTokenProviderImpl implements JwtProvider {
+public class SimpleTokenProviderImpl implements SimpleTokenProvider {
     private static final String SECURITY_HEADER = "auth";
-    private static final String secretKey = "secret";
-    private static final Long secretKeyExpiration = 100500L;
     private final AccountDao accountDao;
 
     @Override
     public String generateToken(Account account) {
-        Date now = new Date();
-        Date expiration = new Date(now.getTime() + secretKeyExpiration * 1000);
-        return Jwts.builder()
-                .setSubject(String.valueOf(account.getId()))
-                .claim("Role", account.getRole())
-                .setIssuedAt(now)
-                .setExpiration(expiration)
-                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey)))
-                .compact();
+        return String.format("id:%d,role:%s", account.getId(), account.getRole().name());
     }
 
     @Override
     public boolean validateToken(String token) throws AuthenticationException {
-        try {
-            Jwts.parser()
-                    .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey)))
-                    .parse(token);
+        try{
+            var result = parse(token);
+            if(result.isEmpty())
+                return false;
             return true;
-        } catch (ExpiredJwtException expEx) {
-            throw new AuthenticationException("token is expired");
-        } catch (UnsupportedJwtException unsEx) {
-            throw new AuthenticationException("Unsupported jwt");
-        } catch (MalformedJwtException mjEx) {
-            throw new AuthenticationException("Malformed jwt");
-        } catch (SignatureException sEx) {
-            throw new AuthenticationException("Invalid signature");
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    @Override
-    public SecurityUser getSecurityUser(String token) throws SQLException {
-        var userLogin = Jwts.parser()
-                .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey)))
-                .parse(token)
-                .getBody();
-//        var user = accountDao.getById(Long.valueOf(userLogin.getSubject())).get();
-//        return SecurityUser.toSecurityUser(user);
-        return null;
+    private Optional<Token> parse(String token) {
+        String[] parts = token.split(",");
+        if(parts.length==2) {
+            Role role = Role.valueOf(parts[1].split(":")[1]);
+            Long id = Long.parseLong(parts[0].split(":")[1]);
+            return Optional.of(new Token(id, role));
+        }
+        return Optional.empty();
     }
 
     @Override
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(SECURITY_HEADER);
+    public SecurityUser getSecurityUser(String token) throws AccountNotFoundException {
+        Optional<Account> user = null;
+        try {
+            var userId = parse(token).get().id();
+            user = accountDao.getById(userId);
+        } catch (SQLException|NullPointerException e) {
+            throw new AccountNotFoundException();
+        }
+        return SecurityUser.toSecurityUser(user.get());
+    }
+
+    @Override
+    public String resolveToken(HttpServletRequest request) throws AuthenticationException {
+        String token = request.getHeader(SECURITY_HEADER);
+        if(token == null) {
+            throw new AuthenticationException("token is empty or not validate");
+        }
+        return token;
     }
 }

@@ -1,4 +1,4 @@
-package com.munsun.monitoring_service.server.exceptions;
+package com.munsun.monitoring_service.commons.utils.validator.exceptions;
 
 public class ValidationException extends Exception {
     public ValidationException(String message) {

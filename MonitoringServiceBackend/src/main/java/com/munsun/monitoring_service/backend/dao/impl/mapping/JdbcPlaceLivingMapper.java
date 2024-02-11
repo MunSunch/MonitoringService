@@ -20,7 +20,7 @@ public interface JdbcPlaceLivingMapper {
      * @return entity {@link PlaceLivingEmbedded}
      * @throws SQLException
      */
-    PlaceLivingEmbedded toPlaceLiving(ResultSet result) throws SQLException;
+    PlaceLivingEmbedded toPlaceLiving(ResultSet result);
 
     /**
      * Put the values of the arguments in the account save request
@@ -28,5 +28,5 @@ public interface JdbcPlaceLivingMapper {
      * @param account {@link Account}
      * @throws SQLException
      */
-    void preparedSaveStatement(PreparedStatement preparedStatement, Account account) throws SQLException;
+    void preparedSaveStatement(PreparedStatement preparedStatement, Account account);
 }

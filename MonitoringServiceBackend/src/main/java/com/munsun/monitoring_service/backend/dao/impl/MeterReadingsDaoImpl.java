@@ -6,6 +6,7 @@ import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcMeterReadingsM
 import com.munsun.monitoring_service.backend.dao.impl.queries.MeterReadingsQueries;
 import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.commons.db.Database;
+import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
     private final JdbcMeterReadingsMapper mapper;
 
     @Override
-    public Optional<MeterReading> getById(Long aLong) throws SQLException {
+    public Optional<MeterReading> getById(Long aLong) {
         try(var connection = database.getConnection();
             var preparedStatement = connection.prepareStatement(MeterReadingsQueries.GET_METER_READING_BY_ID.QUERY.getDescription()))
         {
@@ -33,7 +34,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return Optional.of(mapper.toMeterReading(result));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return Optional.empty();
     }
@@ -53,9 +54,8 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
             connection.commit();
             return idMeterReading;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return 0L;
     }
 
     private Long getIdSavedMeterReading(Connection connection) {
@@ -66,10 +66,10 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
             if(res.next()) {
                 return res.getLong(NamesColumnsTableMeterReadings.ID.getTitle());
             }
+            return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return 0L;
     }
 
     private void saveReadings(Connection connection, Map.Entry<String, Long> entrySet, Long idMeterReading) {
@@ -77,12 +77,12 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
             mapper.preparedSaveReadingsStatement(saveReadings, entrySet, idMeterReading);
             saveReadings.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
     }
 
     @Override
-    public Integer deleteById(Long aLong) throws SQLException {
+    public Integer deleteById(Long aLong) {
         try(var connection = database.getConnection();
             var deleteReadings = connection.prepareStatement(MeterReadingsQueries.DELETE_READING_BY_ID.QUERY.getDescription());
             var deleteMeterReading = connection.prepareStatement(MeterReadingsQueries.DELETE_METER_READING_BY_ID.QUERY.getDescription()))
@@ -97,9 +97,8 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
             connection.commit();
             return res;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return 0;
     }
 
     @Override
@@ -114,7 +113,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return Optional.of(mapper.toMeterReading(res));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return Optional.empty();
     }
@@ -131,7 +130,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return mapper.toMetersReadings(res);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return List.of();
     }
@@ -147,7 +146,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return Optional.of(mapper.toMeterReading(res));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return Optional.empty();
     }
@@ -165,7 +164,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return mapper.toMetersReadings(res);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return List.of();
     }
@@ -181,7 +180,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return mapper.toMetersReadings(res);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return List.of();
     }
@@ -198,7 +197,7 @@ public class MeterReadingsDaoImpl implements MeterReadingsDao {
                 return mapper.toMetersReadings(res);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
         return List.of();
     }

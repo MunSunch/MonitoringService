@@ -10,6 +10,7 @@ import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+//@Mapper
 public interface MeterReadingMapper {
     /**
      * converts the {@linkplain com.munsun.monitoring_service.backend.models.MeterReading MeterReading} entity

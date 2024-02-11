@@ -1,5 +1,6 @@
 package com.munsun.utils.logger.tests.dao.integrations;
 
+import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.JournalDao;
 import com.munsun.utils.logger.dao.impl.JournalDaoImpl;
@@ -26,7 +27,7 @@ public class JournalDaoIntegrationsTests extends PostgresContainer {
 
     @DisplayName("success save journal in database")
     @Test
-    public void positiveTestSave() {
+    public void positiveTestSave() throws DatabaseException {
         var actual = journalRepository.save(testJournal);
 
         assertThat(actual)
@@ -36,7 +37,7 @@ public class JournalDaoIntegrationsTests extends PostgresContainer {
 
     @DisplayName("get all saved journals")
     @Test
-    public void positiveGetAll() {
+    public void positiveGetAll() throws DatabaseException {
         journalRepository.save(testJournal);
         journalRepository.save(testJournal);
         journalRepository.save(testJournal);

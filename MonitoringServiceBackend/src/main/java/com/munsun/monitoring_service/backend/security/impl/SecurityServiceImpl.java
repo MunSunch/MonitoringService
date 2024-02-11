@@ -3,16 +3,19 @@ package com.munsun.monitoring_service.backend.security.impl;
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
-import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.AccountDao;
-import com.munsun.monitoring_service.backend.security.SecurityContext;
+import com.munsun.monitoring_service.backend.security.SimpleTokenProvider;
 import com.munsun.monitoring_service.backend.security.SecurityService;
 import com.munsun.monitoring_service.backend.security.enums.Role;
+import com.munsun.monitoring_service.backend.security.model.SecurityUser;
 import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.AccountDtoOut;
-import com.munsun.monitoring_service.commons.enums.ItemsMainMenu;
+import com.munsun.monitoring_service.commons.dto.out.AuthorizationTokenDtoOut;
+import com.munsun.monitoring_service.commons.enums.Endpoints;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 /**
  * <p>SecurityServiceImpl class.</p>
@@ -24,11 +27,22 @@ import lombok.RequiredArgsConstructor;
 public class SecurityServiceImpl implements SecurityService {
     private final AccountDao accountRepository;
     private final AccountMapper accountMapper;
-    private final SecurityContext securityContext;
+    private final SimpleTokenProvider jwtProvider;
+
+    private final List<Endpoints> allowedEveryOneEndpoints = List.of(Endpoints.LOGIN,
+                                                                     Endpoints.REGISTER);
+    private final List<Endpoints> allowedUsersEndpoints = List.of(Endpoints.GET_HISTORY,
+                                                                  Endpoints.GET_ACTUAL_METER_READING,
+                                                                  Endpoints.GET_METER_READING_BY_MONTH,
+                                                                  Endpoints.SAVE_NEW_METER_READING);
+    private final List<Endpoints> allowedAdminsEndpoints = List.of(Endpoints.EXPAND_METER_READING,
+                                                                   Endpoints.GET_ACTUAL_METER_READINGS_ALL_USERS,
+                                                                   Endpoints.GET_ALL_HISTORY_ALL_USERS,
+                                                                   Endpoints.GET_ALL_HISTORY_ALL_USERS_BY_MONTH);
 
     /** {@inheritDoc} */
     @Override
-    public void authenticate(LoginPasswordDtoIn loginPassword) throws AccountNotFoundException, AuthenticationException {
+    public AuthorizationTokenDtoOut authenticate(LoginPasswordDtoIn loginPassword) throws AccountNotFoundException, AuthenticationException {
         var account = accountRepository.findByAccount_Login(loginPassword.login())
                 .orElseThrow(AccountNotFoundException::new);
         if(account.isBlocked()) {
@@ -37,7 +51,7 @@ public class SecurityServiceImpl implements SecurityService {
         if(!account.getPassword().equals(loginPassword.password())) {
             throw new AuthenticationException("Incorrect login/password!");
         }
-        securityContext.setCurrentAuthorizedAccount(account);
+        return new AuthorizationTokenDtoOut(jwtProvider.generateToken(account));
     }
 
     /** {@inheritDoc} */
@@ -49,37 +63,27 @@ public class SecurityServiceImpl implements SecurityService {
             var res = accountRepository.save(newAccount);
             return res == 1? new AccountDtoOut(accountDtoIn.login()): null;
         } catch (Exception e) {
-            throw new IllegalArgumentException("Аккаунт с таким логином уже существует");
+            throw new IllegalArgumentException("Account is exists!");
         }
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void logout() {
-        securityContext.clear();
+    public boolean authorization(SecurityUser securityUser, Endpoints api) {
+        Role role = securityUser.getRole();
+        Boolean statusAccess = false;
+        switch (role) {
+            case USER -> {
+                statusAccess = allowedUsersEndpoints.contains(api);
+            }
+            case ADMIN -> {
+                statusAccess = allowedAdminsEndpoints.contains(api);
+            }
+        }
+        return statusAccess;
     }
 
-    /**
-     * <p>getCurrentAuthorizedAccount.</p>
-     *
-     * @return a {@link com.munsun.monitoring_service.backend.models.Account} object
-     */
-    public Account getCurrentAuthorizedAccount() {
-        return securityContext.getAuthorizedAccount();
-    }
-
-    /** {@inheritDoc} */
     @Override
-    public boolean getAccess(Role role, ItemsMainMenu item) {
-        return securityContext.isAccessAllowed(role, item);
-    }
-
-    /**
-     * <p>Getter for the field <code>securityContext</code>.</p>
-     *
-     * @return a {@link com.munsun.monitoring_service.backend.security.SecurityContext} object
-     */
-    public SecurityContext getSecurityContext() {
-        return securityContext;
+    public boolean authorization(Endpoints api) {
+        return allowedEveryOneEndpoints.contains(api);
     }
 }

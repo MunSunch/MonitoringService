@@ -1,12 +1,7 @@
-package com.munsun.monitoring_service.server.mapping;
+package com.munsun.monitoring_service.commons.utils.validator;
 
-import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
-import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
-import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
-import com.munsun.monitoring_service.server.exceptions.ValidationException;
+import com.munsun.monitoring_service.commons.utils.validator.exceptions.ValidationException;
 
 public interface Validator {
-    void validate(AccountDtoIn accountDtoIn) throws ValidationException;
-    void validate(LoginPasswordDtoIn loginPasswordDtoIn);
-    void validate(MeterReadingsDtoIn meterReadingsDtoIn);
+    <T> void validate(T obj) throws ValidationException;
 }

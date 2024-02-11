@@ -21,12 +21,6 @@
         </dependency>
         <dependency>
             <groupId>com.munsun</groupId>
-            <artifactId>MonitoringServicePresenter</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.munsun</groupId>
             <artifactId>Commons</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -38,8 +32,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.munsun</groupId>
-            <artifactId>MonitoringServiceFrontend</artifactId>
+            <groupId>com.munsun.monitoring_service.server</groupId>
+            <artifactId>MonitoringServiceServer</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

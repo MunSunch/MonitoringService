@@ -5,6 +5,7 @@ import com.munsun.monitoring_service.backend.dao.impl.mapping.JdbcAccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.AccountDao;
 import com.munsun.monitoring_service.commons.db.Database;
+import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
@@ -34,9 +35,8 @@ public class AccountDaoImpl implements AccountDao {
             }
             return Optional.of(mapper.toAccount(result));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return Optional.empty();
     }
 
     /** {@inheritDoc} */
@@ -52,15 +52,14 @@ public class AccountDaoImpl implements AccountDao {
             }
             return Optional.of(mapper.toAccount(res));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e);
         }
-        return Optional.empty();
     }
 
     /** {@inheritDoc}
      * @return*/
     @Override
-    public Long save(Account account) throws SQLException {
+    public Long save(Account account) {
         try(var connection = database.getConnection();
             var preparedStatement = connection.prepareStatement(AccountsQueries.SAVE_ACCOUNT.QUERY.getDescription()))
         {
@@ -68,21 +67,21 @@ public class AccountDaoImpl implements AccountDao {
             int res = preparedStatement.executeUpdate();
             return (long) res;
         } catch (SQLException e) {
-            throw e;
+            throw new DatabaseException(e);
         }
     }
 
     /** {@inheritDoc}
      * @return*/
     @Override
-    public Integer deleteById(Long key) throws SQLException {
+    public Integer deleteById(Long key) {
         try(var connection = database.getConnection();
             var preparedStatement = connection.prepareStatement(AccountsQueries.DELETE_BY_ID.QUERY.getDescription()))
         {
             mapper.preparedDeleteByIdStatement(preparedStatement, key);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw e;
+            throw new DatabaseException(e);
         }
     }
 }

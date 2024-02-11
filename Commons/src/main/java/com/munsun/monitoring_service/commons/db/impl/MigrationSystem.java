@@ -1,8 +1,8 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
 import com.munsun.monitoring_service.commons.db.impl.queries.PrevQueries;
-import com.munsun.monitoring_service.commons.utils.PropertyService;
-import com.munsun.monitoring_service.commons.utils.impl.PropertyServiceImpl;
+import com.munsun.monitoring_service.commons.exceptions.InitSchemaLiquibaseException;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
 import liquibase.Liquibase;
 import liquibase.command.CommandScope;
 import liquibase.command.core.UpdateCommandStep;
@@ -15,11 +15,8 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * Migration system for automatic schema creation in DBMS.
@@ -49,7 +46,7 @@ public class MigrationSystem {
      * @throws java.sql.SQLException
      * @throws java.io.FileNotFoundException
      */
-    public void initSchema(Connection connection) throws LiquibaseException, SQLException, FileNotFoundException {
+    public void initSchema(Connection connection) throws LiquibaseException, SQLException, FileNotFoundException, InitSchemaLiquibaseException {
         if(!checkExistsSchema(properties.getProperty("liquibase.default-schema"), connection))
             createSchema(properties.getProperty("liquibase.default-schema"), connection);
         if(!checkExistsSchema(properties.getProperty("datasource.default-schema"), connection))
@@ -78,12 +75,12 @@ public class MigrationSystem {
         }
     }
 
-    private void createSchema(String nameSchema, Connection connection) {
+    private void createSchema(String nameSchema, Connection connection) throws InitSchemaLiquibaseException {
         try(var statement = connection.createStatement())
         {
             statement.executeUpdate(String.format(PrevQueries.CREATE_NEW_SCHEMA.QUERY.getDescription(), nameSchema));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new InitSchemaLiquibaseException();
         }
     }
 

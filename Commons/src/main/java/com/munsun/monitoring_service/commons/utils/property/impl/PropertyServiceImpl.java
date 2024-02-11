@@ -1,6 +1,6 @@
-package com.munsun.monitoring_service.commons.utils.impl;
+package com.munsun.monitoring_service.commons.utils.property.impl;
 
-import com.munsun.monitoring_service.commons.utils.PropertyService;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
 
 import java.io.IOException;
 import java.util.Properties;

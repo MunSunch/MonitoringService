@@ -19,7 +19,7 @@ public interface JdbcAccountMapper {
      * @return entity {@link PlaceLivingEmbedded}
      * @throws SQLException
      */
-    Account toAccount(ResultSet result) throws SQLException;
+    Account toAccount(ResultSet result);
 
     /**
      * Put the values of the arguments in the account save request
@@ -27,7 +27,7 @@ public interface JdbcAccountMapper {
      * @param account {@link Account}
      * @throws SQLException
      */
-    void preparedSaveStatement(PreparedStatement preparedStatement, Account account) throws SQLException;
+    void preparedSaveStatement(PreparedStatement preparedStatement, Account account);
 
     /**
      * Match the values of the arguments with the account search query by its username
@@ -35,7 +35,7 @@ public interface JdbcAccountMapper {
      * @param login {@link String}
      * @throws SQLException
      */
-    void preparedFindByLoginStatement(PreparedStatement preparedStatement, String login) throws SQLException;
+    void preparedFindByLoginStatement(PreparedStatement preparedStatement, String login);
 
     /**
      * Match the values of the arguments with the account search query by its ID
@@ -43,7 +43,7 @@ public interface JdbcAccountMapper {
      * @param key {@link Long}
      * @throws SQLException
      */
-    void preparedFindByIdStatement(PreparedStatement preparedStatement, Long key) throws SQLException;
+    void preparedFindByIdStatement(PreparedStatement preparedStatement, Long key);
 
     /**
      * Match the values of the arguments with the request to delete the account by its ID
@@ -51,5 +51,5 @@ public interface JdbcAccountMapper {
      * @param key {@link Long}
      * @throws SQLException
      */
-    void preparedDeleteByIdStatement(PreparedStatement preparedStatement, Long key) throws SQLException;
+    void preparedDeleteByIdStatement(PreparedStatement preparedStatement, Long key);
 }

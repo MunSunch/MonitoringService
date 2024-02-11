@@ -9,6 +9,7 @@ import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+//@Mapper
 public interface AccountMapper {
     /**
      * Сonvert {@linkplain com.munsun.monitoring_service.commons.dto.in.AccountDtoIn AccountDtoIn}
