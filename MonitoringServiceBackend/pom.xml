@@ -61,12 +61,6 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.munsun.monitoring_service.server</groupId>
-            <artifactId>MonitoringServiceServer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!--        <dependency>-->
 <!--            <groupId>org.mapstruct</groupId>-->

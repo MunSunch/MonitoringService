@@ -36,6 +36,11 @@ import static org.mockito.Mockito.anyString;
 @ExtendWith(MockitoExtension.class)
 public class DispatcherServletUnitTests {
     @Mock
+    HttpServletResponse response;
+    @Mock
+    HttpServletRequest request;
+
+    @Mock
     private SecurityController securityController;
     @Mock
     private MeterReadingsController meterReadingsController;
@@ -45,11 +50,6 @@ public class DispatcherServletUnitTests {
     private JSONMapper jsonMapper;
     @InjectMocks
     private DispatcherServlet dispatcherServlet;
-
-    @Mock
-    HttpServletResponse response;
-    @Mock
-    HttpServletRequest request;
 
     @DisplayName("Switching to an undefined URI")
     @Test
