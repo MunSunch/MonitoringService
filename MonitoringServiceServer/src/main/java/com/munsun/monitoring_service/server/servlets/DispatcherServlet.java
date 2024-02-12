@@ -142,6 +142,7 @@ public class DispatcherServlet extends HttpServlet {
         int statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         try {
             var token = securityController.authenticateUser(loginPassword);
+            statusCode = HttpServletResponse.SC_OK;
             response = jsonMapper.toJSON(token);
         } catch (AuthenticationException e) {
             statusCode = HttpServletResponse.SC_UNAUTHORIZED;

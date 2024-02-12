@@ -8,6 +8,8 @@ import com.munsun.monitoring_service.backend.security.SimpleTokenProvider;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.backend.security.model.SecurityUser;
 import com.munsun.monitoring_service.backend.security.model.Token;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
+import com.munsun.monitoring_service.commons.utils.property.impl.PropertyServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class SimpleTokenProviderImpl implements SimpleTokenProvider {
-    private static final String SECURITY_HEADER = "auth";
+    private final PropertyService propertyService;
     private final AccountDao accountDao;
 
     @Override
@@ -61,7 +63,7 @@ public class SimpleTokenProviderImpl implements SimpleTokenProvider {
 
     @Override
     public String resolveToken(HttpServletRequest request) throws AuthenticationException {
-        String token = request.getHeader(SECURITY_HEADER);
+        String token = request.getHeader(propertyService.getProperty("security.token.header"));
         if(token == null) {
             throw new AuthenticationException("token is empty or not validate");
         }

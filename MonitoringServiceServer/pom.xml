@@ -30,6 +30,7 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.munsun</groupId>
             <artifactId>MonitoringServiceBackend</artifactId>
@@ -54,7 +55,6 @@
             <artifactId>tomcat-embed-core</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
@@ -79,6 +79,19 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <configuration>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>com.munsun</groupId>
+                            <artifactId>Logger</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
                 </configuration>
             </plugin>
         </plugins>

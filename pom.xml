@@ -34,6 +34,11 @@
         <com.fasterxml.jackson.dataformat.jackson-dataformat-xml.version>2.16.0</com.fasterxml.jackson.dataformat.jackson-dataformat-xml.version>
         <org.mapstruct.mapstruct.version>1.5.5.Final</org.mapstruct.mapstruct.version>
         <org.apache.maven.plugins.maven-surefire-plugin.version>2.22.2</org.apache.maven.plugins.maven-surefire-plugin.version>
+        <org.aspectj.aspectjrt.version>1.9.21</org.aspectj.aspectjrt.version>
+        <org.codehaus.mojo.aspectj-maven-plugin.version>1.14.0</org.codehaus.mojo.aspectj-maven-plugin.version>
+        <org.aspectj.aspectjtools.version>1.9.21</org.aspectj.aspectjtools.version>
+        <org.apache.maven.plugins.maven-compiler-plugin.version>3.8.1</org.apache.maven.plugins.maven-compiler-plugin.version>
+        <org.projectlombok.lombok-mapstruct-binding.version>0.2.0</org.projectlombok.lombok-mapstruct-binding.version>
     </properties>
 
     <dependencyManagement>
@@ -122,6 +127,18 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${org.mapstruct.mapstruct.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${org.aspectj.aspectjrt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>1.9.21</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -132,7 +149,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>${org.apache.maven.plugins.maven-compiler-plugin.version}</version>
                     <configuration>
                         <annotationProcessorPaths>
                             <path>
@@ -148,7 +165,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok-mapstruct-binding</artifactId>
-                                <version>0.2.0</version>
+                                <version>${org.projectlombok.lombok-mapstruct-binding.version}</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
@@ -162,28 +179,58 @@
                         <skipTests>true</skipTests>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <version>${org.codehaus.mojo.aspectj-maven-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjtools</artifactId>
+                            <version>${org.aspectj.aspectjtools.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <forceAjcCompile>true</forceAjcCompile>
+                        <sources/>
+                        <weaveDirectories>
+                            <weaveDirectory>${project.build.directory}/classes</weaveDirectory>
+                        </weaveDirectories>
+
+                        <target>16</target>
+                        <complianceLevel>16</complianceLevel>
+                        <showWeaveInfo>true</showWeaveInfo>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${org.apache.maven.plugins.maven-javadoc-plugin.version}</version>
+                    <configuration>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>aggregate</id>
+                            <goals>
+                                <goal>aggregate</goal>
+                            </goals>
+                            <phase>site</phase>
+                            <configuration>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${org.apache.maven.plugins.maven-javadoc-plugin.version}</version>
-                <configuration>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>aggregate</id>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                        <phase>site</phase>
-                        <configuration>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 </project>
