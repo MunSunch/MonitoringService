@@ -1,9 +1,6 @@
 package com.munsun.monitoring_service.backend.models.embedded;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * An embedded object that contains information about the user's place of residence

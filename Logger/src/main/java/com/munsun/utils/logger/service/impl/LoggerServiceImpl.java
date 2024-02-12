@@ -35,7 +35,7 @@ public class LoggerServiceImpl implements JournalService {
      */
     @Override
     public JournalRecord journal(JournalRecord journalRecord) {
-        return null;
+        return journalRepository.save(journalRecord);
     }
 
     /** {@inheritDoc} */

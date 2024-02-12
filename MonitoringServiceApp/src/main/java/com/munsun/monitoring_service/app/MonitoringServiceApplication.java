@@ -8,7 +8,8 @@ import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsDaoImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcMeterReadingsMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
-import com.munsun.monitoring_service.backend.mapping.impl.*;
+import com.munsun.monitoring_service.backend.mapping.AccountMapper;
+import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.dao.impl.AccountDaoImpl;
 import com.munsun.monitoring_service.backend.security.impl.SimpleTokenProviderImpl;
 import com.munsun.monitoring_service.backend.security.impl.SecurityFilterImpl;
@@ -17,7 +18,6 @@ import com.munsun.monitoring_service.backend.services.impl.MonitoringServiceImpl
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
-import com.munsun.monitoring_service.commons.exceptions.InitSchemaLiquibaseException;
 import com.munsun.monitoring_service.commons.utils.property.PropertyService;
 import com.munsun.monitoring_service.commons.utils.property.impl.PropertyServiceImpl;
 import com.munsun.monitoring_service.commons.utils.validator.impl.DefaultValidator;
@@ -25,11 +25,6 @@ import com.munsun.monitoring_service.server.Server;
 import com.munsun.monitoring_service.server.filters.DelegateFilter;
 import com.munsun.monitoring_service.server.mapping.impl.JsonMapperImpl;
 import com.munsun.monitoring_service.server.servlets.DispatcherServlet;
-import liquibase.exception.LiquibaseException;
-import org.apache.catalina.LifecycleException;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * The entry point to the application
@@ -52,10 +47,10 @@ public class MonitoringServiceApplication {
         var objectMapper = new ObjectMapper();
         var jdbcAccountMapper = new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl());
         var jdbcMeterReadingsMapper = new JdbcMeterReadingsMapperImpl(jdbcAccountMapper);
-        var accountMapper = new AccountMapperImpl(new PlaceLivingMapperImpl());
+        var accountMapper = AccountMapper.instance;
         var accountRepository = new AccountDaoImpl(database, jdbcAccountMapper);
         var monitoringService = new MonitoringServiceImpl(new MeterReadingsDaoImpl(database, jdbcMeterReadingsMapper),
-                accountRepository, new MeterReadingMapperImpl());
+                accountRepository, MeterReadingMapper.instance);
         var errorController = new ErrorController();
         var jwtProvider = new SimpleTokenProviderImpl(accountRepository);
         var securityController = new SecurityController(new SecurityServiceImpl(accountRepository, accountMapper, jwtProvider));
