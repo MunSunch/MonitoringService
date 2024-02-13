@@ -8,7 +8,7 @@ import java.util.Properties;
 public class PropertyServiceImpl implements PropertyService {
     private Properties properties;
     private final Class<?> tClass;
-    private static final String DEFAULT_PATH_TO_RESOURCES = "/app.properties";
+    private static final String DEFAULT_PATH_TO_RESOURCES = "app.properties";
 
     public PropertyServiceImpl(Class<?> tClass) {
         this.properties = new Properties();
@@ -17,8 +17,8 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     private void loadResources(Class<?> tClass, String pathToResources) {
-        try {
-            properties.load(tClass.getResourceAsStream(pathToResources));
+        try(var stream = tClass.getClassLoader().getResourceAsStream(pathToResources)) {
+            properties.load(stream);
         } catch (IOException e) {
             e.printStackTrace();
         }
