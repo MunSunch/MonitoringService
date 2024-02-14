@@ -5,7 +5,6 @@ import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.dao.AccountDao;
-import com.munsun.monitoring_service.backend.security.SecurityContext;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
 import org.junit.jupiter.api.DisplayName;
@@ -27,8 +26,6 @@ public class SecurityServiceUnitTests {
     private AccountDao accountRepository;
     @Mock
     private AccountMapper accountMapper;
-    @Mock
-    private SecurityContext securityContext;
     @InjectMocks
     private SecurityServiceImpl securityService;
 

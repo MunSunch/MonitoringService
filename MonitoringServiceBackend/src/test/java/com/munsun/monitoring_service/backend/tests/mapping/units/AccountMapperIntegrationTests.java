@@ -1,8 +1,6 @@
 package com.munsun.monitoring_service.backend.tests.mapping.units;
 
 import com.munsun.monitoring_service.backend.mapping.AccountMapper;
-import com.munsun.monitoring_service.backend.mapping.impl.AccountMapperImpl;
-import com.munsun.monitoring_service.backend.mapping.impl.PlaceLivingMapperImpl;
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
 import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
@@ -11,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountMapperIntegrationTests {
-    private AccountMapper accountMapper = new AccountMapperImpl(new PlaceLivingMapperImpl());
+    private AccountMapper accountMapper = AccountMapper.instance;
 
     @DisplayName("Positive test to convert DTO in entity")
     @Test

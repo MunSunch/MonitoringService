@@ -6,6 +6,7 @@ import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
 import com.munsun.monitoring_service.backend.models.Account;
+import com.munsun.monitoring_service.commons.exceptions.MissingKeyReadingException;
 
 import java.time.Month;
 import java.util.List;
@@ -65,7 +66,7 @@ public interface MonitoringService {
      * @return a {@link com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut} object
      * @throws com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException if any.
      */
-    MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws AccountNotFoundException, MeterReadingNotFoundException;
+    MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws AccountNotFoundException, MeterReadingNotFoundException, MissingKeyReadingException;
 
     /**
      * Return all meter readings of a specific {@link Account account} by its ID

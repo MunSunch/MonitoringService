@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface JdbcJournalMapper {
-    JournalRecord toJournalRecord(ResultSet result) throws SQLException;
+    JournalRecord toJournalRecord(ResultSet result);
 
-    void preparedSaveStatement(PreparedStatement preparedStatement, JournalRecord journalRecord) throws SQLException;
+    void preparedSaveStatement(PreparedStatement preparedStatement, JournalRecord journalRecord);
 
-    List<JournalRecord> toJournalsRecord(ResultSet res) throws SQLException;
+    List<JournalRecord> toJournalsRecord(ResultSet res);
 }

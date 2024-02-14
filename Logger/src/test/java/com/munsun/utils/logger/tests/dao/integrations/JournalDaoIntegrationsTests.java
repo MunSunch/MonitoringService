@@ -1,7 +1,6 @@
 package com.munsun.utils.logger.tests.dao.integrations;
 
-import com.munsun.monitoring_service.commons.db.Database;
-import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
+import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.JournalDao;
 import com.munsun.utils.logger.dao.impl.JournalDaoImpl;
@@ -17,9 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JournalDaoIntegrationsTests extends PostgresContainer {
-    private Database database = new DatabaseImpl(getProperties());
     private JournalDao journalRepository =
-            new JournalDaoImpl(database, new JdbcJournalMapperImpl());
+            new JournalDaoImpl(getDatabase(), new JdbcJournalMapperImpl());
 
     private JournalRecord testJournal = JournalRecord.builder()
                                             .id(1L)
@@ -29,7 +27,7 @@ public class JournalDaoIntegrationsTests extends PostgresContainer {
 
     @DisplayName("success save journal in database")
     @Test
-    public void positiveTestSave() {
+    public void positiveTestSave() throws DatabaseException {
         var actual = journalRepository.save(testJournal);
 
         assertThat(actual)
@@ -39,7 +37,7 @@ public class JournalDaoIntegrationsTests extends PostgresContainer {
 
     @DisplayName("get all saved journals")
     @Test
-    public void positiveGetAll() {
+    public void positiveGetAll() throws DatabaseException {
         journalRepository.save(testJournal);
         journalRepository.save(testJournal);
         journalRepository.save(testJournal);

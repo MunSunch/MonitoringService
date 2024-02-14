@@ -10,13 +10,15 @@ import com.munsun.monitoring_service.backend.services.MonitoringService;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
+import com.munsun.monitoring_service.commons.exceptions.MissingKeyReadingException;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
 /**
@@ -30,8 +32,8 @@ public class MonitoringServiceImpl implements MonitoringService {
     private final MeterReadingsDao readingsRepository;
     private final AccountDao accountRepository;
     private final MeterReadingMapper readingsMapper;
-    private static final List<String> DEFAULT_NAMES_METER_READINGS = List.of("отопление", "горячая вода", "холодная вода");
-    private List<String> namesReadingsMeters = new ArrayList<>(DEFAULT_NAMES_METER_READINGS);
+    private static final List<String> DEFAULT_NAMES_METER_READINGS = List.of("heating", "hot_water", "cold_water");
+    private CopyOnWriteArraySet<String> namesReadingsMeters = new CopyOnWriteArraySet<>(DEFAULT_NAMES_METER_READINGS);
 
     /** {@inheritDoc} */
     @Override
@@ -41,7 +43,7 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     /** {@inheritDoc} */
     public List<String> getNamesReadingsMeters() {
-        return namesReadingsMeters;
+        return namesReadingsMeters.stream().toList();
     }
 
     /** {@inheritDoc} */
@@ -87,9 +89,11 @@ public class MonitoringServiceImpl implements MonitoringService {
 
     /** {@inheritDoc} */
     @Override
-    public MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws AccountNotFoundException, MeterReadingNotFoundException {
-        Date now = new Date();
+    public MeterReadingDtoOut addMeterReadings(Long idAccount, MeterReadingsDtoIn dtoIn) throws AccountNotFoundException, MeterReadingNotFoundException, MissingKeyReadingException {
         checkRepeatAddMeterReadingPerMonth(idAccount);
+        checkDefaultNamesMeterReadings(dtoIn);
+
+        Date now = new Date();
         try {
             MeterReading newMeterReading = new MeterReading();
                 newMeterReading.setAccount(accountRepository.getById(idAccount).orElseThrow(AccountNotFoundException::new));
@@ -97,10 +101,21 @@ public class MonitoringServiceImpl implements MonitoringService {
                 newMeterReading.setReadings(dtoIn.readings());
             Long idSavedMeterReading = readingsRepository.save(newMeterReading);
             return readingsMapper.toMeterReadingDtoOut(readingsRepository.getById(idSavedMeterReading).orElseThrow(MeterReadingNotFoundException::new));
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void checkDefaultNamesMeterReadings(MeterReadingsDtoIn dtoIn) throws MissingKeyReadingException {
+        var keys = dtoIn.readings().keySet();
+        if(keys.containsAll(namesReadingsMeters)) {
+            return;
+        }
+        String message = namesReadingsMeters.stream()
+                .filter(x -> !keys.contains(x))
+                .collect(Collectors.joining(","));
+        throw new MissingKeyReadingException("Missing parameters: " + message);
     }
 
     private void checkRepeatAddMeterReadingPerMonth(Long idAccount) {
@@ -108,7 +123,7 @@ public class MonitoringServiceImpl implements MonitoringService {
         if(actualMeterReading.isEmpty())
             return;
         if(actualMeterReading.get().getDate().getMonth() == (new Date()).getMonth())
-            throw new IllegalArgumentException("Добавление невозможно: запись за текущий месяц уже существует");
+            throw new IllegalArgumentException("Adding is not possible: the record for the current month already exists");
     }
 
     /** {@inheritDoc} */

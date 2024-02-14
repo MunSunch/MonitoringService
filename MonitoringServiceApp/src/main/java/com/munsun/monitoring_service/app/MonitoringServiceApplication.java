@@ -1,93 +1,64 @@
 package com.munsun.monitoring_service.app;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.munsun.monitoring_service.backend.controllers.MeterReadingsController;
+import com.munsun.monitoring_service.backend.controllers.SecurityController;
+import com.munsun.monitoring_service.backend.controllers.advice.ErrorController;
 import com.munsun.monitoring_service.backend.dao.impl.MeterReadingsDaoImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcAccountMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcMeterReadingsMapperImpl;
 import com.munsun.monitoring_service.backend.dao.impl.mapping.impl.JdbcPlaceLivingMapperImpl;
-import com.munsun.monitoring_service.backend.mapping.impl.*;
-import com.munsun.monitoring_service.backend.models.Account;
+import com.munsun.monitoring_service.backend.mapping.AccountMapper;
+import com.munsun.monitoring_service.backend.mapping.MeterReadingMapper;
 import com.munsun.monitoring_service.backend.dao.impl.AccountDaoImpl;
-import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
-import com.munsun.monitoring_service.backend.security.enums.Role;
-import com.munsun.monitoring_service.backend.security.impl.SecurityContextImpl;
+import com.munsun.monitoring_service.backend.security.impl.SimpleTokenProviderImpl;
+import com.munsun.monitoring_service.backend.security.impl.SecurityFilterImpl;
 import com.munsun.monitoring_service.backend.security.impl.SecurityServiceImpl;
 import com.munsun.monitoring_service.backend.services.impl.MonitoringServiceImpl;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.DatabaseImpl;
 import com.munsun.monitoring_service.commons.db.impl.MigrationSystem;
-import com.munsun.monitoring_service.frontend.in.service.impl.Console;
-import com.munsun.monitoring_service.presenter.service.Presenter;
-import com.munsun.monitoring_service.presenter.service.impl.MainPresenter;
-import com.munsun.utils.logger.dao.impl.JournalDaoImpl;
-import com.munsun.utils.logger.dao.impl.mapping.impl.JdbcJournalMapperImpl;
-import com.munsun.utils.logger.service.impl.LoggerServiceImpl;
-import liquibase.exception.LiquibaseException;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
+import com.munsun.monitoring_service.commons.utils.property.impl.PropertyServiceImpl;
+import com.munsun.monitoring_service.commons.utils.validator.impl.DefaultValidator;
+import com.munsun.monitoring_service.server.Server;
+import com.munsun.monitoring_service.server.filters.DelegateFilter;
+import com.munsun.monitoring_service.server.mapping.impl.JsonMapperImpl;
+import com.munsun.monitoring_service.server.servlets.DispatcherServlet;
 
 /**
  * The entry point to the application
  *
- * @author apple
- * @version $Id: $Id
+ * @author MunSun
+ * @version 1.0-SNAPSHOT
  */
 public class MonitoringServiceApplication {
-    private static final Account ADMIN = new Account(null,
-            "admin",
-            "admin",
-            PlaceLivingEmbedded.builder()
-                    .country("Russia")
-                    .city("Saratov")
-                    .street("red")
-                    .house("silver")
-                    .level("11")
-                    .apartmentNumber("1B")
-                    .build(),
-            Role.ADMIN,
-            false);
-
-    private static final Account USER = new Account(null,
-            "user",
-            "user",
-            PlaceLivingEmbedded.builder()
-                    .country("Russia")
-                    .city("Saratov")
-                    .street("red")
-                    .house("silver")
-                    .level("11")
-                    .apartmentNumber("1B")
-                    .build(),
-            Role.USER,
-            false);
-
     /**
      * <p>main.</p>
      *
      * @param args an array of {@link java.lang.String} objects
      */
-    public static void main(String[] args) throws SQLException, LiquibaseException, IOException {
-        Database database = new DatabaseImpl();
-        new MigrationSystem().initSchema(database.getConnection());
+    public static void main(String[] args) throws Exception {
+        PropertyService properties = new PropertyServiceImpl(MonitoringServiceApplication.class);
 
+        Database database = new DatabaseImpl(properties);
+        new MigrationSystem(properties).initSchema(database.getConnection());
+
+        var objectMapper = new ObjectMapper();
         var jdbcAccountMapper = new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl());
+        var jdbcMeterReadingsMapper = new JdbcMeterReadingsMapperImpl(jdbcAccountMapper);
+        var accountMapper = AccountMapper.instance;
         var accountRepository = new AccountDaoImpl(database, jdbcAccountMapper);
-        if(accountRepository.findByAccount_Login(ADMIN.getLogin()).isEmpty())
-            accountRepository.save(ADMIN);
-        if(accountRepository.findByAccount_Login(USER.getLogin()).isEmpty())
-            accountRepository.save(USER);
-
-        Presenter presenter = new MainPresenter(new Console(),
-                                                new MonitoringServiceImpl(new MeterReadingsDaoImpl(database,
-                                                                                                          new JdbcMeterReadingsMapperImpl(jdbcAccountMapper)),
-                                                                          accountRepository,
-                                                                          new MeterReadingMapperImpl()),
-                                                new SecurityServiceImpl(accountRepository,
-                                                                        new AccountMapperImpl(new PlaceLivingMapperImpl()),
-                                                                        new SecurityContextImpl()),
-                                                new LoggerServiceImpl(MainPresenter.class,
-                                                                      new JournalDaoImpl(database,
-                                                                                                new JdbcJournalMapperImpl())));
-        presenter.start();
+        var monitoringService = new MonitoringServiceImpl(new MeterReadingsDaoImpl(database, jdbcMeterReadingsMapper),
+                accountRepository, MeterReadingMapper.instance);
+        var errorController = new ErrorController();
+        var jwtProvider = new SimpleTokenProviderImpl(properties, accountRepository);
+        var securityController = new SecurityController(new SecurityServiceImpl(accountRepository, accountMapper, jwtProvider));
+        var meterReadingsController = new MeterReadingsController(monitoringService);
+        var securityService = new SecurityServiceImpl(accountRepository, accountMapper, jwtProvider);
+        var delegateFilter = new DelegateFilter(new SecurityFilterImpl(jwtProvider, securityService), errorController, objectMapper);
+        var dispatcherServlet = new DispatcherServlet(securityController, meterReadingsController,errorController, new JsonMapperImpl(new DefaultValidator()));
+        var server = new Server(dispatcherServlet, delegateFilter);
+        server.start(Integer.parseInt(properties.getProperty("server.port")));
     }
 }

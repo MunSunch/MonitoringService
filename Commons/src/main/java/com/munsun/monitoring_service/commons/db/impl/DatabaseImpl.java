@@ -1,13 +1,11 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
 import com.munsun.monitoring_service.commons.db.Database;
+import com.munsun.monitoring_service.commons.utils.property.PropertyService;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * Database interface implementation.
@@ -23,23 +21,10 @@ import java.util.Properties;
  * @version 1.0-SNAPSHOT
  */
 public class DatabaseImpl implements Database {
-    private Properties property = new Properties();
-    private static final String PATH_TO_RESOURCES = "Commons/src/main/resources/app.properties";
+    private PropertyService property;
 
-    public DatabaseImpl(Properties properties) {
-        property = properties;
-    }
-
-    public DatabaseImpl() {
-        loadProperties();
-    }
-
-    private void loadProperties() {
-        try {
-            property.load(new FileReader(PATH_TO_RESOURCES));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public DatabaseImpl(PropertyService property) {
+        this.property = property;
     }
 
     /**

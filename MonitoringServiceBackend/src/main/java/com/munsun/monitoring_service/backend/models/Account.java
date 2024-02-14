@@ -2,12 +2,7 @@ package com.munsun.monitoring_service.backend.models;
 
 import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
 import com.munsun.monitoring_service.backend.security.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Entity for storing user information
@@ -15,8 +10,8 @@ import lombok.EqualsAndHashCode;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -28,13 +23,4 @@ public class Account {
     private PlaceLivingEmbedded placeLiving;
     private Role role;
     private boolean isBlocked;
-
-    /**
-     * <p>Constructor for Account.</p>
-     *
-     * @param id a {@link java.lang.Long} object
-     */
-    public Account(Long id) {
-        this.id = id;
-    }
 }

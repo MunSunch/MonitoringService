@@ -28,19 +28,19 @@ public class LoggerServiceImpl implements JournalService {
         this.journalRepository = journalRepository;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public List<JournalRecord> getJournalRecords() {
-        return journalRepository.getAllJournalRecords();
-    }
-
     /**
      * {@inheritDoc}
      *
      * Record a user action
      */
     @Override
-    public JournalRecord journal(String message) {
-        return journalRepository.save(new JournalRecord(new Date(new java.util.Date().getTime()), message));
+    public JournalRecord journal(JournalRecord journalRecord) {
+        return journalRepository.save(journalRecord);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<JournalRecord> getJournalRecords() {
+        return journalRepository.getAllJournalRecords();
     }
 }
