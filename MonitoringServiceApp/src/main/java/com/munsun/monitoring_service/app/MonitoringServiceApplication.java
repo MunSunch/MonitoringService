@@ -25,10 +25,6 @@ import com.munsun.monitoring_service.server.Server;
 import com.munsun.monitoring_service.server.filters.DelegateFilter;
 import com.munsun.monitoring_service.server.mapping.impl.JsonMapperImpl;
 import com.munsun.monitoring_service.server.servlets.DispatcherServlet;
-import com.munsun.utils.logger.aspects.LogAspect;
-import com.munsun.utils.logger.dao.impl.JournalDaoImpl;
-import com.munsun.utils.logger.dao.impl.mapping.impl.JdbcJournalMapperImpl;
-import com.munsun.utils.logger.service.impl.LoggerServiceImpl;
 
 /**
  * The entry point to the application
