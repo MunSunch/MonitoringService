@@ -1,8 +1,8 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
+import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.queries.PrevQueries;
 import com.munsun.monitoring_service.commons.exceptions.InitSchemaLiquibaseException;
-import com.munsun.monitoring_service.commons.utils.property.PropertyService;
 import liquibase.Liquibase;
 import liquibase.command.CommandScope;
 import liquibase.command.core.UpdateCommandStep;
@@ -13,6 +13,9 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.CommandExecutionException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -31,33 +34,40 @@ import java.sql.SQLException;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+@Component
+@RequiredArgsConstructor
 public class MigrationSystem {
-    private final PropertyService properties;
+    @Value("${liquibase.default-schema}")
+    private String defaultSchemaForLiquibase;
 
-    public MigrationSystem(PropertyService properties) {
-        this.properties = properties;
-    }
+    @Value("${datasource.default-schema}")
+    private String defaultSchemaForDatasource;
+
+    @Value("${liquibase.changelog.path}")
+    private String changelog;
+
+    private final Database database;
 
     /**
      * Create a schema in the database based on a set of changes.
      *
-     * @param connection a Connection object
      * @throws liquibase.exception.LiquibaseException
      * @throws java.sql.SQLException
      * @throws java.io.FileNotFoundException
      */
-    public void initSchema(Connection connection) throws LiquibaseException, SQLException, FileNotFoundException, InitSchemaLiquibaseException {
-        if(!checkExistsSchema(properties.getProperty("liquibase.default-schema"), connection))
-            createSchema(properties.getProperty("liquibase.default-schema"), connection);
-        if(!checkExistsSchema(properties.getProperty("datasource.default-schema"), connection))
-            createSchema(properties.getProperty("datasource.default-schema"), connection);
+    public void initSchema() throws LiquibaseException, SQLException, FileNotFoundException, InitSchemaLiquibaseException {
+        var connection = database.getConnection();
+        if(!checkExistsSchema(defaultSchemaForLiquibase, connection))
+            createSchema(defaultSchemaForLiquibase, connection);
+        if(!checkExistsSchema(defaultSchemaForDatasource, connection))
+            createSchema(defaultSchemaForDatasource, connection);
 
         var database = DatabaseFactory.getInstance()
                 .findCorrectDatabaseImplementation(new JdbcConnection(connection));
-        Liquibase liquibase = new Liquibase(properties.getProperty("liquibase.changelog.path"),
+        Liquibase liquibase = new Liquibase(changelog,
                 new ClassLoaderResourceAccessor(),
                 database);
-        liquibase.getDatabase().setDefaultSchemaName(properties.getProperty("liquibase.default-schema"));
+        liquibase.getDatabase().setDefaultSchemaName(defaultSchemaForLiquibase);
         update(liquibase);
 
         liquibase.close();

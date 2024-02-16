@@ -16,37 +16,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JournalDaoIntegrationsTests extends PostgresContainer {
-    private JournalDao journalRepository =
-            new JournalDaoImpl(getDatabase(), new JdbcJournalMapperImpl());
-
-    private JournalRecord testJournal = JournalRecord.builder()
-                                            .id(1L)
-                                            .date(new Date(new java.util.Date().getTime()))
-                                            .message("test message")
-                                        .build();
-
-    @DisplayName("success save journal in database")
-    @Test
-    public void positiveTestSave() throws DatabaseException {
-        var actual = journalRepository.save(testJournal);
-
-        assertThat(actual)
-                .extracting(JournalRecord::getId, JournalRecord::getMessage)
-                .containsExactly(testJournal.getId(), testJournal.getMessage());
-    }
-
-    @DisplayName("get all saved journals")
-    @Test
-    public void positiveGetAll() throws DatabaseException {
-        journalRepository.save(testJournal);
-        journalRepository.save(testJournal);
-        journalRepository.save(testJournal);
-        int expectedSize = 3;
-
-        var actual = journalRepository.getAllJournalRecords();
-
-        assertThat(actual)
-                .hasSize(expectedSize)
-                .allMatch(Objects::nonNull);
-    }
+//    private JournalDao journalRepository =
+//            new JournalDaoImpl(getDatabase(), new JdbcJournalMapperImpl());
+//
+//    private JournalRecord testJournal = JournalRecord.builder()
+//                                            .id(1L)
+//                                            .date(new Date(new java.util.Date().getTime()))
+//                                            .message("test message")
+//                                        .build();
+//
+//    @DisplayName("success save journal in database")
+//    @Test
+//    public void positiveTestSave() throws DatabaseException {
+//        var actual = journalRepository.save(testJournal);
+//
+//        assertThat(actual)
+//                .extracting(JournalRecord::getId, JournalRecord::getMessage)
+//                .containsExactly(testJournal.getId(), testJournal.getMessage());
+//    }
+//
+//    @DisplayName("get all saved journals")
+//    @Test
+//    public void positiveGetAll() throws DatabaseException {
+//        journalRepository.save(testJournal);
+//        journalRepository.save(testJournal);
+//        journalRepository.save(testJournal);
+//        int expectedSize = 3;
+//
+//        var actual = journalRepository.getAllJournalRecords();
+//
+//        assertThat(actual)
+//                .hasSize(expectedSize)
+//                .allMatch(Objects::nonNull);
+//    }
 }

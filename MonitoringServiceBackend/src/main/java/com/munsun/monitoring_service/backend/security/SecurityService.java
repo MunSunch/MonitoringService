@@ -1,10 +1,7 @@
 package com.munsun.monitoring_service.backend.security;
 
-import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
-import com.munsun.monitoring_service.backend.security.model.SecurityUser;
 import com.munsun.monitoring_service.commons.dto.out.AuthorizationTokenDtoOut;
-import com.munsun.monitoring_service.commons.enums.Endpoints;
 import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
@@ -24,7 +21,7 @@ public interface SecurityService {
      * @throws com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException if any.
      * @throws com.munsun.monitoring_service.backend.exceptions.AuthenticationException if any.
      */
-    AuthorizationTokenDtoOut authenticate(LoginPasswordDtoIn loginPassword) throws AccountNotFoundException, AuthenticationException;
+    AuthorizationTokenDtoOut authenticate(LoginPasswordDtoIn loginPassword) throws org.springframework.security.core.AuthenticationException, AuthenticationException;
 
     /**
      * Add a new user to the system with the predefined {@link Role role}=Role.USER.
@@ -32,7 +29,4 @@ public interface SecurityService {
      * @return a {@link com.munsun.monitoring_service.commons.dto.out.AccountDtoOut} object
      */
     AccountDtoOut register(AccountDtoIn accountDtoIn);
-
-    boolean authorization(SecurityUser securityUser, Endpoints api);
-    boolean authorization(Endpoints api);
 }

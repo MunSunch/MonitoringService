@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-@Mapper(imports = Arrays.class)
+@Mapper(imports = Arrays.class, componentModel = "spring")
 public interface MeterReadingMapper {
     MeterReadingMapper instance = Mappers.getMapper(MeterReadingMapper.class);
 

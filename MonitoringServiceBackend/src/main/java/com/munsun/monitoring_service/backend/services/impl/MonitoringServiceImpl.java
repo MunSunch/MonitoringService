@@ -12,6 +12,7 @@ import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.exceptions.MissingKeyReadingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.Month;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
  * @version 1.0-SNAPSHOT
  */
 @RequiredArgsConstructor
+@Service
 public class MonitoringServiceImpl implements MonitoringService {
     private final MeterReadingsDao readingsRepository;
     private final AccountDao accountRepository;

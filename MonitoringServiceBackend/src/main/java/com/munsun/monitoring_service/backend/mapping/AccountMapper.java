@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AccountMapper {
     AccountMapper instance = Mappers.getMapper(AccountMapper.class);
 

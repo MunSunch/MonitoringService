@@ -1,5 +1,10 @@
 package com.munsun.monitoring_service.commons.dto.in;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.MapSerializer;
+
 import java.util.Map;
 
 /**

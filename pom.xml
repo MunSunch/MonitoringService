@@ -12,9 +12,7 @@
     <modules>
         <module>MonitoringServiceBackend</module>
         <module>Commons</module>
-        <module>MonitoringServiceApp</module>
         <module>Logger</module>
-        <module>MonitoringServiceServer</module>
     </modules>
 
     <properties>
@@ -30,7 +28,6 @@
         <org.testcontainers.postgresql.version>1.18.3</org.testcontainers.postgresql.version>
         <org.apache.maven.plugins.maven-javadoc-plugin.version>3.6.3</org.apache.maven.plugins.maven-javadoc-plugin.version>
         <org.mockito.mockito-junit-jupiter.version>5.10.0</org.mockito.mockito-junit-jupiter.version>
-        <jakarta.servlet.jakarta.servlet-api.version>6.0.0</jakarta.servlet.jakarta.servlet-api.version>
         <com.fasterxml.jackson.dataformat.jackson-dataformat-xml.version>2.16.0</com.fasterxml.jackson.dataformat.jackson-dataformat-xml.version>
         <org.mapstruct.mapstruct.version>1.5.5.Final</org.mapstruct.mapstruct.version>
         <org.apache.maven.plugins.maven-surefire-plugin.version>2.22.2</org.apache.maven.plugins.maven-surefire-plugin.version>
@@ -39,10 +36,32 @@
         <org.aspectj.aspectjtools.version>1.9.21</org.aspectj.aspectjtools.version>
         <org.apache.maven.plugins.maven-compiler-plugin.version>3.8.1</org.apache.maven.plugins.maven-compiler-plugin.version>
         <org.projectlombok.lombok-mapstruct-binding.version>0.2.0</org.projectlombok.lombok-mapstruct-binding.version>
+        <org.springframework.spring-context.version>6.1.3</org.springframework.spring-context.version>
+        <org.springframework.spring-webmvc.version>6.1.3</org.springframework.spring-webmvc.version>
+        <org.hibernate.validator.hibernate-validator.version>8.0.1.Final</org.hibernate.validator.hibernate-validator.version>
+        <jakarta.servlet.jakarta.servlet-api.version>6.0.0</jakarta.servlet.jakarta.servlet-api.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${org.hibernate.validator.hibernate-validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${org.springframework.spring-context.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${org.springframework.spring-webmvc.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -98,22 +117,22 @@
             </dependency>
 
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>4.0.1</version>
-                <scope>provided</scope>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>6.0.0</version>
             </dependency>
+
 
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
-                <version>9.0.75</version>
+                <version>10.1.18</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-jasper</artifactId>
-                <version>9.0.75</version>
+                <version>10.1.18</version>
             </dependency>
 
             <dependency>

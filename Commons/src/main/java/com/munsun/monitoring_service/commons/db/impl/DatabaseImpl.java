@@ -1,7 +1,8 @@
 package com.munsun.monitoring_service.commons.db.impl;
 
 import com.munsun.monitoring_service.commons.db.Database;
-import com.munsun.monitoring_service.commons.utils.property.PropertyService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,12 +21,16 @@ import java.sql.SQLException;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+@Component
 public class DatabaseImpl implements Database {
-    private PropertyService property;
+    @Value("${datasource.url}")
+    private String url;
 
-    public DatabaseImpl(PropertyService property) {
-        this.property = property;
-    }
+    @Value("${datasource.username}")
+    private String user;
+
+    @Value("${datasource.password}")
+    private String password;
 
     /**
      * Reconnect to the database. It is important that after use, the connection is closed using the close() method or specified in try-with-resources
@@ -33,8 +38,6 @@ public class DatabaseImpl implements Database {
      * @throws SQLException
      */
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(property.getProperty("datasource.url"),
-                property.getProperty("datasource.username"),
-                property.getProperty("datasource.password"));
+        return DriverManager.getConnection(url,user,password);
     }
 }

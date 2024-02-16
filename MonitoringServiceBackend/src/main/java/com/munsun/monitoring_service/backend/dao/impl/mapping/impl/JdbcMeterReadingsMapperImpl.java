@@ -9,6 +9,7 @@ import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.commons.exceptions.MappingSqlEntityException;
 import com.munsun.monitoring_service.commons.exceptions.ParseSqlQueryException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 @RequiredArgsConstructor
 public class JdbcMeterReadingsMapperImpl implements JdbcMeterReadingsMapper {
     private final JdbcAccountMapper jdbcAccountMapper;

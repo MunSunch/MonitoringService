@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.*;
 
 import java.util.Date;
 
-@Aspect
+//@Aspect
 @RequiredArgsConstructor
 public class LogAspect {
     private final JournalService service;

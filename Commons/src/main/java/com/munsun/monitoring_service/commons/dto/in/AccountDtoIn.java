@@ -1,7 +1,7 @@
 package com.munsun.monitoring_service.commons.dto.in;
 
-import com.munsun.monitoring_service.commons.utils.validator.impl.annotations.NotEmptyOrNull;
-import com.munsun.monitoring_service.commons.utils.validator.impl.annotations.Size;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * A data transfer object for storing information about a user who has not yet been registered
@@ -15,28 +15,28 @@ import com.munsun.monitoring_service.commons.utils.validator.impl.annotations.Si
  * @param apartmentNumber
  */
 public record AccountDtoIn(
-        @NotEmptyOrNull
+        @NotBlank
         String login,
 
-        @NotEmptyOrNull
-        @Size(limit = 4, message = "size of at least 4 characters")
+        @NotBlank
+        @Length(min = 4)
         String password,
 
-        @NotEmptyOrNull
+        @NotBlank
         String country,
 
-        @NotEmptyOrNull
+        @NotBlank
         String city,
 
-        @NotEmptyOrNull
+        @NotBlank
         String street,
 
-        @NotEmptyOrNull
+        @NotBlank
         String house,
 
-        @NotEmptyOrNull
+        @NotBlank
         String level,
 
-        @NotEmptyOrNull
+        @NotBlank
         String apartmentNumber
 ) {}

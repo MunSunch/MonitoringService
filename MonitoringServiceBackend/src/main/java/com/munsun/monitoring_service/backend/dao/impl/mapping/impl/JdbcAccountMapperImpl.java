@@ -9,11 +9,13 @@ import com.munsun.monitoring_service.backend.security.enums.Role;
 import com.munsun.monitoring_service.commons.exceptions.MappingSqlEntityException;
 import com.munsun.monitoring_service.commons.exceptions.ParseSqlQueryException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 @RequiredArgsConstructor
 public class JdbcAccountMapperImpl implements JdbcAccountMapper {
     private final JdbcPlaceLivingMapper placeLivingMapper;
