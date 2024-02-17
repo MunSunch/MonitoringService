@@ -25,7 +25,6 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class SecurityConfig{
     @Autowired
     private JwtFilter jwtFilter;

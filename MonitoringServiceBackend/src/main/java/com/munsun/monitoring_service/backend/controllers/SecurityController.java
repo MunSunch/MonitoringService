@@ -7,6 +7,7 @@ import com.munsun.monitoring_service.commons.dto.in.AccountDtoIn;
 import com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.AccountDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.AuthorizationTokenDtoOut;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 @RestController
+@Tag(name = "SecurityController", description = "Security")
 public class SecurityController {
     private final SecurityService securityService;
 

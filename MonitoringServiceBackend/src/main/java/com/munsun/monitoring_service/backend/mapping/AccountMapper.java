@@ -14,8 +14,6 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
-    AccountMapper instance = Mappers.getMapper(AccountMapper.class);
-
     /**
      * Сonvert {@linkplain com.munsun.monitoring_service.commons.dto.in.AccountDtoIn AccountDtoIn}
      * to {@linkplain com.munsun.monitoring_service.backend.models.Account Account}

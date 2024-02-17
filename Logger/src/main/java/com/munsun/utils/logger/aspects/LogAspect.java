@@ -1,25 +1,23 @@
 package com.munsun.utils.logger.aspects;
 
-import com.munsun.utils.logger.aspects.annotations.SecurityLog;
-import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.service.JournalService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-
-import java.util.Date;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
 //@Aspect
-@RequiredArgsConstructor
+//@Component
 public class LogAspect {
-    private final JournalService service;
+//    private final JournalService service;
 
     @Pointcut("execution(* *(..))")
     public void publicMethod() {}
 
-    @Pointcut("within(@com.munsun.utils.logger.annotations.SecurityLog *)")
-    public void annotatedBySecurityLog(){}
+//    @Pointcut("within(@com.munsun.utils.logger.annotations.SecurityLog *)")
+//    public void annotatedBySecurityLog(){}
 
     @Around("publicMethod()")
     public Object loggingSpeed(ProceedingJoinPoint joinPoint) throws Throwable {

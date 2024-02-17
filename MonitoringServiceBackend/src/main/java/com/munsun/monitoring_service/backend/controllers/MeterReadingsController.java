@@ -1,47 +1,47 @@
 package com.munsun.monitoring_service.backend.controllers;
 
 import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
-import com.munsun.monitoring_service.backend.models.Account;
+import com.munsun.monitoring_service.backend.security.models.SecurityUser;
 import com.munsun.monitoring_service.backend.services.MonitoringService;
 import com.munsun.monitoring_service.commons.dto.in.MeterReadingsDtoIn;
 import com.munsun.monitoring_service.commons.dto.out.LongMeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut;
 import com.munsun.monitoring_service.commons.exceptions.MissingKeyReadingException;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.Month;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Validated
 @RestController
+@Tag(name = "MeterReadingsController", description = "Bus")
 public class MeterReadingsController {
     private final MonitoringService monitoringService;
 
     @GetMapping("/get")
-    public List<MeterReadingDtoOut> getHistory(Principal principal) {
-       return monitoringService.getAllHistory(Long.parseLong(principal.getName()));
+    public List<MeterReadingDtoOut> getHistory(Authentication authentication) {
+       var user = (SecurityUser)authentication.getPrincipal();
+       return monitoringService.getAllHistory(user.getId());
     }
 
     @GetMapping("/get/{month}")
-    public List<MeterReadingDtoOut> getMeterReadingByMonth(@PathVariable Month month, Principal principal) {
-        return monitoringService.getHistoryMonth(Long.parseLong(principal.getName()), month);
+    public List<MeterReadingDtoOut> getMeterReadingByMonth(@PathVariable Month month, Authentication authentication) {
+        var user = (SecurityUser)authentication.getPrincipal();
+        return monitoringService.getHistoryMonth(user.getId(), month);
     }
 
     @GetMapping("/get/actual")
-    public MeterReadingDtoOut getActualMeterReading(Principal principal) throws AccountNotFoundException {
-        return monitoringService.getActualMeterReadings(Long.parseLong(principal.getName()));
+    public MeterReadingDtoOut getActualMeterReading(Authentication authentication) throws AccountNotFoundException {
+        var user = (SecurityUser)authentication.getPrincipal();
+        return monitoringService.getActualMeterReadings(user.getId());
     }
 
     @GetMapping("/get/all")
@@ -61,9 +61,10 @@ public class MeterReadingsController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveNewMeterReadings(@RequestBody MeterReadingsDtoIn meterReadingsDtoIn,
-                                                     Principal principal) throws AccountNotFoundException, MissingKeyReadingException
+                                                     Authentication authentication) throws AccountNotFoundException, MissingKeyReadingException
     {
-        monitoringService.addMeterReadings(Long.parseLong(principal.getName()), meterReadingsDtoIn);
+        var user = (SecurityUser)authentication.getPrincipal();
+        monitoringService.addMeterReadings(user.getId(), meterReadingsDtoIn);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();

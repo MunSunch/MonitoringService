@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MeterReadingMapperUnitsTests {
-    private MeterReadingMapper meterReadingMapper = MeterReadingMapper.instance;
+    private MeterReadingMapper meterReadingMapper;
 
     @DisplayName("Successful Entity and DTO conversion")
     @Test
