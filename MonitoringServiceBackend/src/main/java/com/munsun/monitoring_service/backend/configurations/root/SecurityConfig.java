@@ -1,4 +1,4 @@
-package com.munsun.monitoring_service.backend.security.configurations;
+package com.munsun.monitoring_service.backend.configurations.root;
 
 import com.munsun.monitoring_service.backend.security.JwtFilter;
 import com.munsun.monitoring_service.backend.security.enums.Role;

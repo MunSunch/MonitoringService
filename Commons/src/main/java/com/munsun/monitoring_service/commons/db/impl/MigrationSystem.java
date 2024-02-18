@@ -3,6 +3,7 @@ package com.munsun.monitoring_service.commons.db.impl;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.db.impl.queries.PrevQueries;
 import com.munsun.monitoring_service.commons.exceptions.InitSchemaLiquibaseException;
+import jakarta.annotation.PostConstruct;
 import liquibase.Liquibase;
 import liquibase.command.CommandScope;
 import liquibase.command.core.UpdateCommandStep;

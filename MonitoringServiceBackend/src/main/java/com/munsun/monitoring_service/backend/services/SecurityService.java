@@ -1,5 +1,6 @@
-package com.munsun.monitoring_service.backend.security;
+package com.munsun.monitoring_service.backend.services;
 
+import com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException;
 import com.munsun.monitoring_service.backend.exceptions.AuthenticationException;
 import com.munsun.monitoring_service.commons.dto.out.AuthorizationTokenDtoOut;
 import com.munsun.monitoring_service.backend.security.enums.Role;
@@ -18,10 +19,9 @@ public interface SecurityService {
      * An attempt to authenticate the user. If the attempt is successful, the current user will be added to the Security Context for subsequent authorization to the resources
      *
      * @param loginPassword a {@link com.munsun.monitoring_service.commons.dto.in.LoginPasswordDtoIn} object
-     * @throws com.munsun.monitoring_service.backend.exceptions.AccountNotFoundException if any.
      * @throws com.munsun.monitoring_service.backend.exceptions.AuthenticationException if any.
      */
-    AuthorizationTokenDtoOut authenticate(LoginPasswordDtoIn loginPassword) throws org.springframework.security.core.AuthenticationException, AuthenticationException;
+    AuthorizationTokenDtoOut authenticate(LoginPasswordDtoIn loginPassword) throws AuthenticationException, AccountNotFoundException;
 
     /**
      * Add a new user to the system with the predefined {@link Role role}=Role.USER.

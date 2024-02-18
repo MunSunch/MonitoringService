@@ -1,12 +1,12 @@
-package com.munsun.utils.logger.aspects.annotations;
+package com.munsun.monitoring_service.backend.aspects.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
-public @interface SecurityLog {
+public @interface Journal {
     String message();
 }

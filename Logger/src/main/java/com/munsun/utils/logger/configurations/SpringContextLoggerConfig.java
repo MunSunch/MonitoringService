@@ -7,6 +7,5 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan("com.munsun.utils.logger")
-@PropertySource("classpath:app.properties")
 @EnableAspectJAutoProxy
 public class SpringContextLoggerConfig {}

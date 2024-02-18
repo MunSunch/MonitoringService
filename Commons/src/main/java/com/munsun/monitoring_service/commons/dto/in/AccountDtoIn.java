@@ -15,28 +15,28 @@ import org.hibernate.validator.constraints.Length;
  * @param apartmentNumber
  */
 public record AccountDtoIn(
-        @NotBlank
+        @NotBlank(message = "login is empty")
         String login,
 
-        @NotBlank
+        @NotBlank(message = "password is empty")
         @Length(min = 4)
         String password,
 
-        @NotBlank
+        @NotBlank(message = "country is empty")
         String country,
 
-        @NotBlank
+        @NotBlank(message = "city is empty")
         String city,
 
-        @NotBlank
+        @NotBlank(message = "street is empty")
         String street,
 
-        @NotBlank
+        @NotBlank(message = "house is empty")
         String house,
 
-        @NotBlank
+        @NotBlank(message = "level is empty")
         String level,
 
-        @NotBlank
+        @NotBlank(message = "apartmentNumber is empty")
         String apartmentNumber
 ) {}

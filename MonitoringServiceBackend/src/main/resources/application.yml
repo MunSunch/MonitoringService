@@ -1,3 +1,14 @@
+datasource:
+  url: jdbc:postgresql://localhost:8081/root
+  username: root
+  password: root
+  default-schema: monitoring_system
+
+liquibase:
+  default-schema: monitoring_system_service
+  changelog:
+    path: db.changelogs/db.changelog-master.xml
+
 security:
   jwt:
     secret:

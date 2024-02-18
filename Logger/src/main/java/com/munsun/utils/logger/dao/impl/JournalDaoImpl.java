@@ -7,6 +7,7 @@ import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.JournalDao;
 import com.munsun.utils.logger.dao.impl.mapping.JdbcJournalMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+@Repository
 @RequiredArgsConstructor
 public class JournalDaoImpl implements JournalDao {
     private final Database database;

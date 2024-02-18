@@ -1,13 +1,12 @@
 package com.munsun.monitoring_service.backend.configurations.web;
 
 import com.munsun.monitoring_service.backend.configurations.root.SpringContextBackendConfig;
-import com.munsun.monitoring_service.backend.security.configurations.SecurityConfig;
+import com.munsun.monitoring_service.backend.configurations.root.SecurityConfig;
 import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;

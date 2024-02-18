@@ -1,5 +1,7 @@
 package com.munsun.monitoring_service.backend;
 
+import com.munsun.monitoring_service.commons.exceptions.InitSchemaLiquibaseException;
+import liquibase.exception.LiquibaseException;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
@@ -7,9 +9,10 @@ import org.apache.catalina.startup.Tomcat;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) throws LifecycleException, IOException {
+    public static void main(String[] args) throws LifecycleException, IOException, InitSchemaLiquibaseException, SQLException, LiquibaseException {
         var tomcat = new Tomcat();
         var baseDir = Files.createTempDirectory("tomcat");
         baseDir.toFile().deleteOnExit();

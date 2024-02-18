@@ -6,5 +6,4 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan(basePackages = "com.munsun.monitoring_service.commons")
-@PropertySource("classpath:app.properties")
 public class SpringContextCommonsConfig {}

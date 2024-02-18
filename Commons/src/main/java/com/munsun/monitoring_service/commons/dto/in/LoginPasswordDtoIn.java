@@ -9,10 +9,10 @@ import org.hibernate.validator.constraints.Length;
  * @param password
  */
 public record LoginPasswordDtoIn(
-        @NotBlank
+        @NotBlank(message = "login is empty")
         String login,
 
-        @NotBlank
+        @NotBlank(message = "password is empty")
         @Length(min=4)
         String password
 ) {}
