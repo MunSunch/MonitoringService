@@ -25,13 +25,10 @@ public class BackendAspects {
     @Pointcut("execution(public * com.munsun.monitoring_service.backend..*(..))")
     public void publicMethod() {}
 
-    @Pointcut("!execution(* com.munsun.monitoring_service.backend.Main.*(..))")
-    public void noMainMethod() {}
+//    @Pointcut("@annotation(org.springframework.context.annotation.Configuration)")
+//    public void isAnnotatedConfiguration() {}
 
-    @Pointcut("@annotation(org.springframework.context.annotation.Configuration)")
-    public void isAnnotatedConfiguration() {}
-
-    @Before("@annotation(Journal) && publicMethod()")
+    @Before("@annotation(Journal)")
     public void journalUserAction(JoinPoint joinPoint, Journal journal) throws Throwable {
         var securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var message = String.format("Login=%s; Role=%s; Action=%s",
@@ -39,13 +36,13 @@ public class BackendAspects {
         journalService.journal(new JournalRecord(new Date(System.currentTimeMillis()), message));
     }
 
-//    @Around("publicMethod() && !within(com.munsun.monitoring_service.backend.configurations.*) && noMainMethod()")
-//    public Object measureSpeedExecution(ProceedingJoinPoint joinPoint) throws Throwable {
-//        System.out.print("Calling method " + joinPoint.getSignature() + ":");
-//        long start = System.currentTimeMillis();
-//        Object result = joinPoint.proceed();
-//        long end = System.currentTimeMillis() - start;
-//            System.out.println("Execution of method " + joinPoint.getSignature() + " finished. Execution time is " + end + " ms.");
-//            return result;
-//    }
+    @Around("!within(@org.springframework.context.annotation.Configuration *) && execution(* com.munsun.monitoring_service.backend..*(..))")
+    public Object measureSpeedExecution(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.print("Calling method " + joinPoint.getSignature() + ":");
+        long start = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long end = System.currentTimeMillis() - start;
+        System.out.println("Execution of method " + joinPoint.getSignature() + " finished. Execution time is " + end + " ms.");
+        return result;
+    }
 }
