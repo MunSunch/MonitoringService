@@ -10,7 +10,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +20,6 @@ import java.sql.Date;
 @RequiredArgsConstructor
 public class BackendAspects {
     private final JournalService journalService;
-
-    @Pointcut("execution(public * com.munsun.monitoring_service.backend..*(..))")
-    public void publicMethod() {}
-
-//    @Pointcut("@annotation(org.springframework.context.annotation.Configuration)")
-//    public void isAnnotatedConfiguration() {}
 
     @Before("@annotation(Journal)")
     public void journalUserAction(JoinPoint joinPoint, Journal journal) throws Throwable {

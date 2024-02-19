@@ -29,26 +29,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.munsun</groupId>
             <artifactId>Commons</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.munsun.monitoring_service.server</groupId>
-            <artifactId>MonitoringServiceServer</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>

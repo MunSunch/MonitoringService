@@ -13,6 +13,7 @@
         <module>MonitoringServiceBackend</module>
         <module>Commons</module>
         <module>Logger</module>
+        <module>MonitoringServiceApp</module>
     </modules>
 
     <properties>

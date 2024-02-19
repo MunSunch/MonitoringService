@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 
-@Service
+@Service("securityService")
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
     private final JwtProvider jwtProvider;
