@@ -62,4 +62,8 @@ mvn clean package -DskipTests=true
 docker compose up -d
 ```
 
-Запустить получившийся war в apache tomcat 10.x версии.
+Запустить сборку:
+
+```
+java -jar MonitoringServiceApp/target/MonitoringService.jar
+```
