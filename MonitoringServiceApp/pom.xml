@@ -24,18 +24,6 @@
 
         <dependency>
             <groupId>com.munsun</groupId>
-            <artifactId>Commons</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.munsun</groupId>
-            <artifactId>Logger</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.munsun</groupId>
             <artifactId>MonitoringServiceBackend</artifactId>
             <version>${project.version}</version>
         </dependency>

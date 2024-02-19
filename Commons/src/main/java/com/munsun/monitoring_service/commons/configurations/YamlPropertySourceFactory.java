@@ -1,4 +1,4 @@
-package com.munsun.monitoring_service.backend.configurations.root;
+package com.munsun.monitoring_service.commons.configurations;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;

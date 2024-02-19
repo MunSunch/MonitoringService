@@ -12,6 +12,7 @@ import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
+import org.springframework.core.io.support.DefaultPropertySourceFactory;
 import org.springframework.web.SpringServletContainerInitializer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoader;
@@ -33,7 +34,7 @@ public class Main {
         tomcat.setConnector(connector);
 
         tomcat.getHost().setAppBase(".");
-        var context = tomcat.addContext("/", ".");
+        var context = tomcat.addContext("", ".");
         context.addServletContainerInitializer(new SpringServletContainerInitializer(), Set.of(ApplicationInitializer.class));
 
         tomcat.start();
