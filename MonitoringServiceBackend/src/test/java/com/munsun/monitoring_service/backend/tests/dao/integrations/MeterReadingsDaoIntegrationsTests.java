@@ -27,10 +27,8 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MeterReadingsDaoIntegrationsTests extends PostgresContainer {
-    private MeterReadingsDao meterReadingsRepository =
-            new MeterReadingsDaoImpl(getDatabase(), new JdbcMeterReadingsMapperImpl(new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl())));
-    private AccountDao accountRepository =
-            new AccountDaoImpl(getDatabase(), new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl()));
+    private MeterReadingsDao meterReadingsRepository;
+    private AccountDao accountRepository;
 
     private Account testAccount1 = Account.builder()
             .id(1L)

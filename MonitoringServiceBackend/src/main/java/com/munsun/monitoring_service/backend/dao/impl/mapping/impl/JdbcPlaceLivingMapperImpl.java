@@ -5,11 +5,13 @@ import com.munsun.monitoring_service.backend.dao.impl.enums.NamesColumnsTableAcc
 import com.munsun.monitoring_service.backend.models.Account;
 import com.munsun.monitoring_service.backend.models.embedded.PlaceLivingEmbedded;
 import com.munsun.monitoring_service.commons.exceptions.ParseSqlQueryException;
+import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class JdbcPlaceLivingMapperImpl implements JdbcPlaceLivingMapper {
     @Override
     public PlaceLivingEmbedded toPlaceLiving(ResultSet result) {

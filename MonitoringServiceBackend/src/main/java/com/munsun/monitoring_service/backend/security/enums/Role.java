@@ -1,6 +1,11 @@
 package com.munsun.monitoring_service.backend.security.enums;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>Role class.</p>
@@ -23,7 +28,9 @@ public enum Role {
      *
      * @return a {@link java.util.Set} object
      */
-    public Set<String> getPermissions() {
-        return permissions;
+    public Collection<GrantedAuthority> getPermissions() {
+        return permissions.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 }

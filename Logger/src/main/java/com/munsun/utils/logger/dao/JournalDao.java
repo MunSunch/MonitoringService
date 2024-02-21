@@ -1,6 +1,5 @@
 package com.munsun.utils.logger.dao;
 
-import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import com.munsun.utils.logger.model.JournalRecord;
 
 import java.util.List;

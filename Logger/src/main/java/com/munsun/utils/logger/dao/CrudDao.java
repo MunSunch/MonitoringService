@@ -1,7 +1,5 @@
 package com.munsun.utils.logger.dao;
 
-import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
-
 /**
  * An interface for performing four basic data manipulations:
  * reading, writing, updating, and deleting. In this implementation, some of the operations are omitted as unnecessary

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountMapperIntegrationTests {
-    private AccountMapper accountMapper = AccountMapper.instance;
+    private AccountMapper accountMapper;
 
     @DisplayName("Positive test to convert DTO in entity")
     @Test

@@ -7,6 +7,7 @@ import com.munsun.monitoring_service.backend.dao.AccountDao;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
+@Repository
 @RequiredArgsConstructor
 public class AccountDaoImpl implements AccountDao {
     private final Database database;

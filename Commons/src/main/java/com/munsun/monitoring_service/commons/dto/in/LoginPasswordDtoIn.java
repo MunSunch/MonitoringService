@@ -1,7 +1,7 @@
 package com.munsun.monitoring_service.commons.dto.in;
 
-import com.munsun.monitoring_service.commons.utils.validator.impl.annotations.NotEmptyOrNull;
-import com.munsun.monitoring_service.commons.utils.validator.impl.annotations.Size;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * A data transfer object for storing information about an as-yet-unidentified user
@@ -9,10 +9,10 @@ import com.munsun.monitoring_service.commons.utils.validator.impl.annotations.Si
  * @param password
  */
 public record LoginPasswordDtoIn(
-        @NotEmptyOrNull
+        @NotBlank(message = "login is empty")
         String login,
 
-        @NotEmptyOrNull
-        @Size(limit = 4, message = "size of at least 4 characters")
+        @NotBlank(message = "password is empty")
+        @Length(min=4)
         String password
 ) {}

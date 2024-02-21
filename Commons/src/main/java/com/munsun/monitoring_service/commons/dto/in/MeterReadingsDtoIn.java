@@ -1,5 +1,12 @@
 package com.munsun.monitoring_service.commons.dto.in;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.MapSerializer;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -8,4 +15,13 @@ import java.util.Map;
  */
 public record MeterReadingsDtoIn(
         Map<String, Long> readings
-){}
+){
+        public MeterReadingsDtoIn {
+                readings = new HashMap<>();
+        }
+
+        @JsonAnySetter
+        public void addPair(String key, Long value) {
+                readings.put(key, value);
+        }
+}

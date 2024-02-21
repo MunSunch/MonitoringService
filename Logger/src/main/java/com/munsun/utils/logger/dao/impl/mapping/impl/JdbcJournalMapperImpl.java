@@ -6,6 +6,7 @@ import com.munsun.utils.logger.dao.impl.queries.JournalQueries;
 import com.munsun.utils.logger.model.JournalRecord;
 import com.munsun.utils.logger.dao.impl.enums.NamesColumnsTableJournals;
 import com.munsun.utils.logger.dao.impl.mapping.JdbcJournalMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JdbcJournalMapperImpl implements JdbcJournalMapper {
     @Override
     public JournalRecord toJournalRecord(ResultSet result) {

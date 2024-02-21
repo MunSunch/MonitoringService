@@ -19,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AccountsDaoIntegrationsTests extends PostgresContainer {
-    private final JdbcAccountMapper jdbcAccountMapper = new JdbcAccountMapperImpl(new JdbcPlaceLivingMapperImpl());
-    private final AccountDao accountRepository = new AccountDaoImpl(getDatabase(), jdbcAccountMapper);
+    private JdbcAccountMapper jdbcAccountMapper;
+    private AccountDao accountRepository;
 
     private Account testAccount = Account.builder()
             .login("user")

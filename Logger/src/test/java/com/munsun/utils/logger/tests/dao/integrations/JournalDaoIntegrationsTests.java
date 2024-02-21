@@ -16,9 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class JournalDaoIntegrationsTests extends PostgresContainer {
-    private JournalDao journalRepository =
-            new JournalDaoImpl(getDatabase(), new JdbcJournalMapperImpl());
-
+    private JournalDao journalRepository;
     private JournalRecord testJournal = JournalRecord.builder()
                                             .id(1L)
                                             .date(new Date(new java.util.Date().getTime()))

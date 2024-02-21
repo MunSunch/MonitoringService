@@ -8,6 +8,7 @@ import com.munsun.monitoring_service.backend.models.MeterReading;
 import com.munsun.monitoring_service.commons.db.Database;
 import com.munsun.monitoring_service.commons.exceptions.DatabaseException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class MeterReadingsDaoImpl implements MeterReadingsDao {
     private final Database database;
     private final JdbcMeterReadingsMapper mapper;

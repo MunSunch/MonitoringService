@@ -19,10 +19,8 @@ import java.util.stream.Collectors;
  * @author MunSun
  * @version 1.0-SNAPSHOT
  */
-@Mapper(imports = Arrays.class)
+@Mapper(imports = Arrays.class, componentModel = "spring")
 public interface MeterReadingMapper {
-    MeterReadingMapper instance = Mappers.getMapper(MeterReadingMapper.class);
-
     /**
      * converts the {@linkplain com.munsun.monitoring_service.backend.models.MeterReading MeterReading} entity
      * to the {@linkplain com.munsun.monitoring_service.commons.dto.out.MeterReadingDtoOut MeterReadingDtoOut} output object
